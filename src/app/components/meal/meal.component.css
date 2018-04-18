@@ -1,0 +1,14 @@
+.display {
+  display: none;
+}
+
+.doDisplay {
+  display: block;
+}
+
+.btn-small {
+  height: 32.4px;
+  padding: 0 16px;
+  line-height: 32.4px;
+  font-size: 13px;
+}

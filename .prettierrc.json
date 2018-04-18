@@ -1,0 +1,11 @@
+{
+  "singleQuote": false,
+  "overrides": [
+    {
+      "files": "*",
+      "options": {
+        "singleQuote": true
+      }
+    }
+  ]
+}

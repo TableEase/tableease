@@ -1,0 +1,44 @@
+<form (ngSubmit)="updateMeal(meal)" class="col s12 m10">
+
+  <!-- Top Row -->
+  <div class="row">
+    <div class="input-field col s6">
+      <input type="text" [(ngModel)]="meal.name" name="name">
+      <label [ngClass]="meal.name ? 'active' : '' " for="name">Title</label>
+    </div>
+    <div class="input-field col s6">
+      <input type="text" [(ngModel)]="meal.description" name="description">
+      <label [ngClass]="meal.description ? 'active' : ''" for="description">Description</label>
+    </div>
+  </div>
+
+  <!-- Second Row -->
+  <div class="row">
+    <div class="input-field col s6">
+      <input type="text" name="course" [(ngModel)]="meal.course" id="course">
+      <label [ngClass]="meal.name ? 'active' : '' " for="course">Course</label>
+    </div>
+    <div class="input-field col s6">
+      <input type="text" name="price" [(ngModel)]="meal.price" id="price">
+      <label [ngClass]="meal.name ? 'active' : '' " for="price">Price</label>
+    </div>
+  </div>
+
+  <!-- Third Row -->
+  <!-- <div class="container">
+      <div class="row">
+        <div *ngFor="let allergy of allergies" class="chip" [ngClass]="allergyInMeal(allergy.id, meal.allergies) ? 'green lighten-1' : 'red lighten-1'">
+          {{ allergy.name }}
+        </div>
+      </div>
+    </div> -->
+
+
+  <button class="btn btn-small orange ligthen-2" type="submit" name="edit">Update
+    <i class="fa fa-edit left"></i>
+  </button>
+  <button class="btn btn-small red lighten-2" (click)="deleteMeal($event, meal)">Delete
+    <i class="fa fa-trash left"></i>
+  </button>
+
+</form>
