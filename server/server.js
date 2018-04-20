@@ -16,7 +16,6 @@ const app = express();
 // app.set('views', path.join(__dirname, 'src'));
 // app.set('view engine', 'html');
 
-app.use(logger('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(cookieParser());
