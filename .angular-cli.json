@@ -1,12 +1,12 @@
 {
   "$schema": "./node_modules/@angular/cli/lib/config/schema.json",
   "project": {
-    "name": "tableease-v2"
+    "name": "tableease"
   },
   "apps": [
     {
-      "root": "src",
-      "outDir": "dist",
+      "root": "app",
+      "outDir": "server/public/js",
       "assets": ["assets", "favicon.ico"],
       "index": "index.html",
       "main": "main.ts",

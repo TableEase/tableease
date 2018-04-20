@@ -13,13 +13,14 @@ const appRoutes = require('./routes/app');
 const app = express();
 
 // view engine setup
-app.set('views', path.join(__dirname, 'src'));
-app.set('view engine', 'html');
+// app.set('views', path.join(__dirname, 'src'));
+// app.set('view engine', 'html');
 
+app.use(logger('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(cookieParser());
-app.use(express.static(path.join(__dirname, 'dist')));
+app.use(express.static(path.join(__dirname, 'public/js')));
 
 // app.use(session({
 //     secret: 'vidyapathaisalwaysrunning',
