@@ -4,7 +4,7 @@
   "license": "MIT",
   "scripts": {
     "ng": "ng",
-    "start": "node server/app.js",
+    "start": "nodemon ./server/bin/www",
     "build": "ng build --watch",
     "test": "ng test",
     "lint": "ng lint",
@@ -30,7 +30,6 @@
     "angularfire2": "^5.0.0-rc.6",
     "bcrypt-nodejs": "0.0.3",
     "bootstrap": "^4.0.0-alpha.5",
-    "connect-flash": "^0.1.1",
     "cookie-parser": "^1.4.3",
     "core-js": "^2.4.1",
     "express": "^4.16.3",
@@ -46,7 +45,6 @@
     "passport": "^0.4.0",
     "passport-local": "^1.0.0",
     "rxjs": "^5.5.8",
-    "serve-favicon": "^2.5.0",
     "zone.js": "^0.8.19"
   },
   "devDependencies": {

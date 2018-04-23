@@ -6,7 +6,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { AngularFireModule } from 'angularfire2';
 import { AngularFirestoreModule } from 'angularfire2/firestore';
 import { AngularFireAuthModule } from 'angularfire2/auth';
-import { AppRoutingModule } from './app-routing.module';
+import { AppRoutingModule } from './modules/app-routing/app-routing.module';
 
 import { NoopAnimationPlayer } from '@angular/animations';
 import { environment } from '../environments/environment';
