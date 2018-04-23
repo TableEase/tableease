@@ -18,8 +18,8 @@ require('./config/passport')(passport); // pass passport for configuration
 const app = express();
 
 // view engine setup
-app.set('views', path.join(__dirname, 'views'));
-app.set('view engine', 'pug');
+// app.set('views', path.join(__dirname, 'views'));
+// app.set('view engine', 'pug');
 
 // uncomment after placing your favicon in /public
 //app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
@@ -28,14 +28,9 @@ app.use(logger('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: true}));
 app.use(cookieParser());
+
 app.use(express.static(path.join(__dirname, 'public')));
 
-
-// app.use(session({
-//     secret: 'vidyapathaisalwaysrunning',
-//     resave: true,
-//     saveUninitialized: true
-// })); // session secret
 
 var options = {
     host: 'us-cdbr-iron-east-05.cleardb.net',
@@ -58,27 +53,29 @@ app.use(session({
 app.use(passport.initialize());
 app.use(passport.session()); // persistent login sessions
 app.use(flash()); // use connect-flash for flash messages stored in session
-// require('./routes/routes.js')(app, passport); // load our routes and pass in our app and fully configured passport
 
 
-const index = require('./routes/index');
-const users = require('./routes/users');
-const register = require('./routes/register')(passport);
-const login = require('./routes/login')(passport);
-const profile = require('./routes/profile');
-const menu = require('./routes/menu');
-const logout = require('./routes/logout');
+// const index = require('./routes/index');
+// const users = require('./routes/users');
+// const register = require('./routes/register')(passport);
+// const login = require('./routes/login')(passport);
+// const profile = require('./routes/profile');
+// const menu = require('./routes/menu');
+// const logout = require('./routes/logout');
+
+const appRoutes = require('./routes/index');
+
+app.use('/', appRoutes);
 
 
-app.use('/', index);
-app.use('/register', register);
-app.use('/login', login);
-app.use('/profile', profile);
-app.use('/users', users);
-
-
-app.use('/menu', menu);
-app.use('/logout', logout);
+// app.use('/', index);
+// app.use('/register', register);
+// app.use('/login', login);
+// app.use('/profile', profile);
+// app.use('/users', users);
+//
+// app.use('/menu', menu);
+// app.use('/logout', logout);
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
