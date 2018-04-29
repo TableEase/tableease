@@ -17,6 +17,67 @@ webpackEmptyAsyncContext.id = "./app/$$_lazy_route_resource lazy recursive";
 
 /***/ }),
 
+/***/ "./app/app/app-routing.module.ts":
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+var core_1 = __webpack_require__("./node_modules/@angular/core/esm5/core.js");
+var common_1 = __webpack_require__("./node_modules/@angular/common/esm5/common.js");
+var router_1 = __webpack_require__("./node_modules/@angular/router/esm5/router.js");
+var signin_component_1 = __webpack_require__("./app/app/components/auth/signin/signin.component.ts");
+var home_component_1 = __webpack_require__("./app/app/components/home/home.component.ts");
+var application_component_1 = __webpack_require__("./app/app/components/application/application.component.ts");
+var meal2_component_1 = __webpack_require__("./app/app/components/application/meal2/meal2.component.ts");
+var dash_component_1 = __webpack_require__("./app/app/components/application/dash/dash.component.ts");
+var not_found_component_1 = __webpack_require__("./app/app/components/not-found/not-found.component.ts");
+var auth_guard_1 = __webpack_require__("./app/app/private/auth.guard.ts");
+var restaurant_form_component_1 = __webpack_require__("./app/app/components/application/restaurant/restaurant-form/restaurant-form.component.ts");
+var signup_component_1 = __webpack_require__("./app/app/components/auth/signup/signup.component.ts");
+// import { AuthGuard } from '../../private/auth.guard';
+var routes = [
+    { path: '', component: home_component_1.HomeComponent },
+    { path: 'signin', component: signin_component_1.SigninComponent },
+    { path: 'signup', component: signup_component_1.SignupComponent },
+    { path: 'restaurant', component: restaurant_form_component_1.RestaurantFormComponent },
+    {
+        path: 'app',
+        canActivate: [auth_guard_1.AuthGuard],
+        component: application_component_1.ApplicationComponent,
+        children: [
+            { path: 'homepage', component: dash_component_1.DashComponent },
+            { path: 'menu', component: meal2_component_1.Meal2Component },
+            { path: '**', redirectTo: '/homepage', pathMatch: 'full' }
+        ]
+    },
+    { path: 'not-found', component: not_found_component_1.NotFoundComponent },
+    { path: '**', redirectTo: '/not-found' }
+    // { path: 'meals', component: MealComponent, canActivate: [AuthGuard] }
+];
+var AppRoutingModule = /** @class */ (function () {
+    function AppRoutingModule() {
+    }
+    AppRoutingModule = __decorate([
+        core_1.NgModule({
+            imports: [common_1.CommonModule, router_1.RouterModule.forRoot(routes)],
+            exports: [router_1.RouterModule]
+            // declarations: [AuthGuard]
+        })
+    ], AppRoutingModule);
+    return AppRoutingModule;
+}());
+exports.AppRoutingModule = AppRoutingModule;
+
+
+/***/ }),
+
 /***/ "./app/app/app.component.css":
 /***/ (function(module, exports) {
 
@@ -27,7 +88,7 @@ module.exports = ""
 /***/ "./app/app/app.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<!-- <clr-main-container> -->\r\n<!-- <app-home></app-home> -->\r\n\r\n<!-- <app-header></app-header>\r\n    <div class=\"content-container\">\r\n        <div class=\"content-area\">\r\n            <app-meal2></app-meal2>\r\n        </div>\r\n        <clr-vertical-nav [clrVerticalNavCollapsible]=\"true\" [(clrVerticalNavCollapsed)]=\"collapsed\">\r\n            <app-sidenav></app-sidenav>\r\n        </clr-vertical-nav>\r\n    </div> -->\r\n<!-- </clr-main-container> -->\r\n\r\n<!-- <app-signin></app-signin> -->\r\n\r\n<router-outlet></router-outlet>"
+module.exports = "\r\n\r\n<router-outlet></router-outlet>"
 
 /***/ }),
 
@@ -81,11 +142,8 @@ var forms_1 = __webpack_require__("./node_modules/@angular/forms/esm5/forms.js")
 var angularfire2_1 = __webpack_require__("./node_modules/angularfire2/index.js");
 var firestore_1 = __webpack_require__("./node_modules/angularfire2/firestore/index.js");
 var auth_1 = __webpack_require__("./node_modules/angularfire2/auth/index.js");
-var app_routing_module_1 = __webpack_require__("./app/app/modules/app-routing/app-routing.module.ts");
+var app_routing_module_1 = __webpack_require__("./app/app/app-routing.module.ts");
 var environment_1 = __webpack_require__("./app/environments/environment.ts");
-var toggle_open_directive_1 = __webpack_require__("./app/app/directives/toggle-open.directive.ts");
-var allergy_select_directive_1 = __webpack_require__("./app/app/directives/allergy-select.directive.ts");
-var open_close_directive_1 = __webpack_require__("./app/app/directives/open-close.directive.ts");
 var app_component_1 = __webpack_require__("./app/app/app.component.ts");
 var header_component_1 = __webpack_require__("./app/app/components/application/nav/header/header.component.ts");
 var navbar_component_1 = __webpack_require__("./app/app/components/application/nav/navbar/navbar.component.ts");
@@ -123,9 +181,6 @@ var AppModule = /** @class */ (function () {
                 signin_component_1.SigninComponent,
                 signout_component_1.SignoutComponent,
                 signup_component_1.SignupComponent,
-                toggle_open_directive_1.ToggleOpenDirective,
-                allergy_select_directive_1.AllergySelectDirective,
-                open_close_directive_1.OpenCloseDirective,
                 meal2_component_1.Meal2Component,
                 meal2_item_component_1.Meal2ItemComponent,
                 meal2_detail_component_1.Meal2DetailComponent,
@@ -1359,7 +1414,8 @@ var HomeComponent = /** @class */ (function () {
     function HomeComponent(authService) {
         this.authService = authService;
     }
-    HomeComponent.prototype.ngOnInit = function () { };
+    HomeComponent.prototype.ngOnInit = function () {
+    };
     HomeComponent = __decorate([
         core_1.Component({
             selector: 'app-home',
@@ -1473,177 +1529,6 @@ exports.SplashComponent = SplashComponent;
 
 /***/ }),
 
-/***/ "./app/app/directives/allergy-select.directive.ts":
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
-    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
-    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
-    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
-    return c > 3 && r && Object.defineProperty(target, key, r), r;
-};
-var __metadata = (this && this.__metadata) || function (k, v) {
-    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
-};
-Object.defineProperty(exports, "__esModule", { value: true });
-var core_1 = __webpack_require__("./node_modules/@angular/core/esm5/core.js");
-var AllergySelectDirective = /** @class */ (function () {
-    function AllergySelectDirective() {
-        this.backgroundColor = '#e4e4e4';
-        this.fontColor = 'black';
-    }
-    AllergySelectDirective.prototype.allergySelect = function (event) {
-        if (this.backgroundColor !== '#26a69a') {
-            this.backgroundColor = '#26a69a';
-            this.fontColor = 'white';
-        }
-        else {
-            this.backgroundColor = '#e4e4e4';
-            this.fontColor = 'black';
-        }
-    };
-    __decorate([
-        core_1.HostBinding('style.backgroundColor'),
-        __metadata("design:type", Object)
-    ], AllergySelectDirective.prototype, "backgroundColor", void 0);
-    __decorate([
-        core_1.HostBinding('style.color'),
-        __metadata("design:type", Object)
-    ], AllergySelectDirective.prototype, "fontColor", void 0);
-    __decorate([
-        core_1.HostListener('click'),
-        __metadata("design:type", Function),
-        __metadata("design:paramtypes", [Event]),
-        __metadata("design:returntype", void 0)
-    ], AllergySelectDirective.prototype, "allergySelect", null);
-    AllergySelectDirective = __decorate([
-        core_1.Directive({
-            selector: '[appAllergySelect]'
-        }),
-        __metadata("design:paramtypes", [])
-    ], AllergySelectDirective);
-    return AllergySelectDirective;
-}());
-exports.AllergySelectDirective = AllergySelectDirective;
-
-
-/***/ }),
-
-/***/ "./app/app/directives/open-close.directive.ts":
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
-    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
-    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
-    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
-    return c > 3 && r && Object.defineProperty(target, key, r), r;
-};
-var __metadata = (this && this.__metadata) || function (k, v) {
-    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
-};
-Object.defineProperty(exports, "__esModule", { value: true });
-var core_1 = __webpack_require__("./node_modules/@angular/core/esm5/core.js");
-var OpenCloseDirective = /** @class */ (function () {
-    // @HostBinding() wasClicked = false;
-    function OpenCloseDirective(templateRef, vcRef) {
-        this.templateRef = templateRef;
-        this.vcRef = vcRef;
-    }
-    Object.defineProperty(OpenCloseDirective.prototype, "appOpenClose", {
-        set: function (condition) {
-            if (!condition) {
-                this.vcRef.createEmbeddedView(this.templateRef);
-            }
-            else {
-                this.vcRef.clear();
-            }
-        },
-        enumerable: true,
-        configurable: true
-    });
-    __decorate([
-        core_1.Input(),
-        __metadata("design:type", Boolean),
-        __metadata("design:paramtypes", [Boolean])
-    ], OpenCloseDirective.prototype, "appOpenClose", null);
-    OpenCloseDirective = __decorate([
-        core_1.Directive({
-            selector: '[appOpenClose]'
-        }),
-        __metadata("design:paramtypes", [core_1.TemplateRef,
-            core_1.ViewContainerRef])
-    ], OpenCloseDirective);
-    return OpenCloseDirective;
-}());
-exports.OpenCloseDirective = OpenCloseDirective;
-
-
-/***/ }),
-
-/***/ "./app/app/directives/toggle-open.directive.ts":
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
-    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
-    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
-    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
-    return c > 3 && r && Object.defineProperty(target, key, r), r;
-};
-var __metadata = (this && this.__metadata) || function (k, v) {
-    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
-};
-Object.defineProperty(exports, "__esModule", { value: true });
-var core_1 = __webpack_require__("./node_modules/@angular/core/esm5/core.js");
-var ToggleOpenDirective = /** @class */ (function () {
-    function ToggleOpenDirective(elRef, rend) {
-        this.elRef = elRef;
-        this.rend = rend;
-        this.backgroundColor = 'transparent';
-    }
-    ToggleOpenDirective.prototype.ngOnInit = function () { };
-    ToggleOpenDirective.prototype.mouseOver = function (eventData) {
-        // this.rend.setStyle(this.elRef.nativeElement, 'background-color', 'blue');
-        // this.rend.removeClass(this.elRef.nativeElement, 'hide');
-        this.backgroundColor = 'blue';
-    };
-    ToggleOpenDirective.prototype.mouseLeave = function (eventData) {
-        this.backgroundColor = 'transparent';
-    };
-    __decorate([
-        core_1.HostBinding('style.backgroundColor'),
-        __metadata("design:type", Object)
-    ], ToggleOpenDirective.prototype, "backgroundColor", void 0);
-    __decorate([
-        core_1.HostListener('mouseenter'),
-        __metadata("design:type", Function),
-        __metadata("design:paramtypes", [Event]),
-        __metadata("design:returntype", void 0)
-    ], ToggleOpenDirective.prototype, "mouseOver", null);
-    __decorate([
-        core_1.HostListener('mouseleave'),
-        __metadata("design:type", Function),
-        __metadata("design:paramtypes", [Event]),
-        __metadata("design:returntype", void 0)
-    ], ToggleOpenDirective.prototype, "mouseLeave", null);
-    ToggleOpenDirective = __decorate([
-        core_1.Directive({
-            selector: '[appOpen]'
-        }),
-        __metadata("design:paramtypes", [core_1.ElementRef, core_1.Renderer2])
-    ], ToggleOpenDirective);
-    return ToggleOpenDirective;
-}());
-exports.ToggleOpenDirective = ToggleOpenDirective;
-
-
-/***/ }),
-
 /***/ "./app/app/models/allergy.ts":
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -1689,67 +1574,6 @@ exports.Location = Location;
 
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.roles = ['User', 'Restaurant', 'admin'];
-
-
-/***/ }),
-
-/***/ "./app/app/modules/app-routing/app-routing.module.ts":
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
-    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
-    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
-    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
-    return c > 3 && r && Object.defineProperty(target, key, r), r;
-};
-Object.defineProperty(exports, "__esModule", { value: true });
-var core_1 = __webpack_require__("./node_modules/@angular/core/esm5/core.js");
-var common_1 = __webpack_require__("./node_modules/@angular/common/esm5/common.js");
-var router_1 = __webpack_require__("./node_modules/@angular/router/esm5/router.js");
-var signin_component_1 = __webpack_require__("./app/app/components/auth/signin/signin.component.ts");
-var home_component_1 = __webpack_require__("./app/app/components/home/home.component.ts");
-var application_component_1 = __webpack_require__("./app/app/components/application/application.component.ts");
-var meal2_component_1 = __webpack_require__("./app/app/components/application/meal2/meal2.component.ts");
-var dash_component_1 = __webpack_require__("./app/app/components/application/dash/dash.component.ts");
-var not_found_component_1 = __webpack_require__("./app/app/components/not-found/not-found.component.ts");
-var auth_guard_1 = __webpack_require__("./app/app/private/auth.guard.ts");
-var signup_component_1 = __webpack_require__("./app/app/components/auth/signup/signup.component.ts");
-var restaurant_form_component_1 = __webpack_require__("./app/app/components/application/restaurant/restaurant-form/restaurant-form.component.ts");
-// import { AuthGuard } from '../../private/auth.guard';
-var routes = [
-    { path: '', component: home_component_1.HomeComponent },
-    { path: 'signin', component: signin_component_1.SigninComponent },
-    { path: 'signup', component: signup_component_1.SignupComponent },
-    { path: 'restaurant', component: restaurant_form_component_1.RestaurantFormComponent },
-    {
-        path: 'app',
-        canActivate: [auth_guard_1.AuthGuard],
-        component: application_component_1.ApplicationComponent,
-        children: [
-            { path: 'homepage', component: dash_component_1.DashComponent },
-            { path: 'menu', component: meal2_component_1.Meal2Component },
-            { path: '**', redirectTo: '/homepage', pathMatch: 'full' }
-        ]
-    },
-    { path: 'not-found', component: not_found_component_1.NotFoundComponent },
-    { path: '**', redirectTo: '/not-found' }
-    // { path: 'meals', component: MealComponent, canActivate: [AuthGuard] }
-];
-var AppRoutingModule = /** @class */ (function () {
-    function AppRoutingModule() {
-    }
-    AppRoutingModule = __decorate([
-        core_1.NgModule({
-            imports: [common_1.CommonModule, router_1.RouterModule.forRoot(routes)],
-            exports: [router_1.RouterModule]
-            // declarations: [AuthGuard]
-        })
-    ], AppRoutingModule);
-    return AppRoutingModule;
-}());
-exports.AppRoutingModule = AppRoutingModule;
 
 
 /***/ }),

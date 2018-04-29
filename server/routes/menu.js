@@ -19,7 +19,7 @@ router.get('/edit', myFunctions.isLoggedIn, function (req, res, next) {
         async.apply(getMenuIds, companyId),
         async.apply(getAllergiesMenu, companyId),
         function (jsonReturn) {
-            res.render('myMenu', {data: jsonReturn})
+            res.send({data: jsonReturn})
         }])
 });
 

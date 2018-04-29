@@ -4,7 +4,8 @@ const myFuction = require('./myFunctions')
 
 /* GET home page. */
 router.get('/', function (req, res, next) {
-    res.render('index', {user: req.user, title: 'TableEase'});
+    // res.render('index', {user: req.user, title: 'TableEase'});
+    res.send({user: req.user, title: 'TableEase'});
 });
 
 module.exports = router;

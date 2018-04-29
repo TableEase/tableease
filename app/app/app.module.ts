@@ -6,17 +6,13 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { AngularFireModule } from 'angularfire2';
 import { AngularFirestoreModule } from 'angularfire2/firestore';
 import { AngularFireAuthModule } from 'angularfire2/auth';
-import { AppRoutingModule } from './modules/app-routing/app-routing.module';
+import { AppRoutingModule } from './app-routing.module';
 
 import { NoopAnimationPlayer } from '@angular/animations';
 import { environment } from '../environments/environment';
 
 import { AllergiesService } from './services/allergies.service';
 import { MealsService } from './services/meals.service';
-
-import { ToggleOpenDirective } from './directives/toggle-open.directive';
-import { AllergySelectDirective } from './directives/allergy-select.directive';
-import { OpenCloseDirective } from './directives/open-close.directive';
 
 import { AppComponent } from './app.component';
 import { HeaderComponent } from './components/application/nav/header/header.component';
@@ -55,9 +51,6 @@ import { UserFormComponent } from './components/auth/signup/user-form/user-form.
     SigninComponent,
     SignoutComponent,
     SignupComponent,
-    ToggleOpenDirective,
-    AllergySelectDirective,
-    OpenCloseDirective,
     Meal2Component,
     Meal2ItemComponent,
     Meal2DetailComponent,
@@ -85,4 +78,5 @@ import { UserFormComponent } from './components/auth/signup/user-form/user-form.
   providers: [AuthService, AuthGuard, UserService],
   bootstrap: [AppComponent]
 })
-export class AppModule {}
+export class AppModule {
+}

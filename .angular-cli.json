@@ -7,7 +7,10 @@
     {
       "root": "app",
       "outDir": "server/public/js",
-      "assets": ["assets", "favicon.ico"],
+      "assets": [
+        "assets",
+        "favicon.ico"
+      ],
       "index": "index.html",
       "main": "main.ts",
       "polyfills": "polyfills.ts",
@@ -16,10 +19,10 @@
       "testTsconfig": "tsconfig.spec.json",
       "prefix": "app",
       "styles": [
-        "styles.css",
         "../node_modules/font-awesome/css/font-awesome.css",
         "../node_modules/@clr/icons/clr-icons.min.css",
-        "../node_modules/@clr/ui/clr-ui.min.css"
+        "../node_modules/@clr/ui/clr-ui.min.css",
+        "styles.css"
       ],
       "scripts": [
         "../node_modules/@webcomponents/custom-elements/custom-elements.min.js",
