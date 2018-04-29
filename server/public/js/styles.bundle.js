@@ -131,7 +131,7 @@ if(false) {
 /***/ "./node_modules/raw-loader/index.js!./node_modules/postcss-loader/lib/index.js??embedded!./app/styles.css":
 /***/ (function(module, exports) {
 
-module.exports = "/* You can add global styles to this file, and also import other style files */\nbody {\n  font-size: 0.87rem;\n}\n"
+module.exports = "/* You can add global styles to this file, and also import other style files */\r\nbody {\r\n  font-size: 0.87rem;\r\n}\r\n"
 
 /***/ }),
 
