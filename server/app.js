@@ -14,7 +14,6 @@ const flash = require("connect-flash");
 
 require("./config/passport")(passport); // pass passport for configuration
 
-
 const app = express();
 
 // view engine setup
