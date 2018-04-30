@@ -4,7 +4,7 @@ import { Routes, RouterModule } from '@angular/router';
 
 import { MealComponent } from './components/meal/meal.component';
 import { AppComponent } from './app.component';
-import { SigninComponent } from './components/auth/signin/signin.component';
+import { LoginComponent } from './components/auth/login/login.component';
 import { HomeComponent } from './components/home/home.component';
 import { ApplicationComponent } from './components/application/application.component';
 import { Meal2Component } from './components/application/meal2/meal2.component';
@@ -18,7 +18,7 @@ import { HttpClient } from 'selenium-webdriver/http';
 
 const routes: Routes = [
   { path: '', component: HomeComponent },
-  { path: 'signin', component: SigninComponent },
+  { path: 'login', component: LoginComponent },
   { path: 'signup', component: SignupComponent },
   { path: 'restaurant', component: RestaurantFormComponent },
   {

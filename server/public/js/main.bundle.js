@@ -32,7 +32,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 var core_1 = __webpack_require__("./node_modules/@angular/core/esm5/core.js");
 var common_1 = __webpack_require__("./node_modules/@angular/common/esm5/common.js");
 var router_1 = __webpack_require__("./node_modules/@angular/router/esm5/router.js");
-var signin_component_1 = __webpack_require__("./app/app/components/auth/signin/signin.component.ts");
+var login_component_1 = __webpack_require__("./app/app/components/auth/login/login.component.ts");
 var home_component_1 = __webpack_require__("./app/app/components/home/home.component.ts");
 var application_component_1 = __webpack_require__("./app/app/components/application/application.component.ts");
 var meal2_component_1 = __webpack_require__("./app/app/components/application/meal2/meal2.component.ts");
@@ -44,7 +44,7 @@ var signup_component_1 = __webpack_require__("./app/app/components/auth/signup/s
 // import { AuthGuard } from '../../private/auth.guard';
 var routes = [
     { path: '', component: home_component_1.HomeComponent },
-    { path: 'signin', component: signin_component_1.SigninComponent },
+    { path: 'login', component: login_component_1.LoginComponent },
     { path: 'signup', component: signup_component_1.SignupComponent },
     { path: 'restaurant', component: restaurant_form_component_1.RestaurantFormComponent },
     {
@@ -143,13 +143,14 @@ var angularfire2_1 = __webpack_require__("./node_modules/angularfire2/index.js")
 var firestore_1 = __webpack_require__("./node_modules/angularfire2/firestore/index.js");
 var auth_1 = __webpack_require__("./node_modules/angularfire2/auth/index.js");
 var app_routing_module_1 = __webpack_require__("./app/app/app-routing.module.ts");
+var http_1 = __webpack_require__("./node_modules/@angular/common/esm5/http.js");
 var environment_1 = __webpack_require__("./app/environments/environment.ts");
 var app_component_1 = __webpack_require__("./app/app/app.component.ts");
 var header_component_1 = __webpack_require__("./app/app/components/application/nav/header/header.component.ts");
 var navbar_component_1 = __webpack_require__("./app/app/components/application/nav/navbar/navbar.component.ts");
 var subnav_component_1 = __webpack_require__("./app/app/components/application/nav/subnav/subnav.component.ts");
 var sidenav_component_1 = __webpack_require__("./app/app/components/application/nav/sidenav/sidenav.component.ts");
-var signin_component_1 = __webpack_require__("./app/app/components/auth/signin/signin.component.ts");
+var login_component_1 = __webpack_require__("./app/app/components/auth/login/login.component.ts");
 var signout_component_1 = __webpack_require__("./app/app/components/auth/signout/signout.component.ts");
 var signup_component_1 = __webpack_require__("./app/app/components/auth/signup/signup.component.ts");
 var meal2_component_1 = __webpack_require__("./app/app/components/application/meal2/meal2.component.ts");
@@ -167,6 +168,7 @@ var restaurant_component_1 = __webpack_require__("./app/app/components/applicati
 var restaurant_form_component_1 = __webpack_require__("./app/app/components/application/restaurant/restaurant-form/restaurant-form.component.ts");
 var user_service_1 = __webpack_require__("./app/app/services/user.service.ts");
 var user_form_component_1 = __webpack_require__("./app/app/components/auth/signup/user-form/user-form.component.ts");
+var passport_service_1 = __webpack_require__("./app/app/services/passport.service.ts");
 var AppModule = /** @class */ (function () {
     function AppModule() {
     }
@@ -178,7 +180,7 @@ var AppModule = /** @class */ (function () {
                 navbar_component_1.NavbarComponent,
                 subnav_component_1.SubnavComponent,
                 sidenav_component_1.SidenavComponent,
-                signin_component_1.SigninComponent,
+                login_component_1.LoginComponent,
                 signout_component_1.SignoutComponent,
                 signup_component_1.SignupComponent,
                 meal2_component_1.Meal2Component,
@@ -203,9 +205,10 @@ var AppModule = /** @class */ (function () {
                 angularfire2_1.AngularFireModule.initializeApp(environment_1.environment.firebase, 'tableease'),
                 firestore_1.AngularFirestoreModule,
                 auth_1.AngularFireAuthModule,
-                app_routing_module_1.AppRoutingModule
+                app_routing_module_1.AppRoutingModule,
+                http_1.HttpClientModule
             ],
-            providers: [auth_service_1.AuthService, auth_guard_1.AuthGuard, user_service_1.UserService],
+            providers: [auth_service_1.AuthService, auth_guard_1.AuthGuard, user_service_1.UserService, passport_service_1.PassportService],
             bootstrap: [app_component_1.AppComponent]
         })
     ], AppModule);
@@ -1049,21 +1052,21 @@ exports.RestaurantComponent = RestaurantComponent;
 
 /***/ }),
 
-/***/ "./app/app/components/auth/signin/signin.component.css":
+/***/ "./app/app/components/auth/login/login.component.css":
 /***/ (function(module, exports) {
 
 module.exports = ""
 
 /***/ }),
 
-/***/ "./app/app/components/auth/signin/signin.component.html":
+/***/ "./app/app/components/auth/login/login.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<div class=\"login-wrapper\">\r\n  <form class=\"login\" (ngSubmit)=\"onSignin(f)\" #f=\"ngForm\">\r\n    <label class=\"title\">\r\n      <h3 class=\"welcome\">Welcome to</h3>\r\n      Company Product Name\r\n      <h5 class=\"hint\">Use your Company ID to sign in or create one now</h5>\r\n    </label>\r\n    <div class=\"login-group\">\r\n      <!-- <div class=\"auth-source select\">\r\n        <select id=\"login-auth-source-1\">\r\n          <option>Local Users</option>\r\n          <option>Administrator</option>\r\n        </select>\r\n      </div> -->\r\n      <input class=\"email\" type=\"email\" id=\"email\" name=\"email\" placeholder=\"Email\" ngModel>\r\n      <input class=\"password\" type=\"password\" id=\"login_password\" name=\"password\" placeholder=\"Password\" ngModel>\r\n      <div class=\"checkbox\">\r\n        <input type=\"checkbox\" id=\"rememberme\">\r\n        <label for=\"rememberme\">\r\n          Remember me\r\n        </label>\r\n      </div>\r\n      <!-- <div class=\"error active\">\r\n        Invalid user name or password\r\n      </div> -->\r\n      <button type=\"submit\" class=\"btn btn-primary\" [disabled]=\"!f.valid\">Login</button>\r\n      <!-- <a href=\"javascript://\" class=\"signup\">Sign up for a Company ID</a> -->\r\n    </div>\r\n  </form>\r\n</div>"
+module.exports = "<div class=\"login-wrapper\">\r\n  <form class=\"login\" (ngSubmit)=\"onLogin(f)\" #f=\"ngForm\">\r\n    <label class=\"title\">\r\n      <h3 class=\"welcome\">Welcome to</h3>\r\n      Company Product Name\r\n      <h5 class=\"hint\">Use your Company ID to sign in or create one now</h5>\r\n    </label>\r\n\r\n    <div class=\"login-group\">\r\n      <div *ngIf=\"messages?.length > 0\" class=\"alert alert-danger\">\r\n        <div class=\"alert-items\">\r\n          <div class=\"alert-item static\" *ngFor=\"let message of messages\">\r\n            <div class=\"alert-icon-wrapper\">\r\n              <clr-icon class=\"alert-icon\" shape=\"exclamation-circle\"></clr-icon>\r\n            </div>\r\n            <span class=\"alert-text\">{{message}}</span>\r\n\r\n          </div>\r\n        </div>\r\n      </div>\r\n\r\n      <input class=\"email\" type=\"email\" id=\"email\" name=\"email\" placeholder=\"Email\" ngModel>\r\n      <input class=\"password\" type=\"password\" id=\"login_password\" name=\"password\" placeholder=\"Password\" ngModel>\r\n      <div class=\"checkbox\">\r\n        <input type=\"checkbox\" id=\"rememberme\">\r\n        <label for=\"rememberme\">\r\n          Remember me\r\n        </label>\r\n      </div>\r\n\r\n      <button type=\"submit\" class=\"btn btn-primary\" [disabled]=\"!f.valid\">Login</button>\r\n\r\n    </div>\r\n  </form>\r\n</div>\r\n"
 
 /***/ }),
 
-/***/ "./app/app/components/auth/signin/signin.component.ts":
+/***/ "./app/app/components/auth/login/login.component.ts":
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1079,30 +1082,37 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 var core_1 = __webpack_require__("./node_modules/@angular/core/esm5/core.js");
-var auth_service_1 = __webpack_require__("./app/app/services/auth.service.ts");
-var SigninComponent = /** @class */ (function () {
-    function SigninComponent(authService) {
-        this.authService = authService;
+var passport_service_1 = __webpack_require__("./app/app/services/passport.service.ts");
+var router_1 = __webpack_require__("./node_modules/@angular/router/esm5/router.js");
+var LoginComponent = /** @class */ (function () {
+    function LoginComponent(passport, router) {
+        this.passport = passport;
+        this.router = router;
     }
-    SigninComponent.prototype.ngOnInit = function () { };
-    SigninComponent.prototype.onSignin = function (form) {
+    LoginComponent.prototype.ngOnInit = function () {
+    };
+    LoginComponent.prototype.onLogin = function (form) {
+        var _this = this;
         var email = form.value.email;
         var password = form.value.password;
-        console.log(email);
-        console.log(password);
-        this.authService.signinUser(email, password);
+        this.passport.login(email, password).subscribe(function (res) {
+            _this.messages = res['messages'];
+            if (_this.messages.length === 0) {
+                _this.router.navigate(['app/homepage']);
+            }
+        });
     };
-    SigninComponent = __decorate([
+    LoginComponent = __decorate([
         core_1.Component({
-            selector: 'app-signin',
-            template: __webpack_require__("./app/app/components/auth/signin/signin.component.html"),
-            styles: [__webpack_require__("./app/app/components/auth/signin/signin.component.css")]
+            selector: 'app-login',
+            template: __webpack_require__("./app/app/components/auth/login/login.component.html"),
+            styles: [__webpack_require__("./app/app/components/auth/login/login.component.css")]
         }),
-        __metadata("design:paramtypes", [auth_service_1.AuthService])
-    ], SigninComponent);
-    return SigninComponent;
+        __metadata("design:paramtypes", [passport_service_1.PassportService, router_1.Router])
+    ], LoginComponent);
+    return LoginComponent;
 }());
-exports.SigninComponent = SigninComponent;
+exports.LoginComponent = LoginComponent;
 
 
 /***/ }),
@@ -1167,7 +1177,7 @@ module.exports = ""
 /***/ "./app/app/components/auth/signup/signup.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<clr-main-container>\r\n\r\n  <div class=\"row\">\r\n    <div class=\"col-xs-12 col-sm-10 col-md-8 push-md-2\">\r\n      <ng-container *ngIf=\"(authService.user$ | async) || {} as user\">\r\n\r\n        <!-- Initial SignupForm -->\r\n        <form class=\"form\" (ngSubmit)=\"onSignup()\" [formGroup]=\"signupForm\" *ngIf=\"!user.uid\">\r\n          <section class=\"form-block\">\r\n            <div class=\"form-group\">\r\n              <label for=\"email\">Email</label>\r\n              <input type=\"email\" id=\"email\" name=\"email\" class=\"form-control\" formControlName=\"email\">\r\n            </div>\r\n            <div class=\"form-group\">\\\r\n              <label for=\"password\">Password</label>\r\n              <input type=\"password\" id=\"password\" name=\"password\" class=\"form-control\" formControlName=\"password\">\r\n            </div>\r\n            <button class=\"btn btn-primary\" type=\"submit\" [disabled]=\"!signupForm.valid\">Sign Up</button>\r\n          </section>\r\n        </form>\r\n        <!-- <app-user-form *ngIf=\"!user.uid\"></app-user-form> -->\r\n\r\n        <!-- Detail Form -->\r\n        <form class=\"form\" [formGroup]=\"detailForm\" (ngSubmit)=\"setDetails(user)\" *ngIf=\"user.uid && !user.name\">\r\n          <section class=\"form-block\">\r\n            <div class=\"form-group\">\r\n              <label for=\"roles\">Role</label>\r\n              <div class=\"select\">\r\n                <select name=\"roles\" class=\"form-control\" formControlName=\"roles\">\r\n                  <option *ngFor=\"let role of roles\" [value]=\"role\">{{ role }}</option>\r\n                </select>\r\n              </div>\r\n            </div>\r\n            <div formGroupName=\"name\">\r\n              <div class=\"form-group\">\r\n                <label for=\"first\">First Name</label>\r\n                <input type=\"text\" id=\"firstName\" name=\"first\" class=\"form-control\" formControlName=\"first\">\r\n              </div>\r\n              <div class=\"form-group\">\r\n                <label for=\"password\">Last Name</label>\r\n                <input type=\"text\" id=\"lastName\" name=\"last\" class=\"form-control\" formControlName=\"last\">\r\n              </div>\r\n            </div>\r\n            <div class=\"form-group\">\r\n              <label for=\"phone\">Phone Number</label>\r\n              <input type=\"text\" id=\"phoneNumber\" name=\"phone\" class=\"form-control\" formControlName=\"phone\">\r\n            </div>\r\n          </section>\r\n\r\n          <!-- Address -->\r\n          <section class=\"form-block\" formGroupName=\"address\">\r\n            <div class=\"form-group\">\r\n              <label for=\"street\">Street</label>\r\n              <input type=\"text\" id=\"street\" name=\"street\" class=\"form-control\" formControlName=\"street\">\r\n            </div>\r\n            <div class=\"form-group\">\r\n              <label for=\"city\">City</label>\r\n              <input type=\"text\" id=\"city\" name=\"city\" class=\"form-control\" formControlName=\"city\">\r\n            </div>\r\n            <div class=\"form-group\">\r\n              <label for=\"state\">State</label>\r\n              <input type=\"text\" id=\"state\" name=\"state\" class=\"form-control\" formControlName=\"state\">\r\n            </div>\r\n            <div class=\"form-group\">\r\n              <label for=\"zip\">Zip</label>\r\n              <input type=\"text\" id=\"zip\" name=\"zip\" class=\"form-control\" formControlName=\"zip\">\r\n            </div>\r\n          </section>\r\n\r\n          <button class=\"btn btn-primary\" type=\"submit\" [disabled]=\"!detailForm.valid\">NEXT</button>\r\n        </form>\r\n\r\n        <app-restaurant-form [user]=\"user\" *ngIf=\"user.uid && user.name\"></app-restaurant-form>\r\n        {{user.roles}}\r\n      </ng-container>\r\n    </div>\r\n  </div>\r\n\r\n</clr-main-container>"
+module.exports = "<clr-main-container>\r\n\r\n  <div class=\"row\">\r\n    <div class=\"col-xs-12 col-sm-10 col-md-8 push-md-2\">\r\n      <ng-container *ngIf=\"(authService.user$ | async) || {} as user\">\r\n\r\n        <!-- Initial SignupForm -->\r\n        <form class=\"form\" (ngSubmit)=\"onSignup()\" [formGroup]=\"signupForm\" *ngIf=\"!user.uid\">\r\n          <section class=\"form-block\">\r\n            <div class=\"form-group\">\r\n              <label for=\"email\">Email</label>\r\n              <input type=\"email\" id=\"email\" name=\"email\" class=\"form-control\" formControlName=\"email\">\r\n            </div>\r\n            <div class=\"form-group\">\r\n              <label for=\"password\">Password</label>\r\n              <input type=\"password\" id=\"password\" name=\"password\" class=\"form-control\" formControlName=\"password\">\r\n            </div>\r\n            <button class=\"btn btn-primary\" type=\"submit\" [disabled]=\"!signupForm.valid\">Sign Up</button>\r\n          </section>\r\n        </form>\r\n        <!-- <app-user-form *ngIf=\"!user.uid\"></app-user-form> -->\r\n\r\n        <!-- Detail Form -->\r\n        <form class=\"form\" [formGroup]=\"detailForm\" (ngSubmit)=\"setDetails(user)\" *ngIf=\"user.uid && !user.name\">\r\n          <section class=\"form-block\">\r\n            <div class=\"form-group\">\r\n              <label for=\"roles\">Role</label>\r\n              <div class=\"select\">\r\n                <select name=\"roles\" class=\"form-control\" formControlName=\"roles\">\r\n                  <option *ngFor=\"let role of roles\" [value]=\"role\">{{ role }}</option>\r\n                </select>\r\n              </div>\r\n            </div>\r\n            <div formGroupName=\"name\">\r\n              <div class=\"form-group\">\r\n                <label for=\"first\">First Name</label>\r\n                <input type=\"text\" id=\"firstName\" name=\"first\" class=\"form-control\" formControlName=\"first\">\r\n              </div>\r\n              <div class=\"form-group\">\r\n                <label for=\"password\">Last Name</label>\r\n                <input type=\"text\" id=\"lastName\" name=\"last\" class=\"form-control\" formControlName=\"last\">\r\n              </div>\r\n            </div>\r\n            <div class=\"form-group\">\r\n              <label for=\"phone\">Phone Number</label>\r\n              <input type=\"text\" id=\"phoneNumber\" name=\"phone\" class=\"form-control\" formControlName=\"phone\">\r\n            </div>\r\n          </section>\r\n\r\n          <!-- Address -->\r\n          <section class=\"form-block\" formGroupName=\"address\">\r\n            <div class=\"form-group\">\r\n              <label for=\"street\">Street</label>\r\n              <input type=\"text\" id=\"street\" name=\"street\" class=\"form-control\" formControlName=\"street\">\r\n            </div>\r\n            <div class=\"form-group\">\r\n              <label for=\"city\">City</label>\r\n              <input type=\"text\" id=\"city\" name=\"city\" class=\"form-control\" formControlName=\"city\">\r\n            </div>\r\n            <div class=\"form-group\">\r\n              <label for=\"state\">State</label>\r\n              <input type=\"text\" id=\"state\" name=\"state\" class=\"form-control\" formControlName=\"state\">\r\n            </div>\r\n            <div class=\"form-group\">\r\n              <label for=\"zip\">Zip</label>\r\n              <input type=\"text\" id=\"zip\" name=\"zip\" class=\"form-control\" formControlName=\"zip\">\r\n            </div>\r\n          </section>\r\n\r\n          <button class=\"btn btn-primary\" type=\"submit\" [disabled]=\"!detailForm.valid\">NEXT</button>\r\n        </form>\r\n\r\n        <app-restaurant-form [user]=\"user\" *ngIf=\"user.uid && user.name\"></app-restaurant-form>\r\n        {{user.roles}}\r\n      </ng-container>\r\n    </div>\r\n  </div>\r\n\r\n</clr-main-container>\r\n"
 
 /***/ }),
 
@@ -1197,7 +1207,6 @@ var SignupComponent = /** @class */ (function () {
         this.fb = fb;
         this.userService = userService;
         this.roles = roles_1.roles;
-        this.createForm();
     }
     SignupComponent.prototype.ngOnInit = function () { };
     SignupComponent.prototype.createForm = function () {
@@ -1389,7 +1398,7 @@ module.exports = ""
 /***/ "./app/app/components/home/home.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<clr-main-container>\r\n\r\n  <header class=\"header-1\">\r\n    <div class=\"branding\">\r\n      <a class=\"nav-link\">\r\n        <clr-icon shape=\"dna\"></clr-icon>\r\n        <span class=\"title\">Tableease</span>\r\n      </a>\r\n    </div>\r\n    <div class=\"header-actions\">\r\n      <a routerLink=\"signin\" class=\"nav-link nav-text\">\r\n        Log In\r\n      </a>\r\n      <a routerLink=\"signup\" class=\"nav-link nav-text\">\r\n        Signup\r\n      </a>\r\n      <a routerLink=\"app/homepage\" class=\"nav-link nav-text\">\r\n        Go To App\r\n      </a>\r\n    </div>\r\n  </header>\r\n  <p>\r\n    This is the main home page\r\n  </p>\r\n\r\n</clr-main-container>"
+module.exports = "<clr-main-container>\r\n\r\n  <header class=\"header-1\">\r\n    <div class=\"branding\">\r\n      <a class=\"nav-link\">\r\n        <clr-icon shape=\"dna\"></clr-icon>\r\n        <span class=\"title\">Tableease</span>\r\n      </a>\r\n    </div>\r\n    <div class=\"header-actions\">\r\n      <a routerLink=\"login\" class=\"nav-link nav-text\">\r\n        Log In\r\n      </a>\r\n      <a routerLink=\"signup\" class=\"nav-link nav-text\">\r\n        Signup\r\n      </a>\r\n      <a routerLink=\"app/homepage\" class=\"nav-link nav-text\">\r\n        Go To App\r\n      </a>\r\n    </div>\r\n  </header>\r\n  <p>\r\n    This is the main home page\r\n  </p>\r\n\r\n</clr-main-container>\r\n"
 
 /***/ }),
 
@@ -1612,7 +1621,7 @@ var AuthGuard = /** @class */ (function () {
             .do(function (loggedIn) {
             if (!loggedIn) {
                 // this.notify.update('You must be logged in and have a atch phrase!', 'error');
-                _this.router.navigate(['/signin']);
+                _this.router.navigate(['/login']);
             }
         }));
     };
@@ -1729,7 +1738,7 @@ var AuthService = /** @class */ (function () {
     AuthService.prototype.signoutUser = function () {
         var _this = this;
         this.afAuth.auth.signOut().catch(function (error) { return _this.handleError(error); });
-        this.router.navigate(['/signin']);
+        this.router.navigate(['/login']);
     };
     // #### Email/Password Auth #### //
     AuthService.prototype.emailSignup = function (email, password) {
@@ -1864,6 +1873,41 @@ var MealsService = /** @class */ (function () {
     return MealsService;
 }());
 exports.MealsService = MealsService;
+
+
+/***/ }),
+
+/***/ "./app/app/services/passport.service.ts":
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (this && this.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+var core_1 = __webpack_require__("./node_modules/@angular/core/esm5/core.js");
+var http_1 = __webpack_require__("./node_modules/@angular/common/esm5/http.js");
+var PassportService = /** @class */ (function () {
+    function PassportService(http) {
+        this.http = http;
+    }
+    PassportService.prototype.login = function (email, password) {
+        return this.http.post('/api/login', { email: email, password: password });
+    };
+    PassportService = __decorate([
+        core_1.Injectable(),
+        __metadata("design:paramtypes", [http_1.HttpClient])
+    ], PassportService);
+    return PassportService;
+}());
+exports.PassportService = PassportService;
 
 
 /***/ }),

@@ -28,7 +28,7 @@ export class AuthGuard implements CanActivate {
         .do(loggedIn => {
           if (!loggedIn) {
             // this.notify.update('You must be logged in and have a atch phrase!', 'error');
-            this.router.navigate(['/signin']);
+            this.router.navigate(['/login']);
           }
         })
     );

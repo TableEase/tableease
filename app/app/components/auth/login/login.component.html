@@ -1,17 +1,24 @@
 <div class="login-wrapper">
-  <form class="login" (ngSubmit)="onSignin(f)" #f="ngForm">
+  <form class="login" (ngSubmit)="onLogin(f)" #f="ngForm">
     <label class="title">
       <h3 class="welcome">Welcome to</h3>
       Company Product Name
       <h5 class="hint">Use your Company ID to sign in or create one now</h5>
     </label>
+
     <div class="login-group">
-      <!-- <div class="auth-source select">
-        <select id="login-auth-source-1">
-          <option>Local Users</option>
-          <option>Administrator</option>
-        </select>
-      </div> -->
+      <div *ngIf="messages?.length > 0" class="alert alert-danger">
+        <div class="alert-items">
+          <div class="alert-item static" *ngFor="let message of messages">
+            <div class="alert-icon-wrapper">
+              <clr-icon class="alert-icon" shape="exclamation-circle"></clr-icon>
+            </div>
+            <span class="alert-text">{{message}}</span>
+
+          </div>
+        </div>
+      </div>
+
       <input class="email" type="email" id="email" name="email" placeholder="Email" ngModel>
       <input class="password" type="password" id="login_password" name="password" placeholder="Password" ngModel>
       <div class="checkbox">
@@ -20,11 +27,9 @@
           Remember me
         </label>
       </div>
-      <!-- <div class="error active">
-        Invalid user name or password
-      </div> -->
+
       <button type="submit" class="btn btn-primary" [disabled]="!f.valid">Login</button>
-      <!-- <a href="javascript://" class="signup">Sign up for a Company ID</a> -->
+
     </div>
   </form>
 </div>

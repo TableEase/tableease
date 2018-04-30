@@ -11,6 +11,7 @@ const MySQLStore = require("express-mysql-session")(session);
 const morgan = require("morgan");
 const passport = require("passport");
 const flash = require("connect-flash");
+const router = express.Router({});
 
 require("./config/passport")(passport); // pass passport for configuration
 
@@ -28,7 +29,7 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(expressValidator());
 app.use(cookieParser());
-app.use(express.static(path.join(__dirname, 'public/js')));
+app.use(express.static(path.join(__dirname, "public/js")));
 
 const options = {
   host: "us-cdbr-iron-east-05.cleardb.net",
@@ -53,24 +54,25 @@ app.use(flash()); // use connect-flash for flash messages stored in session
 // require('./routes/routes.js')(app, passport); // load our routes and pass in our app and fully configured passport
 
 
-const index = require('./routes/index');
-// const users = require('./routes/users');
-// const register = require('./routes/register')(passport);
-// const login = require('./routes/login')(passport);
-// const profile = require('./routes/profile');
-// const menu = require('./routes/menu');
-// const logout = require('./routes/logout');
-// const admin = require('./routes/admin');
+const index = require("./routes/index");
+const login = require("./routes/login")(passport);
+const signup = require("./routes/signup")(passport);
+const profile = require("./routes/profile");
+const menu = require("./routes/menu");
+const logout = require("./routes/logout");
+const admin = require("./routes/admin");
+const users = require("./routes/users");
 
+app.use("/api", router);
 
-app.use('/', index);
-// app.use('/register', register);
-// app.use('/login', login);
-// app.use('/profile', profile);
-// app.use('/users', users);
-// app.use('/menu', menu);
-// app.use('/logout', logout);
-// app.use('/admin', admin);
+router.use("/", index);
+router.use("/login", login);
+router.use("/signup", signup);
+router.use("/profile", profile);
+router.use("/menu", menu);
+router.use("/logout", logout);
+router.use("/admin", admin);
+router.use("/users", users);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

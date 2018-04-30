@@ -20,7 +20,7 @@ export class SignupComponent implements OnInit {
     private fb: FormBuilder,
     private userService: UserService
   ) {
-    this.createForm();
+
   }
 
   ngOnInit() {}
