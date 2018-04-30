@@ -6,7 +6,7 @@ var bcrypt = require('bcrypt-nodejs');
 module.exports = function (passport) {
     /* GET home page. */
     router.get('/', function (req, res, next) {
-        res.render('register', {formVals: req.flash('formVals')[0] || {}, message: req.flash('signupMessage')});
+        res.send({formVals: req.flash('formVals')[0] || {}, message: req.flash('signupMessage')});
     });
 
     router.post('/restaurant', function (req, res) {
@@ -18,12 +18,12 @@ module.exports = function (passport) {
                     });
                     req.flash('signupMessage', err_msg);
                     req.flash('formVals', req.body);
-                    return res.redirect('/register');
+                    return res.redirect('/api/signup');
                 }
                 else {
                     passport.authenticate('local-signup', {
-                        successRedirect: '/profile', // redirect to the secure profile section
-                        failureRedirect: '/register', // redirect back to the signup page if there is an error
+                        // successRedirect: '/profile', // redirect to the secure profile section
+                        failureRedirect: '/api/signup', // redirect back to the signup page if there is an error
                         failureFlash: true // allow flash messages
                     })(req, res);
                 }

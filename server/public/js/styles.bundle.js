@@ -628,10 +628,10 @@ module.exports = function (css) {
 /***/ 2:
 /***/ (function(module, exports, __webpack_require__) {
 
-__webpack_require__("./app/styles.css");
 __webpack_require__("./node_modules/font-awesome/css/font-awesome.css");
 __webpack_require__("./node_modules/@clr/icons/clr-icons.min.css");
-module.exports = __webpack_require__("./node_modules/@clr/ui/clr-ui.min.css");
+__webpack_require__("./node_modules/@clr/ui/clr-ui.min.css");
+module.exports = __webpack_require__("./app/styles.css");
 
 
 /***/ })

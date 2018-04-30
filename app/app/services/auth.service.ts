@@ -51,7 +51,7 @@ export class AuthService {
 
   signoutUser() {
     this.afAuth.auth.signOut().catch(error => this.handleError(error));
-    this.router.navigate(['/signin']);
+    this.router.navigate(['/login']);
   }
 
   // #### Email/Password Auth #### //

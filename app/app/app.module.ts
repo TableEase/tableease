@@ -7,6 +7,7 @@ import { AngularFireModule } from 'angularfire2';
 import { AngularFirestoreModule } from 'angularfire2/firestore';
 import { AngularFireAuthModule } from 'angularfire2/auth';
 import { AppRoutingModule } from './app-routing.module';
+import { HttpClientModule } from '@angular/common/http';
 
 import { NoopAnimationPlayer } from '@angular/animations';
 import { environment } from '../environments/environment';
@@ -20,7 +21,7 @@ import { NavbarComponent } from './components/application/nav/navbar/navbar.comp
 import { SubnavComponent } from './components/application/nav/subnav/subnav.component';
 import { SidenavComponent } from './components/application/nav/sidenav/sidenav.component';
 
-import { SigninComponent } from './components/auth/signin/signin.component';
+import { LoginComponent } from './components/auth/login/login.component';
 import { SignoutComponent } from './components/auth/signout/signout.component';
 import { SignupComponent } from './components/auth/signup/signup.component';
 
@@ -40,6 +41,7 @@ import { RestaurantComponent } from './components/application/restaurant/restaur
 import { RestaurantFormComponent } from './components/application/restaurant/restaurant-form/restaurant-form.component';
 import { UserService } from './services/user.service';
 import { UserFormComponent } from './components/auth/signup/user-form/user-form.component';
+import { PassportService } from './services/passport.service';
 
 @NgModule({
   declarations: [
@@ -48,7 +50,7 @@ import { UserFormComponent } from './components/auth/signup/user-form/user-form.
     NavbarComponent,
     SubnavComponent,
     SidenavComponent,
-    SigninComponent,
+    LoginComponent,
     SignoutComponent,
     SignupComponent,
     Meal2Component,
@@ -73,9 +75,10 @@ import { UserFormComponent } from './components/auth/signup/user-form/user-form.
     AngularFireModule.initializeApp(environment.firebase, 'tableease'),
     AngularFirestoreModule,
     AngularFireAuthModule,
-    AppRoutingModule
+    AppRoutingModule,
+    HttpClientModule
   ],
-  providers: [AuthService, AuthGuard, UserService],
+  providers: [AuthService, AuthGuard, UserService, PassportService],
   bootstrap: [AppComponent]
 })
 export class AppModule {

@@ -85,12 +85,12 @@ module.exports = function (passport) {
 
         new LocalStrategy({
                 // by default, local strategy uses username and password, we will override with email
-                usernameField: 'username',
+                usernameField: 'email',
                 passwordField: 'password',
                 passReqToCallback: true // allows us to pass back the entire request to the callback
             },
-            function (req, username, password, done) { // callback with email and password from our form
-                db.query("SELECT * FROM companies WHERE email = ?", [username], function (err, rows) {
+            function (req, email, password, done) { // callback with email and password from our form
+                db.query("SELECT * FROM companies WHERE email = ?", [email], function (err, rows) {
                     if (err)
                         return done(err);
                     if (!rows.length) {
