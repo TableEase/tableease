@@ -2,18 +2,17 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Routes, RouterModule } from '@angular/router';
 
-import { MealComponent } from './components/meal/meal.component';
 import { AppComponent } from './app.component';
 import { SigninComponent } from './components/auth/signin/signin.component';
 import { HomeComponent } from './components/home/home.component';
 import { ApplicationComponent } from './components/application/application.component';
-import { Meal2Component } from './components/application/meal2/meal2.component';
 import { DashComponent } from './components/application/dash/dash.component';
 import { NotFoundComponent } from './components/not-found/not-found.component';
 import { AuthGuard } from './private/auth.guard';
 import { RestaurantFormComponent } from './components/application/restaurant/restaurant-form/restaurant-form.component';
 import { SignupComponent } from './components/auth/signup/signup.component';
 import { HttpClient } from 'selenium-webdriver/http';
+import { MealComponent } from './components/application/meal/meal.component';
 // import { AuthGuard } from '../../private/auth.guard';
 
 const routes: Routes = [
@@ -27,7 +26,7 @@ const routes: Routes = [
     component: ApplicationComponent,
     children: [
       { path: 'homepage', component: DashComponent },
-      { path: 'menu', component: Meal2Component },
+      { path: 'menu', component: MealComponent },
       { path: '**', redirectTo: '/homepage', pathMatch: 'full' }
     ]
   },

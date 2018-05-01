@@ -35,12 +35,12 @@ var router_1 = __webpack_require__("./node_modules/@angular/router/esm5/router.j
 var signin_component_1 = __webpack_require__("./app/app/components/auth/signin/signin.component.ts");
 var home_component_1 = __webpack_require__("./app/app/components/home/home.component.ts");
 var application_component_1 = __webpack_require__("./app/app/components/application/application.component.ts");
-var meal2_component_1 = __webpack_require__("./app/app/components/application/meal2/meal2.component.ts");
 var dash_component_1 = __webpack_require__("./app/app/components/application/dash/dash.component.ts");
 var not_found_component_1 = __webpack_require__("./app/app/components/not-found/not-found.component.ts");
 var auth_guard_1 = __webpack_require__("./app/app/private/auth.guard.ts");
 var restaurant_form_component_1 = __webpack_require__("./app/app/components/application/restaurant/restaurant-form/restaurant-form.component.ts");
 var signup_component_1 = __webpack_require__("./app/app/components/auth/signup/signup.component.ts");
+var meal_component_1 = __webpack_require__("./app/app/components/application/meal/meal.component.ts");
 // import { AuthGuard } from '../../private/auth.guard';
 var routes = [
     { path: '', component: home_component_1.HomeComponent },
@@ -53,7 +53,7 @@ var routes = [
         component: application_component_1.ApplicationComponent,
         children: [
             { path: 'homepage', component: dash_component_1.DashComponent },
-            { path: 'menu', component: meal2_component_1.Meal2Component },
+            { path: 'menu', component: meal_component_1.MealComponent },
             { path: '**', redirectTo: '/homepage', pathMatch: 'full' }
         ]
     },
@@ -152,10 +152,10 @@ var sidenav_component_1 = __webpack_require__("./app/app/components/application/
 var signin_component_1 = __webpack_require__("./app/app/components/auth/signin/signin.component.ts");
 var signout_component_1 = __webpack_require__("./app/app/components/auth/signout/signout.component.ts");
 var signup_component_1 = __webpack_require__("./app/app/components/auth/signup/signup.component.ts");
-var meal2_component_1 = __webpack_require__("./app/app/components/application/meal2/meal2.component.ts");
-var meal2_item_component_1 = __webpack_require__("./app/app/components/application/meal2/meal2-item/meal2-item.component.ts");
-var meal2_detail_component_1 = __webpack_require__("./app/app/components/application/meal2/meal2-detail/meal2-detail.component.ts");
-var meal2_form_component_1 = __webpack_require__("./app/app/components/application/meal2/meal2-form/meal2-form.component.ts");
+var meal_component_1 = __webpack_require__("./app/app/components/application/meal/meal.component.ts");
+var meal_detail_component_1 = __webpack_require__("./app/app/components/application/meal/meal-detail/meal-detail.component.ts");
+var meal_form_component_1 = __webpack_require__("./app/app/components/application/meal/meal-form/meal-form.component.ts");
+var meal_item_component_1 = __webpack_require__("./app/app/components/application/meal/meal-item/meal-item.component.ts");
 var home_component_1 = __webpack_require__("./app/app/components/home/home.component.ts");
 var splash_component_1 = __webpack_require__("./app/app/components/splash/splash.component.ts");
 var application_component_1 = __webpack_require__("./app/app/components/application/application.component.ts");
@@ -181,10 +181,6 @@ var AppModule = /** @class */ (function () {
                 signin_component_1.SigninComponent,
                 signout_component_1.SignoutComponent,
                 signup_component_1.SignupComponent,
-                meal2_component_1.Meal2Component,
-                meal2_item_component_1.Meal2ItemComponent,
-                meal2_detail_component_1.Meal2DetailComponent,
-                meal2_form_component_1.Meal2FormComponent,
                 home_component_1.HomeComponent,
                 splash_component_1.SplashComponent,
                 application_component_1.ApplicationComponent,
@@ -192,7 +188,11 @@ var AppModule = /** @class */ (function () {
                 not_found_component_1.NotFoundComponent,
                 restaurant_component_1.RestaurantComponent,
                 user_form_component_1.UserFormComponent,
-                restaurant_form_component_1.RestaurantFormComponent
+                restaurant_form_component_1.RestaurantFormComponent,
+                meal_component_1.MealComponent,
+                meal_detail_component_1.MealDetailComponent,
+                meal_form_component_1.MealFormComponent,
+                meal_item_component_1.MealItemComponent
             ],
             imports: [
                 platform_browser_1.BrowserModule,
@@ -315,21 +315,21 @@ exports.DashComponent = DashComponent;
 
 /***/ }),
 
-/***/ "./app/app/components/application/meal2/meal2-detail/meal2-detail.component.css":
+/***/ "./app/app/components/application/meal/meal-detail/meal-detail.component.css":
 /***/ (function(module, exports) {
 
 module.exports = ""
 
 /***/ }),
 
-/***/ "./app/app/components/application/meal2/meal2-detail/meal2-detail.component.html":
+/***/ "./app/app/components/application/meal/meal-detail/meal-detail.component.html":
 /***/ (function(module, exports) {
 
 module.exports = "<p>\r\n  meal2-detail works!\r\n</p>\r\n"
 
 /***/ }),
 
-/***/ "./app/app/components/application/meal2/meal2-detail/meal2-detail.component.ts":
+/***/ "./app/app/components/application/meal/meal-detail/meal-detail.component.ts":
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -345,41 +345,40 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 var core_1 = __webpack_require__("./node_modules/@angular/core/esm5/core.js");
-var Meal2DetailComponent = /** @class */ (function () {
-    function Meal2DetailComponent() {
+var MealDetailComponent = /** @class */ (function () {
+    function MealDetailComponent() {
     }
-    Meal2DetailComponent.prototype.ngOnInit = function () {
-    };
-    Meal2DetailComponent = __decorate([
+    MealDetailComponent.prototype.ngOnInit = function () { };
+    MealDetailComponent = __decorate([
         core_1.Component({
-            selector: 'app-meal2-detail',
-            template: __webpack_require__("./app/app/components/application/meal2/meal2-detail/meal2-detail.component.html"),
-            styles: [__webpack_require__("./app/app/components/application/meal2/meal2-detail/meal2-detail.component.css")]
+            selector: 'app-meal-detail',
+            template: __webpack_require__("./app/app/components/application/meal/meal-detail/meal-detail.component.html"),
+            styles: [__webpack_require__("./app/app/components/application/meal/meal-detail/meal-detail.component.css")]
         }),
         __metadata("design:paramtypes", [])
-    ], Meal2DetailComponent);
-    return Meal2DetailComponent;
+    ], MealDetailComponent);
+    return MealDetailComponent;
 }());
-exports.Meal2DetailComponent = Meal2DetailComponent;
+exports.MealDetailComponent = MealDetailComponent;
 
 
 /***/ }),
 
-/***/ "./app/app/components/application/meal2/meal2-form/meal2-form.component.css":
+/***/ "./app/app/components/application/meal/meal-form/meal-form.component.css":
 /***/ (function(module, exports) {
 
 module.exports = ".drop {\r\n  margin-bottom: 0.1rem;\r\n}\r\n"
 
 /***/ }),
 
-/***/ "./app/app/components/application/meal2/meal2-form/meal2-form.component.html":
+/***/ "./app/app/components/application/meal/meal-form/meal-form.component.html":
 /***/ (function(module, exports) {
 
 module.exports = "<form class=\"form\" [formGroup]=\"mealForm\" (ngSubmit)=\"onSubmit()\" [hidden]=\"submitted\">\r\n\r\n  <!-- <div *ngIf=\"allergies$ | async; else loading\"> -->\r\n\r\n  <section class=\"form-block\">\r\n\r\n    <div class=\"form-group row\">\r\n\r\n      <div class=\"col-sm-2 col-xs-12\">\r\n        <label for=\"mealName\">Title</label>\r\n      </div>\r\n\r\n      <div class=\"col-sm-9 col-xs-11 push-xs-1\">\r\n        <label for=\"mealName\" aria-haspopup=\"true\" role=\"tooltip\" class=\"tooltip tooltip-validation tooltip-sm\">\r\n          <input id=\"mealName\" type=\"text\" size=\"45\" formControlName=\"name\">\r\n          <span class=\"tooltip-content\">\r\n            Name is required.\r\n          </span>\r\n        </label>\r\n      </div>\r\n\r\n    </div>\r\n\r\n    <div class=\"form-group row\">\r\n\r\n      <div class=\"col-sm-2 col-xs-12\">\r\n        <label for=\"description\">Description</label>\r\n      </div>\r\n\r\n      <div class=\"col-sm-9 col-xs-11 push-xs-1\">\r\n        <label for=\"description\" aria-haspopup=\"true\" role=\"tooltip\" class=\"tooltip tooltip-validation tooltip-sm\">\r\n          <textarea name=\"description\" id=\"description\" rows=\"2\" cols=\"45\" formControlName=\"description\"></textarea>\r\n          <span class=\"tooltip-content\">\r\n            description code is required.\r\n          </span>\r\n        </label>\r\n      </div>\r\n\r\n    </div>\r\n\r\n    <div class=\"form-group row\">\r\n\r\n      <div class=\"col-xs-2\">\r\n        <label for=\"course\">Course</label>\r\n      </div>\r\n\r\n      <div class=\"col-xs-4 push-sm-1\">\r\n        <label for=\"course\" aria-haspopup=\"true\" role=\"tooltip\" class=\"tooltip tooltip-validation tooltip-sm\">\r\n          <input id=\"course\" type=\"text\" size=\"10\" formControlName=\"course\">\r\n          <span class=\"tooltip-content\">\r\n            course is required.\r\n          </span>\r\n        </label>\r\n      </div>\r\n\r\n\r\n      <div class=\"col-xs-2 push-sm-1\">\r\n        <label for=\"price\">Price</label>\r\n      </div>\r\n\r\n      <div class=\"col-xs-4\">\r\n        <label for=\"price\" aria-haspopup=\"true\" role=\"tooltip\" class=\"tooltip tooltip-validation tooltip-sm\">\r\n          <input id=\"price\" type=\"text\" size=\"10\" formControlName=\"price\">\r\n          <span class=\"tooltip-content\">\r\n            price is required.\r\n          </span>\r\n        </label>\r\n      </div>\r\n\r\n    </div>\r\n\r\n    <div class=\"form-group row\">\r\n\r\n      <div class=\"col-xs-2\">\r\n        <label for=\"calories\">Calories</label>\r\n      </div>\r\n\r\n      <div class=\"col-xs-4 push-xs-1\">\r\n        <label for=\"calories\" aria-haspopup=\"true\" role=\"tooltip\" class=\"tooltip tooltip-validation tooltip-sm\">\r\n          <input id=\"calories\" type=\"text\" size=\"10\" formControlName=\"calories\">\r\n          <span class=\"tooltip-content\">\r\n            Calories is required.\r\n          </span>\r\n        </label>\r\n      </div>\r\n\r\n    </div>\r\n\r\n  </section>\r\n\r\n  <div *ngIf=\"allergies$ | async; else loading\">\r\n\r\n    <section class=\"form-block\">\r\n      <div formArrayName=\"allergies\">\r\n\r\n        <div class=\"form-group row drop\">\r\n          <div class=\"col-xs-12\">\r\n            <label for=\"allergy\">Allergies</label>\r\n          </div>\r\n        </div>\r\n\r\n        <div class=\"form-group row\">\r\n          <div class=\"col-xs-4\" *ngFor=\"let allergy of allergies.controls; let i = index\" [formGroupName]=\"i\">\r\n            <div class=\"checkbox-inline center\">\r\n              <input [id]=\"allergiesArray[i].name\" type=\"checkbox\" formControlName=\"active\">\r\n              <label [for]=\"allergiesArray[i].name\">{{allergiesArray[i].name}}</label>\r\n            </div>\r\n          </div>\r\n        </div>\r\n\r\n      </div>\r\n    </section>\r\n\r\n  </div>\r\n  <ng-template #loading>Loading&hellip;</ng-template>\r\n\r\n</form>"
 
 /***/ }),
 
-/***/ "./app/app/components/application/meal2/meal2-form/meal2-form.component.ts":
+/***/ "./app/app/components/application/meal/meal-form/meal-form.component.ts":
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -402,8 +401,8 @@ var meals_service_1 = __webpack_require__("./app/app/services/meals.service.ts")
 var allergies_service_1 = __webpack_require__("./app/app/services/allergies.service.ts");
 var submit_form_service_1 = __webpack_require__("./app/app/services/submit-form.service.ts");
 var allergy_1 = __webpack_require__("./app/app/models/allergy.ts");
-var Meal2FormComponent = /** @class */ (function () {
-    function Meal2FormComponent(mealsService, allergiesService, submitService, fb) {
+var MealFormComponent = /** @class */ (function () {
+    function MealFormComponent(mealsService, allergiesService, submitService, fb) {
         this.mealsService = mealsService;
         this.allergiesService = allergiesService;
         this.submitService = submitService;
@@ -412,7 +411,7 @@ var Meal2FormComponent = /** @class */ (function () {
         this.allergiesArray = [];
         this.createForm();
     }
-    Meal2FormComponent.prototype.ngOnInit = function () {
+    MealFormComponent.prototype.ngOnInit = function () {
         var _this = this;
         this.allergies$ = this.allergiesService.readAllergies().map(function (array) {
             return array.map(function (obj) {
@@ -446,10 +445,10 @@ var Meal2FormComponent = /** @class */ (function () {
             }
         });
     };
-    Meal2FormComponent.prototype.ngOnChanges = function () {
+    MealFormComponent.prototype.ngOnChanges = function () {
         this.rebuildForm();
     };
-    Meal2FormComponent.prototype.ngOnDestroy = function () {
+    MealFormComponent.prototype.ngOnDestroy = function () {
         var mealToSend = this.mealForm.getRawValue();
         if (this.mealForm.valid &&
             (this.submitService.update === true || this.submitService.create === true)) {
@@ -458,7 +457,7 @@ var Meal2FormComponent = /** @class */ (function () {
         this.ngUnsubscribe.next();
         this.ngUnsubscribe.complete();
     };
-    Meal2FormComponent.prototype.createForm = function () {
+    MealFormComponent.prototype.createForm = function () {
         this.mealForm = this.fb.group({
             name: '',
             description: '',
@@ -469,7 +468,7 @@ var Meal2FormComponent = /** @class */ (function () {
             allergies: this.fb.array([])
         });
     };
-    Meal2FormComponent.prototype.rebuildForm = function () {
+    MealFormComponent.prototype.rebuildForm = function () {
         this.mealForm.reset({
             name: this.meal.name,
             description: this.meal.description,
@@ -480,19 +479,19 @@ var Meal2FormComponent = /** @class */ (function () {
             allergies: this.allergies[0] || new allergy_1.Allergy()
         });
     };
-    Meal2FormComponent.prototype.clearForm = function () {
+    MealFormComponent.prototype.clearForm = function () {
         this.mealForm.reset();
     };
-    Meal2FormComponent.prototype.setAllergies = function (allergies) {
+    MealFormComponent.prototype.setAllergies = function (allergies) {
         var _this = this;
         var allergyFGs = allergies.map(function (allergy) { return _this.fb.group(allergy); });
         var allergyFormArray = this.fb.array(allergyFGs);
         this.mealForm.setControl('allergies', allergyFormArray);
     };
-    Meal2FormComponent.prototype.checkAllergies = function (allergies) {
+    MealFormComponent.prototype.checkAllergies = function (allergies) {
         return allergies.map(function (allergy) { });
     };
-    Object.defineProperty(Meal2FormComponent.prototype, "allergies", {
+    Object.defineProperty(MealFormComponent.prototype, "allergies", {
         get: function () {
             return this.mealForm.get('allergies');
         },
@@ -502,41 +501,41 @@ var Meal2FormComponent = /** @class */ (function () {
     __decorate([
         core_1.Input(),
         __metadata("design:type", Object)
-    ], Meal2FormComponent.prototype, "meal", void 0);
-    Meal2FormComponent = __decorate([
+    ], MealFormComponent.prototype, "meal", void 0);
+    MealFormComponent = __decorate([
         core_1.Component({
-            selector: 'app-meal2-form',
-            template: __webpack_require__("./app/app/components/application/meal2/meal2-form/meal2-form.component.html"),
-            styles: [__webpack_require__("./app/app/components/application/meal2/meal2-form/meal2-form.component.css")],
+            selector: 'app-meal-form',
+            template: __webpack_require__("./app/app/components/application/meal/meal-form/meal-form.component.html"),
+            styles: [__webpack_require__("./app/app/components/application/meal/meal-form/meal-form.component.css")],
             providers: []
         }),
         __metadata("design:paramtypes", [meals_service_1.MealsService,
             allergies_service_1.AllergiesService,
             submit_form_service_1.SubmitFormService,
             forms_1.FormBuilder])
-    ], Meal2FormComponent);
-    return Meal2FormComponent;
+    ], MealFormComponent);
+    return MealFormComponent;
 }());
-exports.Meal2FormComponent = Meal2FormComponent;
+exports.MealFormComponent = MealFormComponent;
 
 
 /***/ }),
 
-/***/ "./app/app/components/application/meal2/meal2-item/meal2-item.component.css":
+/***/ "./app/app/components/application/meal/meal-item/meal-item.component.css":
 /***/ (function(module, exports) {
 
 module.exports = ""
 
 /***/ }),
 
-/***/ "./app/app/components/application/meal2/meal2-item/meal2-item.component.html":
+/***/ "./app/app/components/application/meal/meal-item/meal-item.component.html":
 /***/ (function(module, exports) {
 
 module.exports = "<p>\r\n  meal2-item works!\r\n</p>\r\n"
 
 /***/ }),
 
-/***/ "./app/app/components/application/meal2/meal2-item/meal2-item.component.ts":
+/***/ "./app/app/components/application/meal/meal-item/meal-item.component.ts":
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -552,41 +551,40 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 var core_1 = __webpack_require__("./node_modules/@angular/core/esm5/core.js");
-var Meal2ItemComponent = /** @class */ (function () {
-    function Meal2ItemComponent() {
+var MealItemComponent = /** @class */ (function () {
+    function MealItemComponent() {
     }
-    Meal2ItemComponent.prototype.ngOnInit = function () {
-    };
-    Meal2ItemComponent = __decorate([
+    MealItemComponent.prototype.ngOnInit = function () { };
+    MealItemComponent = __decorate([
         core_1.Component({
-            selector: 'app-meal2-item',
-            template: __webpack_require__("./app/app/components/application/meal2/meal2-item/meal2-item.component.html"),
-            styles: [__webpack_require__("./app/app/components/application/meal2/meal2-item/meal2-item.component.css")]
+            selector: 'app-meal-item',
+            template: __webpack_require__("./app/app/components/application/meal/meal-item/meal-item.component.html"),
+            styles: [__webpack_require__("./app/app/components/application/meal/meal-item/meal-item.component.css")]
         }),
         __metadata("design:paramtypes", [])
-    ], Meal2ItemComponent);
-    return Meal2ItemComponent;
+    ], MealItemComponent);
+    return MealItemComponent;
 }());
-exports.Meal2ItemComponent = Meal2ItemComponent;
+exports.MealItemComponent = MealItemComponent;
 
 
 /***/ }),
 
-/***/ "./app/app/components/application/meal2/meal2.component.css":
+/***/ "./app/app/components/application/meal/meal.component.css":
 /***/ (function(module, exports) {
 
 module.exports = ".flexMe {\r\n  display: -webkit-box;\r\n  display: -ms-flexbox;\r\n  display: flex;\r\n  -webkit-box-pack: justify;\r\n      -ms-flex-pack: justify;\r\n          justify-content: space-between;\r\n}\r\n"
 
 /***/ }),
 
-/***/ "./app/app/components/application/meal2/meal2.component.html":
+/***/ "./app/app/components/application/meal/meal.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<div *ngIf=\"meals$ | async; else loading\">\r\n  <button class=\"btn btn-primary\" (click)=\"addModal=true\">Add Item</button>\r\n\r\n  <clr-stack-view *ngFor=\"let course of courses; let ci = index\">\r\n\r\n    <clr-stack-header class=\"cap\">\r\n      {{course}}\r\n    </clr-stack-header>\r\n\r\n    <div *ngFor=\"let meal of meals\">\r\n\r\n      <clr-stack-block *ngIf=\"meal.course == course\">\r\n\r\n        <clr-stack-label>{{meal.name}}</clr-stack-label>\r\n        <div class=\"flexMe\">\r\n          <clr-stack-content>{{meal.description}}</clr-stack-content>\r\n          <clr-stack-content>\r\n            <a (click)=\"editModal = true; onReadMeal(meal)\">\r\n              <clr-icon shape=\"pencil\"></clr-icon>\r\n            </a>\r\n          </clr-stack-content>\r\n        </div>\r\n\r\n        <clr-stack-block>\r\n          <clr-stack-label>Allergies</clr-stack-label>\r\n          <clr-stack-content *ngFor=\"let allergy of meal.allergies; let ai = index\">\r\n            <span *ngIf=\"allergy.active\">\r\n              {{(meal.allergies.length >= 1) ? (ai === (meal.allergies.length -1)) ? allergy.name : allergy.name + ', ' : allergy.name}}\r\n            </span>\r\n          </clr-stack-content>\r\n        </clr-stack-block>\r\n\r\n        <clr-stack-block>\r\n          <clr-stack-label>Price</clr-stack-label>\r\n          <clr-stack-content>${{meal.price}}</clr-stack-content>\r\n        </clr-stack-block>\r\n\r\n        <clr-stack-block>\r\n          <clr-stack-label>Course</clr-stack-label>\r\n          <clr-stack-content>{{meal.course}}</clr-stack-content>\r\n        </clr-stack-block>\r\n\r\n        <clr-stack-block>\r\n          <clr-stack-label>Calories</clr-stack-label>\r\n          <clr-stack-content>{{meal.calories}}cal</clr-stack-content>\r\n        </clr-stack-block>\r\n\r\n      </clr-stack-block>\r\n\r\n    </div>\r\n\r\n  </clr-stack-view>\r\n\r\n</div>\r\n\r\n<ng-template #loading>Loading&hellip;</ng-template>\r\n\r\n<clr-modal [(clrModalOpen)]=\"editModal\">\r\n  <h3 class=\"modal-title\" *ngIf=\"editModal\">{{mealToEdit.name}}</h3>\r\n  <div class=\"modal-body\">\r\n    <app-meal2-form *ngIf=\"editModal\" [meal]=\"mealToEdit\"></app-meal2-form>\r\n  </div>\r\n  <div class=\"modal-footer pr-0\">\r\n    <button type=\"button\" class=\"btn btn-outline btn-sm\" (click)=\"editModal = false; onUpdateMeal($event)\">Update</button>\r\n    <button type=\"button\" class=\"btn btn-danger btn-sm\" (click)=\"editModal = false; doubleCheck=true\">Delete</button>\r\n  </div>\r\n</clr-modal>\r\n\r\n<clr-modal [(clrModalOpen)]=\"doubleCheck\">\r\n  <h3 class=\"modal-title\">Confirm delete confirmation</h3>\r\n  <h4 class=\"modal-body\" *ngIf=\"doubleCheck\">Are you sure you want to remove {{mealToEdit.name}}?</h4>\r\n  <div class=\"modal-footer\">\r\n    <button type=\"button\" class=\"btn btn-secondary btn-sm\" (click)=\"doubleCheck=false; editModal=true\">Return</button>\r\n    <button type=\"button\" class=\"btn btn-danger btn-sm\" (click)=\"doubleCheck=false; onDeleteMeal(mealToEdit)\">Confirm</button>\r\n  </div>\r\n</clr-modal>\r\n\r\n<clr-modal [(clrModalOpen)]=\"addModal\">\r\n  <h3 class=\"modal-title\" *ngIf=\"addModal\">Add A Dish</h3>\r\n  <div class=\"modal-body\">\r\n    <app-meal2-form *ngIf=\"addModal\"></app-meal2-form>\r\n  </div>\r\n  <div class=\"modal-footer pr-0\">\r\n    <button type=\"button\" class=\"btn btn-outline btn-sm\" (click)=\"addModal = false; onCreateMeal()\">Submit</button>\r\n    <button type=\"button\" class=\"btn btn-warning btn-sm\" (click)=\"onClear()\">Clear</button>\r\n  </div>\r\n</clr-modal>"
+module.exports = "<div *ngIf=\"meals$ | async; else loading\">\r\n  <button class=\"btn btn-primary\" (click)=\"addModal=true\">Add Item</button>\r\n\r\n  <clr-stack-view *ngFor=\"let course of courses; let ci = index\">\r\n\r\n    <clr-stack-header class=\"cap\">\r\n      {{course}}\r\n    </clr-stack-header>\r\n\r\n    <div *ngFor=\"let meal of meals\">\r\n\r\n      <clr-stack-block *ngIf=\"meal.course == course\">\r\n\r\n        <clr-stack-label>{{meal.name}}</clr-stack-label>\r\n        <div class=\"flexMe\">\r\n          <clr-stack-content>{{meal.description}}</clr-stack-content>\r\n          <clr-stack-content>\r\n            <a (click)=\"editModal = true; onReadMeal(meal)\">\r\n              <clr-icon shape=\"pencil\"></clr-icon>\r\n            </a>\r\n          </clr-stack-content>\r\n        </div>\r\n\r\n        <clr-stack-block>\r\n          <clr-stack-label>Allergies</clr-stack-label>\r\n          <clr-stack-content *ngFor=\"let allergy of meal.allergies; let ai = index\">\r\n            <span *ngIf=\"allergy.active\">\r\n              {{(meal.allergies.length >= 1) ? (ai === (meal.allergies.length -1)) ? allergy.name : allergy.name + ', ' : allergy.name}}\r\n            </span>\r\n          </clr-stack-content>\r\n        </clr-stack-block>\r\n\r\n        <clr-stack-block>\r\n          <clr-stack-label>Price</clr-stack-label>\r\n          <clr-stack-content>${{meal.price}}</clr-stack-content>\r\n        </clr-stack-block>\r\n\r\n        <clr-stack-block>\r\n          <clr-stack-label>Course</clr-stack-label>\r\n          <clr-stack-content>{{meal.course}}</clr-stack-content>\r\n        </clr-stack-block>\r\n\r\n        <clr-stack-block>\r\n          <clr-stack-label>Calories</clr-stack-label>\r\n          <clr-stack-content>{{meal.calories}}cal</clr-stack-content>\r\n        </clr-stack-block>\r\n\r\n      </clr-stack-block>\r\n\r\n    </div>\r\n\r\n  </clr-stack-view>\r\n\r\n</div>\r\n\r\n<ng-template #loading>Loading&hellip;</ng-template>\r\n\r\n<clr-modal [(clrModalOpen)]=\"editModal\">\r\n  <h3 class=\"modal-title\" *ngIf=\"editModal\">{{mealToEdit.name}}</h3>\r\n  <div class=\"modal-body\">\r\n    <app-meal-form *ngIf=\"editModal\" [meal]=\"mealToEdit\"></app-meal-form>\r\n  </div>\r\n  <div class=\"modal-footer pr-0\">\r\n    <button type=\"button\" class=\"btn btn-outline btn-sm\" (click)=\"editModal = false; onUpdateMeal($event)\">Update</button>\r\n    <button type=\"button\" class=\"btn btn-danger btn-sm\" (click)=\"editModal = false; doubleCheck=true\">Delete</button>\r\n  </div>\r\n</clr-modal>\r\n\r\n<clr-modal [(clrModalOpen)]=\"doubleCheck\">\r\n  <h3 class=\"modal-title\">Confirm delete confirmation</h3>\r\n  <h4 class=\"modal-body\" *ngIf=\"doubleCheck\">Are you sure you want to remove {{mealToEdit.name}}?</h4>\r\n  <div class=\"modal-footer\">\r\n    <button type=\"button\" class=\"btn btn-secondary btn-sm\" (click)=\"doubleCheck=false; editModal=true\">Return</button>\r\n    <button type=\"button\" class=\"btn btn-danger btn-sm\" (click)=\"doubleCheck=false; onDeleteMeal(mealToEdit)\">Confirm</button>\r\n  </div>\r\n</clr-modal>\r\n\r\n<clr-modal [(clrModalOpen)]=\"addModal\">\r\n  <h3 class=\"modal-title\" *ngIf=\"addModal\">Add A Dish</h3>\r\n  <div class=\"modal-body\">\r\n    <app-meal-form *ngIf=\"addModal\"></app-meal-form>\r\n  </div>\r\n  <div class=\"modal-footer pr-0\">\r\n    <button type=\"button\" class=\"btn btn-outline btn-sm\" (click)=\"addModal = false; onCreateMeal()\">Submit</button>\r\n    <button type=\"button\" class=\"btn btn-warning btn-sm\" (click)=\"onClear()\">Clear</button>\r\n  </div>\r\n</clr-modal>"
 
 /***/ }),
 
-/***/ "./app/app/components/application/meal2/meal2.component.ts":
+/***/ "./app/app/components/application/meal/meal.component.ts":
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -607,8 +605,8 @@ __webpack_require__("./node_modules/rxjs/_esm5/add/operator/takeUntil.js");
 var meals_service_1 = __webpack_require__("./app/app/services/meals.service.ts");
 var allergies_service_1 = __webpack_require__("./app/app/services/allergies.service.ts");
 var submit_form_service_1 = __webpack_require__("./app/app/services/submit-form.service.ts");
-var Meal2Component = /** @class */ (function () {
-    function Meal2Component(mealService, allergiesService, submitService) {
+var MealComponent = /** @class */ (function () {
+    function MealComponent(mealService, allergiesService, submitService) {
         this.mealService = mealService;
         this.allergiesService = allergiesService;
         this.submitService = submitService;
@@ -616,7 +614,7 @@ var Meal2Component = /** @class */ (function () {
         this.meals = [];
         this.courses = [];
     }
-    Meal2Component.prototype.ngOnInit = function () {
+    MealComponent.prototype.ngOnInit = function () {
         var _this = this;
         this.meals$ = this.mealService.readMeals();
         // console.log(this.meals$);
@@ -640,41 +638,41 @@ var Meal2Component = /** @class */ (function () {
             }, []);
         });
     };
-    Meal2Component.prototype.ngOnDestroy = function () {
+    MealComponent.prototype.ngOnDestroy = function () {
         this.ngUnsubscribe.next();
         this.ngUnsubscribe.complete();
     };
-    Meal2Component.prototype.onCreateMeal = function () {
+    MealComponent.prototype.onCreateMeal = function () {
         this.submitService.create = true;
     };
-    Meal2Component.prototype.onReadMeal = function (meal) {
+    MealComponent.prototype.onReadMeal = function (meal) {
         this.mealToEdit = meal;
     };
-    Meal2Component.prototype.onUpdateMeal = function (event) {
+    MealComponent.prototype.onUpdateMeal = function (event) {
         if (event.type === 'click') {
             this.submitService.update = true;
         }
     };
-    Meal2Component.prototype.onDeleteMeal = function (meal) {
+    MealComponent.prototype.onDeleteMeal = function (meal) {
         this.mealService.deleteMeal(meal);
     };
-    Meal2Component.prototype.onClear = function () {
+    MealComponent.prototype.onClear = function () {
         this.submitService.clearForm$.next(true);
     };
-    Meal2Component = __decorate([
+    MealComponent = __decorate([
         core_1.Component({
-            selector: 'app-meal2',
-            template: __webpack_require__("./app/app/components/application/meal2/meal2.component.html"),
-            styles: [__webpack_require__("./app/app/components/application/meal2/meal2.component.css")],
+            selector: 'app-meal',
+            template: __webpack_require__("./app/app/components/application/meal/meal.component.html"),
+            styles: [__webpack_require__("./app/app/components/application/meal/meal.component.css")],
             providers: [meals_service_1.MealsService, allergies_service_1.AllergiesService, submit_form_service_1.SubmitFormService]
         }),
         __metadata("design:paramtypes", [meals_service_1.MealsService,
             allergies_service_1.AllergiesService,
             submit_form_service_1.SubmitFormService])
-    ], Meal2Component);
-    return Meal2Component;
+    ], MealComponent);
+    return MealComponent;
 }());
-exports.Meal2Component = Meal2Component;
+exports.MealComponent = MealComponent;
 
 
 /***/ }),
