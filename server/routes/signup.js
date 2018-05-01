@@ -22,7 +22,7 @@ module.exports = function(passport) {
       }
       else {
         passport.authenticate("local-signup", {
-          successRedirect: '/api/signup', // redirect to the secure profile section
+          successRedirect: "/api/signup", // redirect to the secure profile section
           failureRedirect: "/api/signup", // redirect back to the signup page if there is an error
           failureFlash: true // allow flash messages
         })(req, res);
