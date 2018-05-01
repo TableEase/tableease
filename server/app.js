@@ -53,7 +53,6 @@ app.use(passport.session()); // persistent login sessions
 app.use(flash()); // use connect-flash for flash messages stored in session
 // require('./routes/routes.js')(app, passport); // load our routes and pass in our app and fully configured passport
 
-
 const index = require("./routes/index");
 const login = require("./routes/login")(passport);
 const signup = require("./routes/signup")(passport);
