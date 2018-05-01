@@ -1,9 +1,11 @@
 import { Component, OnInit } from '@angular/core';
-import { NgForm, FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { NgForm, FormBuilder, FormGroup, Validators, Form } from '@angular/forms';
 import { AuthService } from '../../../services/auth.service';
 import { User } from '../../../models/user';
 import { roles } from '../../../models/roles';
 import { UserService } from '../../../services/user.service';
+import { PassportService } from '../../../services/passport.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-signup',
@@ -14,67 +16,46 @@ export class SignupComponent implements OnInit {
   signupForm: FormGroup;
   detailForm: FormGroup;
   roles: string[] = roles;
+  messages: string[];
 
   constructor(
     private authService: AuthService,
     private fb: FormBuilder,
-    private userService: UserService
+    private passport: PassportService,
+    private userService: UserService,
+    private router: Router
   ) {
 
   }
 
-  ngOnInit() {}
+  ngOnInit() {
+  }
 
-  createForm() {
-    this.signupForm = this.fb.group({
-      email: ['', [Validators.required, Validators.email]],
-      password: [
-        '',
-        [
-          Validators.required,
-          Validators.pattern('^(?=.*[0-9])(?=.*[a-zA-Z])([a-zA-Z0-9]+)$'),
-          Validators.minLength(6),
-          Validators.maxLength(25)
-        ]
-      ]
-    });
-
-    this.detailForm = this.fb.group({
-      name: this.fb.group({
-        first: ['', [Validators.required]],
-        last: ['', [Validators.required]]
-      }),
-      address: this.fb.group({
-        street: '',
-        apartment: '',
-        city: '',
-        state: '',
-        zip: ''
-      }),
-      roles: '',
-      phone: ['', [Validators.required]],
-      active: true
+  onSignup(form: NgForm) {
+    const formVals = form.value;
+    this.passport.signup(formVals).subscribe(res => {
+      this.messages = res['messages'];
+      console.log(this.messages)
+      if (this.messages.length === 0) {
+        this.router.navigate(['/login']);
+      }
     });
   }
 
-  onSignup() {
-    this.authService.emailSignup(this.email.value, this.password.value);
-  }
-
-  setDetails(user: User) {
-    return this.userService.updateUser(user, this.detailForm.getRawValue());
-  }
-
-  get email() {
-    return this.signupForm.get('email');
-  }
-  get password() {
-    return this.signupForm.get('password');
-  }
-  get first() {
-    return this.detailForm.get('name').get('first');
-  }
-  get last() {
-    return this.detailForm.get('name').get('last');
-  }
+  // setDetails(user: User) {
+  //   return this.userService.updateUser(user, this.detailForm.getRawValue());
+  // }
+  //
+  // get email() {
+  //   return this.signupForm.get('email');
+  // }
+  // get password() {
+  //   return this.signupForm.get('password');
+  // }
+  // get first() {
+  //   return this.detailForm.get('name').get('first');
+  // }
+  // get last() {
+  //   return this.detailForm.get('name').get('last');
+  // }
 }
