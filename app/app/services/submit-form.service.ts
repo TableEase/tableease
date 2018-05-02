@@ -6,7 +6,6 @@ import { Subscription } from 'rxjs/Subscription';
 import { combineLatest } from 'rxjs/observable/combineLatest';
 
 import { MealsService } from './meals.service';
-import { Meal2Component } from '../components/application/meal2/meal2.component';
 import { Meal } from '../models/meal';
 
 @Injectable()

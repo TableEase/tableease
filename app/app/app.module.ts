@@ -25,10 +25,10 @@ import { LoginComponent } from './components/auth/login/login.component';
 import { SignoutComponent } from './components/auth/signout/signout.component';
 import { SignupComponent } from './components/auth/signup/signup.component';
 
-import { Meal2Component } from './components/application/meal2/meal2.component';
-import { Meal2ItemComponent } from './components/application/meal2/meal2-item/meal2-item.component';
-import { Meal2DetailComponent } from './components/application/meal2/meal2-detail/meal2-detail.component';
-import { Meal2FormComponent } from './components/application/meal2/meal2-form/meal2-form.component';
+import { MealComponent } from './components/application/meal/meal.component';
+import { MealDetailComponent } from './components/application/meal/meal-detail/meal-detail.component';
+import { MealFormComponent } from './components/application/meal/meal-form/meal-form.component';
+import { MealItemComponent } from './components/application/meal/meal-item/meal-item.component';
 
 import { HomeComponent } from './components/home/home.component';
 import { SplashComponent } from './components/splash/splash.component';
@@ -53,10 +53,6 @@ import { PassportService } from './services/passport.service';
     LoginComponent,
     SignoutComponent,
     SignupComponent,
-    Meal2Component,
-    Meal2ItemComponent,
-    Meal2DetailComponent,
-    Meal2FormComponent,
     HomeComponent,
     SplashComponent,
     ApplicationComponent,
@@ -64,7 +60,11 @@ import { PassportService } from './services/passport.service';
     NotFoundComponent,
     RestaurantComponent,
     UserFormComponent,
-    RestaurantFormComponent
+    RestaurantFormComponent,
+    MealComponent,
+    MealDetailComponent,
+    MealFormComponent,
+    MealItemComponent
   ],
   imports: [
     BrowserModule,
@@ -81,5 +81,4 @@ import { PassportService } from './services/passport.service';
   providers: [AuthService, AuthGuard, UserService, PassportService],
   bootstrap: [AppComponent]
 })
-export class AppModule {
-}
+export class AppModule {}
