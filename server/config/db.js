@@ -10,3 +10,6 @@ const dbConfig = {
 const MyAppModel = mysqlModel.createConnection(dbConfig);
 
 module.exports = MyAppModel;
+module.exports.dbConfig = dbConfig;
+
+

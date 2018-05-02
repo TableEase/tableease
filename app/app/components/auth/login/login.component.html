@@ -5,8 +5,8 @@
       Company Product Name
       <h5 class="hint">Use your Company ID to sign in or create one now</h5>
     </label>
-
-    <app-messages></app-messages>
+    <div class="login-group">
+      <app-messages [messages]=messages></app-messages>
 
       <input class="email" type="email" id="email" name="email" placeholder="Email" ngModel>
       <input class="password" type="password" id="login_password" name="password" placeholder="Password" ngModel>
@@ -21,4 +21,3 @@
 
     </div>
   </form>
-</div>

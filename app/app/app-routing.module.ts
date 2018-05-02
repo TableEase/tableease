@@ -22,7 +22,7 @@ const routes: Routes = [
   { path: 'restaurant', component: RestaurantFormComponent },
   {
     path: 'app',
-    canActivate: [AuthGuard],
+    // canActivate: [AuthGuard],
     component: ApplicationComponent,
     children: [
       { path: 'homepage', component: DashComponent },

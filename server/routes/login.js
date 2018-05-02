@@ -11,7 +11,7 @@ module.exports = function(passport) {
     req.assert("password", "Password must be at least 5 characters!").isLength({ min: 5 });
     const errors = req.validationErrors();
     if (errors) {
-      var err_msg = [];
+      let err_msg = [];
       errors.forEach(function(err) {
         err_msg.push(err.msg);
       });

@@ -16,4 +16,8 @@ export class PassportService {
   signup(formVals) {
     return this.http.post('/api/signup', formVals);
   }
+
+  logout() {
+    return this.http.get('/api/logout');
+  }
 }

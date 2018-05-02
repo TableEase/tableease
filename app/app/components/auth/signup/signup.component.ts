@@ -1,9 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { NgForm, FormBuilder, FormGroup, Validators, Form } from '@angular/forms';
-import { AuthService } from '../../../services/auth.service';
-import { User } from '../../../models/user';
 import { roles } from '../../../models/roles';
-import { UserService } from '../../../services/user.service';
 import { PassportService } from '../../../services/passport.service';
 import { Router } from '@angular/router';
 
@@ -13,16 +10,11 @@ import { Router } from '@angular/router';
   styleUrls: ['./signup.component.css']
 })
 export class SignupComponent implements OnInit {
-  signupForm: FormGroup;
-  detailForm: FormGroup;
-  roles: string[] = roles;
   messages: string[];
 
   constructor(
-    private authService: AuthService,
     private fb: FormBuilder,
     private passport: PassportService,
-    private userService: UserService,
     private router: Router
   ) {
 

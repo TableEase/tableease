@@ -60,10 +60,6 @@ module.exports = function(passport) {
             return done(null, false, req.flash("signupMessage", "That email is already taken."));
           } else {
 
-            var Company = db.extend({
-              tableName: "companies"
-            });
-
             const company = new Company({
               email: email,
               password: bcrypt.hashSync(password, null, null),  // use the generateHash function in our user model

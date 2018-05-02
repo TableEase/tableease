@@ -7,6 +7,7 @@ const expressValidator = require("express-validator");
 
 const session = require("express-session");
 const MySQLStore = require("express-mysql-session")(session);
+const options = require("./config/db");
 
 const morgan = require("morgan");
 const passport = require("passport");
@@ -20,7 +21,6 @@ const app = express();
 // app.set("views", path.join(__dirname, "views"));
 // app.set("view engine", "pug");
 
-
 // uncomment after placing your favicon in /public
 //app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
 app.use(morgan("dev")); // log every request to the console
@@ -31,14 +31,7 @@ app.use(expressValidator());
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, "public/js")));
 
-const options = {
-  host: "us-cdbr-iron-east-05.cleardb.net",
-  user: "bfdecc39479008",
-  password: "d9d922b1",
-  database: "heroku_150cb394bbf6303"
-};
-
-const sessionStore = new MySQLStore(options);
+const sessionStore = new MySQLStore(options.dbConfig);
 
 app.use(session({
   key: "session_cookie_name",
@@ -47,6 +40,7 @@ app.use(session({
   resave: false,
   saveUninitialized: false
 }));
+
 
 app.use(passport.initialize());
 app.use(passport.session()); // persistent login sessions
