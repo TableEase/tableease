@@ -42,6 +42,7 @@ import { RestaurantFormComponent } from './components/application/restaurant/res
 import { UserService } from './services/user.service';
 import { UserFormComponent } from './components/auth/signup/user-form/user-form.component';
 import { PassportService } from './services/passport.service';
+import { MessagesComponent } from './components/form/messages/messages.component';
 
 @NgModule({
   declarations: [
@@ -64,7 +65,8 @@ import { PassportService } from './services/passport.service';
     MealComponent,
     MealDetailComponent,
     MealFormComponent,
-    MealItemComponent
+    MealItemComponent,
+    MessagesComponent
   ],
   imports: [
     BrowserModule,

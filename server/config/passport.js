@@ -1,12 +1,18 @@
 // config/passport.js
 
 // load all the things we need
-var LocalStrategy = require("passport-local").Strategy;
+const LocalStrategy = require("passport-local").Strategy;
 
 // load up the user model
-var bcrypt = require("bcrypt-nodejs");
+const bcrypt = require("bcrypt-nodejs");
 const db = require("./db");
+
+// database models
 const company = new db({ tableName: "companies" });
+const Company = db.extend({
+  tableName: "companies"
+});
+
 
 // expose this function to our app using module.exports
 module.exports = function(passport) {
@@ -47,7 +53,6 @@ module.exports = function(passport) {
 
         // find a user whose email is the same as the forms email
         // we are checking to see if the user trying to login already exists
-        const company = new db({ tableName: "companies" });
         company.find("all", { where: "email = '" + email + "'" }, function(err, rows) {
           if (err)
             return done(err);
@@ -59,7 +64,7 @@ module.exports = function(passport) {
               tableName: "companies"
             });
 
-            var company = new Company({
+            const company = new Company({
               email: email,
               password: bcrypt.hashSync(password, null, null),  // use the generateHash function in our user model
               phone_number: req.body.phoneNumber,

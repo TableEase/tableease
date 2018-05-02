@@ -169,6 +169,7 @@ var restaurant_form_component_1 = __webpack_require__("./app/app/components/appl
 var user_service_1 = __webpack_require__("./app/app/services/user.service.ts");
 var user_form_component_1 = __webpack_require__("./app/app/components/auth/signup/user-form/user-form.component.ts");
 var passport_service_1 = __webpack_require__("./app/app/services/passport.service.ts");
+var messages_component_1 = __webpack_require__("./app/app/components/form/messages/messages.component.ts");
 var AppModule = /** @class */ (function () {
     function AppModule() {
     }
@@ -194,7 +195,8 @@ var AppModule = /** @class */ (function () {
                 meal_component_1.MealComponent,
                 meal_detail_component_1.MealDetailComponent,
                 meal_form_component_1.MealFormComponent,
-                meal_item_component_1.MealItemComponent
+                meal_item_component_1.MealItemComponent,
+                messages_component_1.MessagesComponent
             ],
             imports: [
                 platform_browser_1.BrowserModule,
@@ -1060,7 +1062,7 @@ module.exports = ""
 /***/ "./app/app/components/auth/login/login.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<div class=\"login-wrapper\">\r\n  <form class=\"login\" (ngSubmit)=\"onLogin(f)\" #f=\"ngForm\">\r\n    <label class=\"title\">\r\n      <h3 class=\"welcome\">Welcome to</h3>\r\n      Company Product Name\r\n      <h5 class=\"hint\">Use your Company ID to sign in or create one now</h5>\r\n    </label>\r\n\r\n    <div class=\"login-group\">\r\n      <div *ngIf=\"messages?.length > 0\" class=\"alert alert-danger\">\r\n        <div class=\"alert-items\">\r\n          <div class=\"alert-item static\" *ngFor=\"let message of messages\">\r\n            <div class=\"alert-icon-wrapper\">\r\n              <clr-icon class=\"alert-icon\" shape=\"exclamation-circle\"></clr-icon>\r\n            </div>\r\n            <span class=\"alert-text\">{{message}}</span>\r\n\r\n          </div>\r\n        </div>\r\n      </div>\r\n\r\n      <input class=\"email\" type=\"email\" id=\"email\" name=\"email\" placeholder=\"Email\" ngModel>\r\n      <input class=\"password\" type=\"password\" id=\"login_password\" name=\"password\" placeholder=\"Password\" ngModel>\r\n      <div class=\"checkbox\">\r\n        <input type=\"checkbox\" id=\"rememberme\">\r\n        <label for=\"rememberme\">\r\n          Remember me\r\n        </label>\r\n      </div>\r\n\r\n      <button type=\"submit\" class=\"btn btn-primary\" [disabled]=\"!f.valid\">Login</button>\r\n\r\n    </div>\r\n  </form>\r\n</div>\r\n"
+module.exports = "<div class=\"login-wrapper\">\r\n  <form class=\"login\" (ngSubmit)=\"onLogin(f)\" #f=\"ngForm\">\r\n    <label class=\"title\">\r\n      <h3 class=\"welcome\">Welcome to</h3>\r\n      Company Product Name\r\n      <h5 class=\"hint\">Use your Company ID to sign in or create one now</h5>\r\n    </label>\r\n\r\n    <app-messages></app-messages>\r\n\r\n      <input class=\"email\" type=\"email\" id=\"email\" name=\"email\" placeholder=\"Email\" ngModel>\r\n      <input class=\"password\" type=\"password\" id=\"login_password\" name=\"password\" placeholder=\"Password\" ngModel>\r\n      <div class=\"checkbox\">\r\n        <input type=\"checkbox\" id=\"rememberme\">\r\n        <label for=\"rememberme\">\r\n          Remember me\r\n        </label>\r\n      </div>\r\n\r\n      <button type=\"submit\" class=\"btn btn-primary\" [disabled]=\"!f.valid\">Login</button>\r\n\r\n    </div>\r\n  </form>\r\n</div>\r\n"
 
 /***/ }),
 
@@ -1174,7 +1176,7 @@ module.exports = ""
 /***/ "./app/app/components/auth/signup/signup.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<clr-main-container>\r\n\r\n  <div class=\"row\">\r\n    <div class=\"col-xs-12 col-sm-10 col-md-8 push-md-2\">\r\n      <ng-container *ngIf=\"(authService.user$ | async) || {} as user\">\r\n\r\n        <!-- Initial SignupForm -->\r\n        <form class=\"form\" (ngSubmit)=\"onSignup(f)\" #f=\"ngForm\">\r\n          <div *ngIf=\"messages?.length > 0\" class=\"alert alert-danger\">\r\n            <div class=\"alert-items\">\r\n              <div class=\"alert-item static\" *ngFor=\"let message of messages\">\r\n                <div class=\"alert-icon-wrapper\">\r\n                  <clr-icon class=\"alert-icon\" shape=\"exclamation-circle\"></clr-icon>\r\n                </div>\r\n                <span class=\"alert-text\">{{message}}</span>\r\n\r\n              </div>\r\n            </div>\r\n          </div>\r\n\r\n          <section class=\"form-block\">\r\n            <div class=\"form-group\">\r\n              <label for=\"name\">Name</label>\r\n              <input type=\"text\" id=\"name\" name=\"name\" class=\"form-control\" ngModel>\r\n            </div>\r\n            <div class=\"form-group\">\r\n              <label for=\"address\">Address</label>\r\n              <input type=\"text\" id=\"address\" name=\"address\" class=\"form-control\" ngModel>\r\n            </div>\r\n\r\n            <div class=\"form-group\">\r\n              <label for=\"phoneNumber\">Phone Number</label>\r\n              <input type=\"number\" id=\"phoneNumber\" name=\"phoneNumber\" class=\"form-control\" ngModel>\r\n            </div>\r\n\r\n            <div class=\"form-group\">\r\n              <label for=\"email\">Email</label>\r\n              <input type=\"email\" id=\"email\" name=\"email\" class=\"form-control\" ngModel>\r\n            </div>\r\n\r\n            <div class=\"form-group\">\r\n              <label for=\"password\">Password</label>\r\n              <input type=\"password\" id=\"password\" name=\"password\" class=\"form-control\" ngModel>\r\n            </div>\r\n\r\n            <div class=\"form-group\">\r\n              <label for=\"confirmPassword\">Confirm Password</label>\r\n              <input type=\"password\" id=\"confirmPassword\" name=\"confirmPassword\" class=\"form-control\" ngModel>\r\n            </div>\r\n\r\n            <button class=\"btn btn-primary\" type=\"submit\" [disabled]=\"!f.valid\">Sign Up</button>\r\n          </section>\r\n        </form>\r\n        <!-- <app-user-form *ngIf=\"!user.uid\"></app-user-form> -->\r\n\r\n        <!-- Detail Form -->\r\n        <form class=\"form\" [formGroup]=\"detailForm\" (ngSubmit)=\"setDetails(user)\" *ngIf=\"user.uid && !user.name\">\r\n          <section class=\"form-block\">\r\n            <div class=\"form-group\">\r\n              <label for=\"roles\">Role</label>\r\n              <div class=\"select\">\r\n                <select name=\"roles\" class=\"form-control\" formControlName=\"roles\">\r\n                  <option *ngFor=\"let role of roles\" [value]=\"role\">{{ role }}</option>\r\n                </select>\r\n              </div>\r\n            </div>\r\n            <div formGroupName=\"name\">\r\n              <div class=\"form-group\">\r\n                <label for=\"first\">First Name</label>\r\n                <input type=\"text\" id=\"firstName\" name=\"first\" class=\"form-control\" formControlName=\"first\">\r\n              </div>\r\n              <div class=\"form-group\">\r\n                <label for=\"password\">Last Name</label>\r\n                <input type=\"text\" id=\"lastName\" name=\"last\" class=\"form-control\" formControlName=\"last\">\r\n              </div>\r\n            </div>\r\n            <div class=\"form-group\">\r\n              <label for=\"phone\">Phone Number</label>\r\n              <input type=\"text\" id=\"phoneNumber\" name=\"phone\" class=\"form-control\" formControlName=\"phone\">\r\n            </div>\r\n          </section>\r\n\r\n          <!-- Address -->\r\n          <section class=\"form-block\" formGroupName=\"address\">\r\n            <div class=\"form-group\">\r\n              <label for=\"street\">Street</label>\r\n              <input type=\"text\" id=\"street\" name=\"street\" class=\"form-control\" formControlName=\"street\">\r\n            </div>\r\n            <div class=\"form-group\">\r\n              <label for=\"city\">City</label>\r\n              <input type=\"text\" id=\"city\" name=\"city\" class=\"form-control\" formControlName=\"city\">\r\n            </div>\r\n            <div class=\"form-group\">\r\n              <label for=\"state\">State</label>\r\n              <input type=\"text\" id=\"state\" name=\"state\" class=\"form-control\" formControlName=\"state\">\r\n            </div>\r\n            <div class=\"form-group\">\r\n              <label for=\"zip\">Zip</label>\r\n              <input type=\"text\" id=\"zip\" name=\"zip\" class=\"form-control\" formControlName=\"zip\">\r\n            </div>\r\n          </section>\r\n\r\n          <button class=\"btn btn-primary\" type=\"submit\" [disabled]=\"!detailForm.valid\">NEXT</button>\r\n        </form>\r\n\r\n        <app-restaurant-form [user]=\"user\" *ngIf=\"user.uid && user.name\"></app-restaurant-form>\r\n        {{user.roles}}\r\n      </ng-container>\r\n    </div>\r\n  </div>\r\n\r\n</clr-main-container>\r\n"
+module.exports = "<clr-main-container>\r\n\r\n  <div class=\"row\">\r\n    <div class=\"col-xs-12 col-sm-10 col-md-8 push-md-2\">\r\n      <ng-container>\r\n\r\n        <!-- Initial SignupForm -->\r\n        <form class=\"form\" (ngSubmit)=\"onSignup(f)\" #f=\"ngForm\">\r\n\r\n          <app-messages></app-messages>\r\n\r\n          <section class=\"form-block\">\r\n            <div class=\"form-group\">\r\n              <label for=\"name\">Name</label>\r\n              <input type=\"text\" id=\"name\" name=\"name\" class=\"form-control\" ngModel>\r\n            </div>\r\n            <div class=\"form-group\">\r\n              <label for=\"address\">Address</label>\r\n              <input type=\"text\" id=\"address\" name=\"address\" class=\"form-control\" ngModel>\r\n            </div>\r\n\r\n            <div class=\"form-group\">\r\n              <label for=\"phoneNumber\">Phone Number</label>\r\n              <input type=\"number\" id=\"phoneNumber\" name=\"phoneNumber\" class=\"form-control\" ngModel>\r\n            </div>\r\n\r\n            <div class=\"form-group\">\r\n              <label for=\"email\">Email</label>\r\n              <input type=\"email\" id=\"email\" name=\"email\" class=\"form-control\" ngModel>\r\n            </div>\r\n\r\n            <div class=\"form-group\">\r\n              <label for=\"password\">Password</label>\r\n              <input type=\"password\" id=\"password\" name=\"password\" class=\"form-control\" ngModel>\r\n            </div>\r\n\r\n            <div class=\"form-group\">\r\n              <label for=\"confirmPassword\">Confirm Password</label>\r\n              <input type=\"password\" id=\"confirmPassword\" name=\"confirmPassword\" class=\"form-control\" ngModel>\r\n            </div>\r\n\r\n            <button class=\"btn btn-primary\" type=\"submit\" [disabled]=\"!f.valid\">Sign Up</button>\r\n          </section>\r\n    </div>\r\n    </form>\r\n    <!-- <app-user-form *ngIf=\"!user.uid\"></app-user-form> -->\r\n\r\n    <!-- Detail Form -->\r\n    <!--<form class=\"form\" [formGroup]=\"detailForm\" (ngSubmit)=\"setDetails(user)\" *ngIf=\"user.uid && !user.name\">-->\r\n    <!--<section class=\"form-block\">-->\r\n    <!--<div class=\"form-group\">-->\r\n    <!--<label for=\"roles\">Role</label>-->\r\n    <!--<div class=\"select\">-->\r\n    <!--<select name=\"roles\" class=\"form-control\" formControlName=\"roles\">-->\r\n    <!--<option *ngFor=\"let role of roles\" [value]=\"role\">{{ role }}</option>-->\r\n    <!--</select>-->\r\n    <!--</div>-->\r\n    <!--</div>-->\r\n    <!--<div formGroupName=\"name\">-->\r\n    <!--<div class=\"form-group\">-->\r\n    <!--<label for=\"first\">First Name</label>-->\r\n    <!--<input type=\"text\" id=\"firstName\" name=\"first\" class=\"form-control\" formControlName=\"first\">-->\r\n    <!--</div>-->\r\n    <!--<div class=\"form-group\">-->\r\n    <!--<label for=\"password\">Last Name</label>-->\r\n    <!--<input type=\"text\" id=\"lastName\" name=\"last\" class=\"form-control\" formControlName=\"last\">-->\r\n    <!--</div>-->\r\n    <!--</div>-->\r\n    <!--<div class=\"form-group\">-->\r\n    <!--<label for=\"phone\">Phone Number</label>-->\r\n    <!--<input type=\"text\" id=\"phoneNumber\" name=\"phone\" class=\"form-control\" formControlName=\"phone\">-->\r\n    <!--</div>-->\r\n    <!--</section>-->\r\n\r\n    <!--&lt;!&ndash; Address &ndash;&gt;-->\r\n    <!--<section class=\"form-block\" formGroupName=\"address\">-->\r\n    <!--<div class=\"form-group\">-->\r\n    <!--<label for=\"street\">Street</label>-->\r\n    <!--<input type=\"text\" id=\"street\" name=\"street\" class=\"form-control\" formControlName=\"street\">-->\r\n    <!--</div>-->\r\n    <!--<div class=\"form-group\">-->\r\n    <!--<label for=\"city\">City</label>-->\r\n    <!--<input type=\"text\" id=\"city\" name=\"city\" class=\"form-control\" formControlName=\"city\">-->\r\n    <!--</div>-->\r\n    <!--<div class=\"form-group\">-->\r\n    <!--<label for=\"state\">State</label>-->\r\n    <!--<input type=\"text\" id=\"state\" name=\"state\" class=\"form-control\" formControlName=\"state\">-->\r\n    <!--</div>-->\r\n    <!--<div class=\"form-group\">-->\r\n    <!--<label for=\"zip\">Zip</label>-->\r\n    <!--<input type=\"text\" id=\"zip\" name=\"zip\" class=\"form-control\" formControlName=\"zip\">-->\r\n    <!--</div>-->\r\n    <!--</section>-->\r\n\r\n    <!--<button class=\"btn btn-primary\" type=\"submit\" [disabled]=\"!detailForm.valid\">NEXT</button>-->\r\n    <!--</form>-->\r\n\r\n    <!--<app-restaurant-form [user]=\"user\" *ngIf=\"user.uid && user.name\"></app-restaurant-form>-->\r\n    <!--{{user.roles}}-->\r\n    </ng-container>\r\n  </div>\r\n  </div>\r\n\r\n</clr-main-container>\r\n"
 
 /***/ }),
 
@@ -1216,7 +1218,6 @@ var SignupComponent = /** @class */ (function () {
         var formVals = form.value;
         this.passport.signup(formVals).subscribe(function (res) {
             _this.messages = res['messages'];
-            console.log(_this.messages);
             if (_this.messages.length === 0) {
                 _this.router.navigate(['/login']);
             }
@@ -1335,6 +1336,56 @@ var UserFormComponent = /** @class */ (function () {
     return UserFormComponent;
 }());
 exports.UserFormComponent = UserFormComponent;
+
+
+/***/ }),
+
+/***/ "./app/app/components/form/messages/messages.component.css":
+/***/ (function(module, exports) {
+
+module.exports = ""
+
+/***/ }),
+
+/***/ "./app/app/components/form/messages/messages.component.html":
+/***/ (function(module, exports) {
+
+module.exports = "<div class=\"login-group\">\n  <div *ngIf=\"messages?.length > 0\" class=\"alert alert-danger\">\n    <div class=\"alert-items\">\n      <div class=\"alert-item static\" *ngFor=\"let message of messages\">\n        <div class=\"alert-icon-wrapper\">\n          <clr-icon class=\"alert-icon\" shape=\"exclamation-circle\"></clr-icon>\n        </div>\n        <span class=\"alert-text\">{{message}}</span>\n      </div>\n    </div>\n  </div>\n"
+
+/***/ }),
+
+/***/ "./app/app/components/form/messages/messages.component.ts":
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (this && this.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+var core_1 = __webpack_require__("./node_modules/@angular/core/esm5/core.js");
+var MessagesComponent = /** @class */ (function () {
+    function MessagesComponent() {
+    }
+    MessagesComponent.prototype.ngOnInit = function () {
+    };
+    MessagesComponent = __decorate([
+        core_1.Component({
+            selector: 'app-messages',
+            template: __webpack_require__("./app/app/components/form/messages/messages.component.html"),
+            styles: [__webpack_require__("./app/app/components/form/messages/messages.component.css")]
+        }),
+        __metadata("design:paramtypes", [])
+    ], MessagesComponent);
+    return MessagesComponent;
+}());
+exports.MessagesComponent = MessagesComponent;
 
 
 /***/ }),

@@ -2,21 +2,12 @@
 
   <div class="row">
     <div class="col-xs-12 col-sm-10 col-md-8 push-md-2">
-      <ng-container *ngIf="(authService.user$ | async) || {} as user">
+      <ng-container>
 
         <!-- Initial SignupForm -->
         <form class="form" (ngSubmit)="onSignup(f)" #f="ngForm">
-          <div *ngIf="messages?.length > 0" class="alert alert-danger">
-            <div class="alert-items">
-              <div class="alert-item static" *ngFor="let message of messages">
-                <div class="alert-icon-wrapper">
-                  <clr-icon class="alert-icon" shape="exclamation-circle"></clr-icon>
-                </div>
-                <span class="alert-text">{{message}}</span>
 
-              </div>
-            </div>
-          </div>
+          <app-messages></app-messages>
 
           <section class="form-block">
             <div class="form-group">
@@ -50,63 +41,64 @@
 
             <button class="btn btn-primary" type="submit" [disabled]="!f.valid">Sign Up</button>
           </section>
-        </form>
-        <!-- <app-user-form *ngIf="!user.uid"></app-user-form> -->
-
-        <!-- Detail Form -->
-        <form class="form" [formGroup]="detailForm" (ngSubmit)="setDetails(user)" *ngIf="user.uid && !user.name">
-          <section class="form-block">
-            <div class="form-group">
-              <label for="roles">Role</label>
-              <div class="select">
-                <select name="roles" class="form-control" formControlName="roles">
-                  <option *ngFor="let role of roles" [value]="role">{{ role }}</option>
-                </select>
-              </div>
-            </div>
-            <div formGroupName="name">
-              <div class="form-group">
-                <label for="first">First Name</label>
-                <input type="text" id="firstName" name="first" class="form-control" formControlName="first">
-              </div>
-              <div class="form-group">
-                <label for="password">Last Name</label>
-                <input type="text" id="lastName" name="last" class="form-control" formControlName="last">
-              </div>
-            </div>
-            <div class="form-group">
-              <label for="phone">Phone Number</label>
-              <input type="text" id="phoneNumber" name="phone" class="form-control" formControlName="phone">
-            </div>
-          </section>
-
-          <!-- Address -->
-          <section class="form-block" formGroupName="address">
-            <div class="form-group">
-              <label for="street">Street</label>
-              <input type="text" id="street" name="street" class="form-control" formControlName="street">
-            </div>
-            <div class="form-group">
-              <label for="city">City</label>
-              <input type="text" id="city" name="city" class="form-control" formControlName="city">
-            </div>
-            <div class="form-group">
-              <label for="state">State</label>
-              <input type="text" id="state" name="state" class="form-control" formControlName="state">
-            </div>
-            <div class="form-group">
-              <label for="zip">Zip</label>
-              <input type="text" id="zip" name="zip" class="form-control" formControlName="zip">
-            </div>
-          </section>
-
-          <button class="btn btn-primary" type="submit" [disabled]="!detailForm.valid">NEXT</button>
-        </form>
-
-        <app-restaurant-form [user]="user" *ngIf="user.uid && user.name"></app-restaurant-form>
-        {{user.roles}}
-      </ng-container>
     </div>
+    </form>
+    <!-- <app-user-form *ngIf="!user.uid"></app-user-form> -->
+
+    <!-- Detail Form -->
+    <!--<form class="form" [formGroup]="detailForm" (ngSubmit)="setDetails(user)" *ngIf="user.uid && !user.name">-->
+    <!--<section class="form-block">-->
+    <!--<div class="form-group">-->
+    <!--<label for="roles">Role</label>-->
+    <!--<div class="select">-->
+    <!--<select name="roles" class="form-control" formControlName="roles">-->
+    <!--<option *ngFor="let role of roles" [value]="role">{{ role }}</option>-->
+    <!--</select>-->
+    <!--</div>-->
+    <!--</div>-->
+    <!--<div formGroupName="name">-->
+    <!--<div class="form-group">-->
+    <!--<label for="first">First Name</label>-->
+    <!--<input type="text" id="firstName" name="first" class="form-control" formControlName="first">-->
+    <!--</div>-->
+    <!--<div class="form-group">-->
+    <!--<label for="password">Last Name</label>-->
+    <!--<input type="text" id="lastName" name="last" class="form-control" formControlName="last">-->
+    <!--</div>-->
+    <!--</div>-->
+    <!--<div class="form-group">-->
+    <!--<label for="phone">Phone Number</label>-->
+    <!--<input type="text" id="phoneNumber" name="phone" class="form-control" formControlName="phone">-->
+    <!--</div>-->
+    <!--</section>-->
+
+    <!--&lt;!&ndash; Address &ndash;&gt;-->
+    <!--<section class="form-block" formGroupName="address">-->
+    <!--<div class="form-group">-->
+    <!--<label for="street">Street</label>-->
+    <!--<input type="text" id="street" name="street" class="form-control" formControlName="street">-->
+    <!--</div>-->
+    <!--<div class="form-group">-->
+    <!--<label for="city">City</label>-->
+    <!--<input type="text" id="city" name="city" class="form-control" formControlName="city">-->
+    <!--</div>-->
+    <!--<div class="form-group">-->
+    <!--<label for="state">State</label>-->
+    <!--<input type="text" id="state" name="state" class="form-control" formControlName="state">-->
+    <!--</div>-->
+    <!--<div class="form-group">-->
+    <!--<label for="zip">Zip</label>-->
+    <!--<input type="text" id="zip" name="zip" class="form-control" formControlName="zip">-->
+    <!--</div>-->
+    <!--</section>-->
+
+    <!--<button class="btn btn-primary" type="submit" [disabled]="!detailForm.valid">NEXT</button>-->
+    <!--</form>-->
+
+    <!--<app-restaurant-form [user]="user" *ngIf="user.uid && user.name"></app-restaurant-form>-->
+    <!--{{user.roles}}-->
+    </ng-container>
+  </div>
   </div>
 
 </clr-main-container>

@@ -35,7 +35,6 @@ export class SignupComponent implements OnInit {
     const formVals = form.value;
     this.passport.signup(formVals).subscribe(res => {
       this.messages = res['messages'];
-      console.log(this.messages)
       if (this.messages.length === 0) {
         this.router.navigate(['/login']);
       }

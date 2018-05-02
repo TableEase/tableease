@@ -14,13 +14,12 @@ const flash = require("connect-flash");
 const router = express.Router({});
 
 require("./config/passport")(passport); // pass passport for configuration
-
 const app = express();
-
 
 // view engine setup
 // app.set("views", path.join(__dirname, "views"));
 // app.set("view engine", "pug");
+
 
 // uncomment after placing your favicon in /public
 //app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
