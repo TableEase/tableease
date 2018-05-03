@@ -11,7 +11,6 @@ module.exports = {
     // if they aren't redirect them to the home page
     res.redirect("/api/login");
   }
-
 };
 
 

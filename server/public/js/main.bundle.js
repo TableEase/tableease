@@ -168,6 +168,7 @@ var restaurant_form_component_1 = __webpack_require__("./app/app/components/appl
 var user_service_1 = __webpack_require__("./app/app/services/user.service.ts");
 var user_form_component_1 = __webpack_require__("./app/app/components/auth/signup/user-form/user-form.component.ts");
 var passport_service_1 = __webpack_require__("./app/app/services/passport.service.ts");
+var meal_service_1 = __webpack_require__("./app/app/services/meal.service.ts");
 var messages_component_1 = __webpack_require__("./app/app/components/form/messages/messages.component.ts");
 var AppModule = /** @class */ (function () {
     function AppModule() {
@@ -209,7 +210,7 @@ var AppModule = /** @class */ (function () {
                 app_routing_module_1.AppRoutingModule,
                 http_1.HttpClientModule
             ],
-            providers: [auth_service_1.AuthService, auth_guard_1.AuthGuard, user_service_1.UserService, passport_service_1.PassportService],
+            providers: [auth_service_1.AuthService, auth_guard_1.AuthGuard, user_service_1.UserService, passport_service_1.PassportService, meal_service_1.MealService],
             bootstrap: [app_component_1.AppComponent]
         })
     ], AppModule);
@@ -584,7 +585,7 @@ module.exports = ".flexMe {\r\n  display: -webkit-box;\r\n  display: -ms-flexbox
 /***/ "./app/app/components/application/meal/meal.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<div *ngIf=\"meals$ | async; else loading\">\r\n  <button class=\"btn btn-primary\" (click)=\"addModal=true\">Add Item</button>\r\n\r\n  <clr-stack-view *ngFor=\"let course of courses; let ci = index\">\r\n\r\n    <clr-stack-header class=\"cap\">\r\n      {{course}}\r\n    </clr-stack-header>\r\n\r\n    <div *ngFor=\"let meal of meals\">\r\n\r\n      <clr-stack-block *ngIf=\"meal.course == course\">\r\n\r\n        <clr-stack-label>{{meal.name}}</clr-stack-label>\r\n        <div class=\"flexMe\">\r\n          <clr-stack-content>{{meal.description}}</clr-stack-content>\r\n          <clr-stack-content>\r\n            <a (click)=\"editModal = true; onReadMeal(meal)\">\r\n              <clr-icon shape=\"pencil\"></clr-icon>\r\n            </a>\r\n          </clr-stack-content>\r\n        </div>\r\n\r\n        <clr-stack-block>\r\n          <clr-stack-label>Allergies</clr-stack-label>\r\n          <clr-stack-content *ngFor=\"let allergy of meal.allergies; let ai = index\">\r\n            <span *ngIf=\"allergy.active\">\r\n              {{(meal.allergies.length >= 1) ? (ai === (meal.allergies.length -1)) ? allergy.name : allergy.name + ', ' : allergy.name}}\r\n            </span>\r\n          </clr-stack-content>\r\n        </clr-stack-block>\r\n\r\n        <clr-stack-block>\r\n          <clr-stack-label>Price</clr-stack-label>\r\n          <clr-stack-content>${{meal.price}}</clr-stack-content>\r\n        </clr-stack-block>\r\n\r\n        <clr-stack-block>\r\n          <clr-stack-label>Course</clr-stack-label>\r\n          <clr-stack-content>{{meal.course}}</clr-stack-content>\r\n        </clr-stack-block>\r\n\r\n        <clr-stack-block>\r\n          <clr-stack-label>Calories</clr-stack-label>\r\n          <clr-stack-content>{{meal.calories}}cal</clr-stack-content>\r\n        </clr-stack-block>\r\n\r\n      </clr-stack-block>\r\n\r\n    </div>\r\n\r\n  </clr-stack-view>\r\n\r\n</div>\r\n\r\n<ng-template #loading>Loading&hellip;</ng-template>\r\n\r\n<clr-modal [(clrModalOpen)]=\"editModal\">\r\n  <h3 class=\"modal-title\" *ngIf=\"editModal\">{{mealToEdit.name}}</h3>\r\n  <div class=\"modal-body\">\r\n    <app-meal-form *ngIf=\"editModal\" [meal]=\"mealToEdit\"></app-meal-form>\r\n  </div>\r\n  <div class=\"modal-footer pr-0\">\r\n    <button type=\"button\" class=\"btn btn-outline btn-sm\" (click)=\"editModal = false; onUpdateMeal($event)\">Update</button>\r\n    <button type=\"button\" class=\"btn btn-danger btn-sm\" (click)=\"editModal = false; doubleCheck=true\">Delete</button>\r\n  </div>\r\n</clr-modal>\r\n\r\n<clr-modal [(clrModalOpen)]=\"doubleCheck\">\r\n  <h3 class=\"modal-title\">Confirm delete confirmation</h3>\r\n  <h4 class=\"modal-body\" *ngIf=\"doubleCheck\">Are you sure you want to remove {{mealToEdit.name}}?</h4>\r\n  <div class=\"modal-footer\">\r\n    <button type=\"button\" class=\"btn btn-secondary btn-sm\" (click)=\"doubleCheck=false; editModal=true\">Return</button>\r\n    <button type=\"button\" class=\"btn btn-danger btn-sm\" (click)=\"doubleCheck=false; onDeleteMeal(mealToEdit)\">Confirm</button>\r\n  </div>\r\n</clr-modal>\r\n\r\n<clr-modal [(clrModalOpen)]=\"addModal\">\r\n  <h3 class=\"modal-title\" *ngIf=\"addModal\">Add A Dish</h3>\r\n  <div class=\"modal-body\">\r\n    <app-meal-form *ngIf=\"addModal\"></app-meal-form>\r\n  </div>\r\n  <div class=\"modal-footer pr-0\">\r\n    <button type=\"button\" class=\"btn btn-outline btn-sm\" (click)=\"addModal = false; onCreateMeal()\">Submit</button>\r\n    <button type=\"button\" class=\"btn btn-warning btn-sm\" (click)=\"onClear()\">Clear</button>\r\n  </div>\r\n</clr-modal>"
+module.exports = "<!--<div *ngIf=\"meals$ | async; else loading\">-->\r\n  <!--<button class=\"btn btn-primary\" (click)=\"addModal=true\">Add Item</button>-->\r\n\r\n  <!--<clr-stack-view *ngFor=\"let course of courses; let ci = index\">-->\r\n\r\n    <!--<clr-stack-header class=\"cap\">-->\r\n      <!--{{course}}-->\r\n    <!--</clr-stack-header>-->\r\n\r\n    <!--<div *ngFor=\"let meal of meals\">-->\r\n\r\n      <!--<clr-stack-block *ngIf=\"meal.course == course\">-->\r\n\r\n        <!--<clr-stack-label>{{meal.name}}</clr-stack-label>-->\r\n        <!--<div class=\"flexMe\">-->\r\n          <!--<clr-stack-content>{{meal.description}}</clr-stack-content>-->\r\n          <!--<clr-stack-content>-->\r\n            <!--<a (click)=\"editModal = true; onReadMeal(meal)\">-->\r\n              <!--<clr-icon shape=\"pencil\"></clr-icon>-->\r\n            <!--</a>-->\r\n          <!--</clr-stack-content>-->\r\n        <!--</div>-->\r\n\r\n        <!--<clr-stack-block>-->\r\n          <!--<clr-stack-label>Allergies</clr-stack-label>-->\r\n          <!--<clr-stack-content *ngFor=\"let allergy of meal.allergies; let ai = index\">-->\r\n            <!--<span *ngIf=\"allergy.active\">-->\r\n              <!--{{(meal.allergies.length >= 1) ? (ai === (meal.allergies.length -1)) ? allergy.name : allergy.name + ', ' : allergy.name}}-->\r\n            <!--</span>-->\r\n          <!--</clr-stack-content>-->\r\n        <!--</clr-stack-block>-->\r\n\r\n        <!--<clr-stack-block>-->\r\n          <!--<clr-stack-label>Price</clr-stack-label>-->\r\n          <!--<clr-stack-content>${{meal.price}}</clr-stack-content>-->\r\n        <!--</clr-stack-block>-->\r\n\r\n        <!--<clr-stack-block>-->\r\n          <!--<clr-stack-label>Course</clr-stack-label>-->\r\n          <!--<clr-stack-content>{{meal.course}}</clr-stack-content>-->\r\n        <!--</clr-stack-block>-->\r\n\r\n        <!--<clr-stack-block>-->\r\n          <!--<clr-stack-label>Calories</clr-stack-label>-->\r\n          <!--<clr-stack-content>{{meal.calories}}cal</clr-stack-content>-->\r\n        <!--</clr-stack-block>-->\r\n\r\n      <!--</clr-stack-block>-->\r\n\r\n    <!--</div>-->\r\n\r\n  <!--</clr-stack-view>-->\r\n\r\n<!--</div>-->\r\n\r\n<!--<ng-template #loading>Loading&hellip;</ng-template>-->\r\n\r\n<!--<clr-modal [(clrModalOpen)]=\"editModal\">-->\r\n  <!--<h3 class=\"modal-title\" *ngIf=\"editModal\">{{mealToEdit.name}}</h3>-->\r\n  <!--<div class=\"modal-body\">-->\r\n    <!--<app-meal-form *ngIf=\"editModal\" [meal]=\"mealToEdit\"></app-meal-form>-->\r\n  <!--</div>-->\r\n  <!--<div class=\"modal-footer pr-0\">-->\r\n    <!--<button type=\"button\" class=\"btn btn-outline btn-sm\" (click)=\"editModal = false; onUpdateMeal($event)\">Update</button>-->\r\n    <!--<button type=\"button\" class=\"btn btn-danger btn-sm\" (click)=\"editModal = false; doubleCheck=true\">Delete</button>-->\r\n  <!--</div>-->\r\n<!--</clr-modal>-->\r\n\r\n<!--<clr-modal [(clrModalOpen)]=\"doubleCheck\">-->\r\n  <!--<h3 class=\"modal-title\">Confirm delete confirmation</h3>-->\r\n  <!--<h4 class=\"modal-body\" *ngIf=\"doubleCheck\">Are you sure you want to remove {{mealToEdit.name}}?</h4>-->\r\n  <!--<div class=\"modal-footer\">-->\r\n    <!--<button type=\"button\" class=\"btn btn-secondary btn-sm\" (click)=\"doubleCheck=false; editModal=true\">Return</button>-->\r\n    <!--<button type=\"button\" class=\"btn btn-danger btn-sm\" (click)=\"doubleCheck=false; onDeleteMeal(mealToEdit)\">Confirm</button>-->\r\n  <!--</div>-->\r\n<!--</clr-modal>-->\r\n\r\n<!--<clr-modal [(clrModalOpen)]=\"addModal\">-->\r\n  <!--<h3 class=\"modal-title\" *ngIf=\"addModal\">Add A Dish</h3>-->\r\n  <!--<div class=\"modal-body\">-->\r\n    <!--<app-meal-form *ngIf=\"addModal\"></app-meal-form>-->\r\n  <!--</div>-->\r\n  <!--<div class=\"modal-footer pr-0\">-->\r\n    <!--<button type=\"button\" class=\"btn btn-outline btn-sm\" (click)=\"addModal = false; onCreateMeal()\">Submit</button>-->\r\n    <!--<button type=\"button\" class=\"btn btn-warning btn-sm\" (click)=\"onClear()\">Clear</button>-->\r\n  <!--</div>-->\r\n<!--</clr-modal>-->\r\n"
 
 /***/ }),
 
@@ -606,73 +607,62 @@ Object.defineProperty(exports, "__esModule", { value: true });
 var core_1 = __webpack_require__("./node_modules/@angular/core/esm5/core.js");
 var Subject_1 = __webpack_require__("./node_modules/rxjs/_esm5/Subject.js");
 __webpack_require__("./node_modules/rxjs/_esm5/add/operator/takeUntil.js");
-var meals_service_1 = __webpack_require__("./app/app/services/meals.service.ts");
+// import { MealsService } from '../../../services/meals.service';
+var meal_service_1 = __webpack_require__("./app/app/services/meal.service.ts");
 var allergies_service_1 = __webpack_require__("./app/app/services/allergies.service.ts");
-var submit_form_service_1 = __webpack_require__("./app/app/services/submit-form.service.ts");
 var MealComponent = /** @class */ (function () {
-    function MealComponent(mealService, allergiesService, submitService) {
+    function MealComponent(
+        // private mealService: MealsService,
+        mealService, allergiesService) {
         this.mealService = mealService;
         this.allergiesService = allergiesService;
-        this.submitService = submitService;
         this.ngUnsubscribe = new Subject_1.Subject();
         this.meals = [];
         this.courses = [];
     }
     MealComponent.prototype.ngOnInit = function () {
-        var _this = this;
-        this.meals$ = this.mealService.readMeals();
-        // console.log(this.meals$);
-        this.mealSub = this.meals$
-            .takeUntil(this.ngUnsubscribe)
-            .subscribe(function (meals) {
-            _this.meals = meals;
-            _this.courses = meals
-                .map(function (meal) {
-                return meal.course;
-            })
-                .slice()
-                .sort(function (a, b) {
-                return a > b;
-            })
-                .reduce(function (a, b) {
-                if (a.slice(-1)[0] !== b) {
-                    a.push(b);
-                }
-                return a;
-            }, []);
+        this.mealService.getMenu().subscribe(function (menu) {
+            console.log(menu);
         });
+        // this.mealSub = this.meals$
+        //   .takeUntil(this.ngUnsubscribe)
+        //   .subscribe(meals => {
+        //     this.meals = meals;
+        //     this.courses = meals
+        //       .map(meal => {
+        //         return meal.course;
+        //       })
+        //       .slice()
+        //       .sort((a: string, b: string): any => {
+        //         return a > b;
+        //       })
+        //       .reduce((a: string[], b: string): any => {
+        //         if (a.slice(-1)[0] !== b) {
+        //           a.push(b);
+        //         }
+        //         return a;
+        //       }, []);
+        //   });
     };
     MealComponent.prototype.ngOnDestroy = function () {
         this.ngUnsubscribe.next();
         this.ngUnsubscribe.complete();
     };
-    MealComponent.prototype.onCreateMeal = function () {
-        this.submitService.create = true;
-    };
+    // onCreateMeal() {
+    //   this.submitService.create = true;
+    // }
     MealComponent.prototype.onReadMeal = function (meal) {
         this.mealToEdit = meal;
-    };
-    MealComponent.prototype.onUpdateMeal = function (event) {
-        if (event.type === 'click') {
-            this.submitService.update = true;
-        }
-    };
-    MealComponent.prototype.onDeleteMeal = function (meal) {
-        this.mealService.deleteMeal(meal);
-    };
-    MealComponent.prototype.onClear = function () {
-        this.submitService.clearForm$.next(true);
     };
     MealComponent = __decorate([
         core_1.Component({
             selector: 'app-meal',
             template: __webpack_require__("./app/app/components/application/meal/meal.component.html"),
             styles: [__webpack_require__("./app/app/components/application/meal/meal.component.css")],
-            providers: [meals_service_1.MealsService, allergies_service_1.AllergiesService, submit_form_service_1.SubmitFormService]
+            providers: [meal_service_1.MealService, allergies_service_1.AllergiesService]
         }),
-        __metadata("design:paramtypes", [meals_service_1.MealsService,
-            allergies_service_1.AllergiesService,
-            submit_form_service_1.SubmitFormService])
+        __metadata("design:paramtypes", [meal_service_1.MealService,
+            allergies_service_1.AllergiesService])
     ], MealComponent);
     return MealComponent;
 }());
@@ -691,7 +681,7 @@ module.exports = ""
 /***/ "./app/app/components/application/nav/header/header.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<header class=\"header-1\">\r\n  <div class=\"header-nav\">\r\n    <div class=\"branding\">\r\n      <a href=\"...\" class=\"nav-link\">\r\n        <clr-icon shape=\"vm-bug\"></clr-icon>\r\n        <span class=\"title\">Project Clarity</span>\r\n      </a>\r\n    </div>\r\n    <div class=\"header-nav\">\r\n      <a href=\"javascript://\" class=\"active nav-link nav-text\">Dashboard</a>\r\n      <a href=\"javascript://\" class=\"nav-link nav-text\">Interactive Analytics</a>\r\n    </div>\r\n    <div class=\"header-actions\">\r\n      <a class=\"nav-link nav-text\" (click)=\"logout()\">\r\n        Log Out\r\n      </a>\r\n    </div>\r\n  </div>\r\n</header>\r\n"
+module.exports = "<header class=\"header-1\">\r\n  <div class=\"header-nav\">\r\n    <div class=\"branding\">\r\n      <a href=\"/\" class=\"nav-link\">\r\n        <clr-icon shape=\"vm-bug\"></clr-icon>\r\n        <span class=\"title\">Home</span>\r\n      </a>\r\n    </div>\r\n    <div class=\"header-nav\">\r\n      <a href=\"javascript://\" class=\"active nav-link nav-text\">Dashboard</a>\r\n      <a href=\"javascript://\" class=\"nav-link nav-text\">Interactive Analytics</a>\r\n    </div>\r\n    <div class=\"header-actions\">\r\n      <a class=\"nav-link nav-text\" (click)=\"logout()\">\r\n        Log Out\r\n      </a>\r\n    </div>\r\n  </div>\r\n</header>\r\n"
 
 /***/ }),
 
@@ -1806,6 +1796,41 @@ var AuthService = /** @class */ (function () {
     return AuthService;
 }());
 exports.AuthService = AuthService;
+
+
+/***/ }),
+
+/***/ "./app/app/services/meal.service.ts":
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (this && this.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+var core_1 = __webpack_require__("./node_modules/@angular/core/esm5/core.js");
+var http_1 = __webpack_require__("./node_modules/@angular/common/esm5/http.js");
+var MealService = /** @class */ (function () {
+    function MealService(http) {
+        this.http = http;
+    }
+    MealService.prototype.getMenu = function () {
+        return this.http.get('/api/menu');
+    };
+    MealService = __decorate([
+        core_1.Injectable(),
+        __metadata("design:paramtypes", [http_1.HttpClient])
+    ], MealService);
+    return MealService;
+}());
+exports.MealService = MealService;
 
 
 /***/ }),

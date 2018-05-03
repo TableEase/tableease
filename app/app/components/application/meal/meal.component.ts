@@ -3,9 +3,10 @@ import { Observable } from 'rxjs/Observable';
 import { Subject } from 'rxjs/Subject';
 import 'rxjs/add/operator/takeUntil';
 
-import { MealsService } from '../../../services/meals.service';
+// import { MealsService } from '../../../services/meals.service';
+import { MealService } from '../../../services/meal.service';
 import { AllergiesService } from '../../../services/allergies.service';
-import { SubmitFormService } from '../../../services/submit-form.service';
+// import { SubmitFormService } from '../../../services/submit-form.service';
 
 import { Meal } from '../../../models/meal';
 
@@ -13,7 +14,7 @@ import { Meal } from '../../../models/meal';
   selector: 'app-meal',
   templateUrl: './meal.component.html',
   styleUrls: ['./meal.component.css'],
-  providers: [MealsService, AllergiesService, SubmitFormService]
+  providers: [MealService, AllergiesService]
 })
 export class MealComponent implements OnInit, OnDestroy {
   private ngUnsubscribe: Subject<any> = new Subject();
@@ -24,33 +25,35 @@ export class MealComponent implements OnInit, OnDestroy {
   private courses: string[] = [];
 
   constructor(
-    private mealService: MealsService,
+    // private mealService: MealsService,
+    private mealService: MealService,
     private allergiesService: AllergiesService,
-    public submitService: SubmitFormService
-  ) {}
+  ) {
+  }
 
   ngOnInit() {
-    this.meals$ = this.mealService.readMeals();
-    // console.log(this.meals$);
-    this.mealSub = this.meals$
-      .takeUntil(this.ngUnsubscribe)
-      .subscribe(meals => {
-        this.meals = meals;
-        this.courses = meals
-          .map(meal => {
-            return meal.course;
-          })
-          .slice()
-          .sort((a: string, b: string): any => {
-            return a > b;
-          })
-          .reduce((a: string[], b: string): any => {
-            if (a.slice(-1)[0] !== b) {
-              a.push(b);
-            }
-            return a;
-          }, []);
-      });
+    this.mealService.getMenu().subscribe((menu) => {
+      console.log(menu);
+    });
+    // this.mealSub = this.meals$
+    //   .takeUntil(this.ngUnsubscribe)
+    //   .subscribe(meals => {
+    //     this.meals = meals;
+    //     this.courses = meals
+    //       .map(meal => {
+    //         return meal.course;
+    //       })
+    //       .slice()
+    //       .sort((a: string, b: string): any => {
+    //         return a > b;
+    //       })
+    //       .reduce((a: string[], b: string): any => {
+    //         if (a.slice(-1)[0] !== b) {
+    //           a.push(b);
+    //         }
+    //         return a;
+    //       }, []);
+    //   });
   }
 
   ngOnDestroy() {
@@ -58,25 +61,25 @@ export class MealComponent implements OnInit, OnDestroy {
     this.ngUnsubscribe.complete();
   }
 
-  onCreateMeal() {
-    this.submitService.create = true;
-  }
+  // onCreateMeal() {
+  //   this.submitService.create = true;
+  // }
 
   onReadMeal(meal: Meal) {
     this.mealToEdit = meal;
   }
 
-  onUpdateMeal(event: Event) {
-    if (event.type === 'click') {
-      this.submitService.update = true;
-    }
-  }
+  // onUpdateMeal(event: Event) {
+  //   if (event.type === 'click') {
+  //     this.submitService.update = true;
+  //   }
+  // }
 
-  onDeleteMeal(meal: Meal) {
-    this.mealService.deleteMeal(meal);
-  }
+  // onDeleteMeal(meal: Meal) {
+  //   this.mealService.deleteMeal(meal);
+  // }
 
-  onClear() {
-    this.submitService.clearForm$.next(true);
-  }
+  // onClear() {
+  //   this.submitService.clearForm$.next(true);
+  // }
 }

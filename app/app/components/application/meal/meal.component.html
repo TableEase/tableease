@@ -1,87 +1,87 @@
-<div *ngIf="meals$ | async; else loading">
-  <button class="btn btn-primary" (click)="addModal=true">Add Item</button>
+<!--<div *ngIf="meals$ | async; else loading">-->
+  <!--<button class="btn btn-primary" (click)="addModal=true">Add Item</button>-->
 
-  <clr-stack-view *ngFor="let course of courses; let ci = index">
+  <!--<clr-stack-view *ngFor="let course of courses; let ci = index">-->
 
-    <clr-stack-header class="cap">
-      {{course}}
-    </clr-stack-header>
+    <!--<clr-stack-header class="cap">-->
+      <!--{{course}}-->
+    <!--</clr-stack-header>-->
 
-    <div *ngFor="let meal of meals">
+    <!--<div *ngFor="let meal of meals">-->
 
-      <clr-stack-block *ngIf="meal.course == course">
+      <!--<clr-stack-block *ngIf="meal.course == course">-->
 
-        <clr-stack-label>{{meal.name}}</clr-stack-label>
-        <div class="flexMe">
-          <clr-stack-content>{{meal.description}}</clr-stack-content>
-          <clr-stack-content>
-            <a (click)="editModal = true; onReadMeal(meal)">
-              <clr-icon shape="pencil"></clr-icon>
-            </a>
-          </clr-stack-content>
-        </div>
+        <!--<clr-stack-label>{{meal.name}}</clr-stack-label>-->
+        <!--<div class="flexMe">-->
+          <!--<clr-stack-content>{{meal.description}}</clr-stack-content>-->
+          <!--<clr-stack-content>-->
+            <!--<a (click)="editModal = true; onReadMeal(meal)">-->
+              <!--<clr-icon shape="pencil"></clr-icon>-->
+            <!--</a>-->
+          <!--</clr-stack-content>-->
+        <!--</div>-->
 
-        <clr-stack-block>
-          <clr-stack-label>Allergies</clr-stack-label>
-          <clr-stack-content *ngFor="let allergy of meal.allergies; let ai = index">
-            <span *ngIf="allergy.active">
-              {{(meal.allergies.length >= 1) ? (ai === (meal.allergies.length -1)) ? allergy.name : allergy.name + ', ' : allergy.name}}
-            </span>
-          </clr-stack-content>
-        </clr-stack-block>
+        <!--<clr-stack-block>-->
+          <!--<clr-stack-label>Allergies</clr-stack-label>-->
+          <!--<clr-stack-content *ngFor="let allergy of meal.allergies; let ai = index">-->
+            <!--<span *ngIf="allergy.active">-->
+              <!--{{(meal.allergies.length >= 1) ? (ai === (meal.allergies.length -1)) ? allergy.name : allergy.name + ', ' : allergy.name}}-->
+            <!--</span>-->
+          <!--</clr-stack-content>-->
+        <!--</clr-stack-block>-->
 
-        <clr-stack-block>
-          <clr-stack-label>Price</clr-stack-label>
-          <clr-stack-content>${{meal.price}}</clr-stack-content>
-        </clr-stack-block>
+        <!--<clr-stack-block>-->
+          <!--<clr-stack-label>Price</clr-stack-label>-->
+          <!--<clr-stack-content>${{meal.price}}</clr-stack-content>-->
+        <!--</clr-stack-block>-->
 
-        <clr-stack-block>
-          <clr-stack-label>Course</clr-stack-label>
-          <clr-stack-content>{{meal.course}}</clr-stack-content>
-        </clr-stack-block>
+        <!--<clr-stack-block>-->
+          <!--<clr-stack-label>Course</clr-stack-label>-->
+          <!--<clr-stack-content>{{meal.course}}</clr-stack-content>-->
+        <!--</clr-stack-block>-->
 
-        <clr-stack-block>
-          <clr-stack-label>Calories</clr-stack-label>
-          <clr-stack-content>{{meal.calories}}cal</clr-stack-content>
-        </clr-stack-block>
+        <!--<clr-stack-block>-->
+          <!--<clr-stack-label>Calories</clr-stack-label>-->
+          <!--<clr-stack-content>{{meal.calories}}cal</clr-stack-content>-->
+        <!--</clr-stack-block>-->
 
-      </clr-stack-block>
+      <!--</clr-stack-block>-->
 
-    </div>
+    <!--</div>-->
 
-  </clr-stack-view>
+  <!--</clr-stack-view>-->
 
-</div>
+<!--</div>-->
 
-<ng-template #loading>Loading&hellip;</ng-template>
+<!--<ng-template #loading>Loading&hellip;</ng-template>-->
 
-<clr-modal [(clrModalOpen)]="editModal">
-  <h3 class="modal-title" *ngIf="editModal">{{mealToEdit.name}}</h3>
-  <div class="modal-body">
-    <app-meal-form *ngIf="editModal" [meal]="mealToEdit"></app-meal-form>
-  </div>
-  <div class="modal-footer pr-0">
-    <button type="button" class="btn btn-outline btn-sm" (click)="editModal = false; onUpdateMeal($event)">Update</button>
-    <button type="button" class="btn btn-danger btn-sm" (click)="editModal = false; doubleCheck=true">Delete</button>
-  </div>
-</clr-modal>
+<!--<clr-modal [(clrModalOpen)]="editModal">-->
+  <!--<h3 class="modal-title" *ngIf="editModal">{{mealToEdit.name}}</h3>-->
+  <!--<div class="modal-body">-->
+    <!--<app-meal-form *ngIf="editModal" [meal]="mealToEdit"></app-meal-form>-->
+  <!--</div>-->
+  <!--<div class="modal-footer pr-0">-->
+    <!--<button type="button" class="btn btn-outline btn-sm" (click)="editModal = false; onUpdateMeal($event)">Update</button>-->
+    <!--<button type="button" class="btn btn-danger btn-sm" (click)="editModal = false; doubleCheck=true">Delete</button>-->
+  <!--</div>-->
+<!--</clr-modal>-->
 
-<clr-modal [(clrModalOpen)]="doubleCheck">
-  <h3 class="modal-title">Confirm delete confirmation</h3>
-  <h4 class="modal-body" *ngIf="doubleCheck">Are you sure you want to remove {{mealToEdit.name}}?</h4>
-  <div class="modal-footer">
-    <button type="button" class="btn btn-secondary btn-sm" (click)="doubleCheck=false; editModal=true">Return</button>
-    <button type="button" class="btn btn-danger btn-sm" (click)="doubleCheck=false; onDeleteMeal(mealToEdit)">Confirm</button>
-  </div>
-</clr-modal>
+<!--<clr-modal [(clrModalOpen)]="doubleCheck">-->
+  <!--<h3 class="modal-title">Confirm delete confirmation</h3>-->
+  <!--<h4 class="modal-body" *ngIf="doubleCheck">Are you sure you want to remove {{mealToEdit.name}}?</h4>-->
+  <!--<div class="modal-footer">-->
+    <!--<button type="button" class="btn btn-secondary btn-sm" (click)="doubleCheck=false; editModal=true">Return</button>-->
+    <!--<button type="button" class="btn btn-danger btn-sm" (click)="doubleCheck=false; onDeleteMeal(mealToEdit)">Confirm</button>-->
+  <!--</div>-->
+<!--</clr-modal>-->
 
-<clr-modal [(clrModalOpen)]="addModal">
-  <h3 class="modal-title" *ngIf="addModal">Add A Dish</h3>
-  <div class="modal-body">
-    <app-meal-form *ngIf="addModal"></app-meal-form>
-  </div>
-  <div class="modal-footer pr-0">
-    <button type="button" class="btn btn-outline btn-sm" (click)="addModal = false; onCreateMeal()">Submit</button>
-    <button type="button" class="btn btn-warning btn-sm" (click)="onClear()">Clear</button>
-  </div>
-</clr-modal>
+<!--<clr-modal [(clrModalOpen)]="addModal">-->
+  <!--<h3 class="modal-title" *ngIf="addModal">Add A Dish</h3>-->
+  <!--<div class="modal-body">-->
+    <!--<app-meal-form *ngIf="addModal"></app-meal-form>-->
+  <!--</div>-->
+  <!--<div class="modal-footer pr-0">-->
+    <!--<button type="button" class="btn btn-outline btn-sm" (click)="addModal = false; onCreateMeal()">Submit</button>-->
+    <!--<button type="button" class="btn btn-warning btn-sm" (click)="onClear()">Clear</button>-->
+  <!--</div>-->
+<!--</clr-modal>-->
