@@ -3,7 +3,9 @@ const router = express.Router();
 const db = require("../config/db");
 const myFunctions = require("./myFunctions");
 const async = require("async");
-const allergy = new db({ tableName: "allergies" });
+
+
+const allergies = new db({ tableName: "allergies" });
 const Allergy = db.extend({
   tableName: "allergies"
 });
@@ -30,6 +32,7 @@ router.get("/", myFunctions.isLoggedIn, function(req, res, next) {
 
 router.post("/post", myFunctions.isLoggedIn, function(req, res, next) {
   var companyId = req.user.id;
+  console.log(req.body);
   addFood(req, companyId, function(formFields) {
     req.flash("menuMessage", "Added: " + JSON.stringify(formFields));
     res.redirect("/menu");
@@ -137,13 +140,6 @@ function getAllergiesFood(row, callback) {
   });
 }
 
-function getAllergies(callback) {
-  allergies.find("all", {}, function(err, rows, fields) {
-    if (err) throw err;
-    return callback(rows);
-  });
-}
-
 function addFood(req, companyId, callback) {
   var formFields = req.body;
   var name = formFields.name;
@@ -172,7 +168,7 @@ function addFoodAllergy(rowId, formFields, callback) {
 }
 
 function getMenu(companyId, callback) {
-  var query = "select food_id, f.description, f.name, " +
+  var query = "select f.price, food_id, f.description, f.name, " +
     "GROUP_CONCAT(DISTINCT a.id SEPARATOR ',') AS allergy_ids, " +
     "GROUP_CONCAT(DISTINCT a.name SEPARATOR ',') AS allergy_names " +
     "from food as f join food_allergy as fa on f.id = fa.food_id join allergies as a on fa.allergy_id =a.id " +

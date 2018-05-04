@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, Input } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 import { Subject } from 'rxjs/Subject';
 import 'rxjs/add/operator/takeUntil';
@@ -9,6 +9,7 @@ import { AllergiesService } from '../../../services/allergies.service';
 // import { SubmitFormService } from '../../../services/submit-form.service';
 
 import { Meal } from '../../../models/meal';
+import { NgForm } from '@angular/forms';
 
 @Component({
   selector: 'app-meal',
@@ -20,20 +21,18 @@ export class MealComponent implements OnInit, OnDestroy {
   private ngUnsubscribe: Subject<any> = new Subject();
   private meals$: Observable<Meal[]>;
   private mealSub: any;
-  private meals: Meal[] = [];
+  meals: Meal[];
   private mealToEdit: Meal;
-  private courses: string[] = [];
 
   constructor(
-    // private mealService: MealsService,
     private mealService: MealService,
-    private allergiesService: AllergiesService,
+    private allergiesService: AllergiesService
   ) {
   }
 
   ngOnInit() {
     this.mealService.getMenu().subscribe((menu) => {
-      console.log(menu);
+      this.meals = menu['data'];
     });
     // this.mealSub = this.meals$
     //   .takeUntil(this.ngUnsubscribe)
@@ -61,9 +60,12 @@ export class MealComponent implements OnInit, OnDestroy {
     this.ngUnsubscribe.complete();
   }
 
-  // onCreateMeal() {
-  //   this.submitService.create = true;
-  // }
+
+  onCreateMeal() {
+    console.log(this);
+    // const formVals = form.value;
+    // this.mealService.addFood(formVals);
+  }
 
   onReadMeal(meal: Meal) {
     this.mealToEdit = meal;

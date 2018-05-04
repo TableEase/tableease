@@ -55,6 +55,7 @@ const menu = require("./routes/menu");
 const logout = require("./routes/logout");
 const admin = require("./routes/admin");
 const users = require("./routes/users");
+const allergies = require("./routes/allergies");
 
 app.use("/api", router);
 
@@ -67,6 +68,7 @@ router.use("/menu", menu);
 router.use("/logout", logout);
 router.use("/admin", admin);
 router.use("/users", users);
+router.use("/allergies", allergies);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
