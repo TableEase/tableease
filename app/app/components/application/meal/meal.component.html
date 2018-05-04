@@ -1,3 +1,4 @@
+<<<<<<< Updated upstream
 <div *ngIf="meals$ | async; else loading">
   <button class="btn btn-primary" (click)="addModal=true">Add Item</button>
 
@@ -5,11 +6,23 @@
 
     <clr-stack-header class="cap">
       {{course}}
+=======
+<div>
+  <button class="btn btn-primary" (click)="addModal=true">Add Item</button>
+
+  <clr-stack-view>
+
+    <clr-stack-header class="cap">
+>>>>>>> Stashed changes
     </clr-stack-header>
 
     <div *ngFor="let meal of meals">
 
+<<<<<<< Updated upstream
       <clr-stack-block *ngIf="meal.course == course">
+=======
+      <clr-stack-block>
+>>>>>>> Stashed changes
 
         <clr-stack-label>{{meal.name}}</clr-stack-label>
         <div class="flexMe">
@@ -23,10 +36,15 @@
 
         <clr-stack-block>
           <clr-stack-label>Allergies</clr-stack-label>
+<<<<<<< Updated upstream
           <clr-stack-content *ngFor="let allergy of meal.allergies; let ai = index">
             <span *ngIf="allergy.active">
               {{(meal.allergies.length >= 1) ? (ai === (meal.allergies.length -1)) ? allergy.name : allergy.name + ', ' : allergy.name}}
             </span>
+=======
+          <clr-stack-content *ngIf="meal.allergy_names.length > 0">
+            <span>{{meal.allergy_names.join(", ")}}</span>
+>>>>>>> Stashed changes
           </clr-stack-content>
         </clr-stack-block>
 
@@ -35,6 +53,7 @@
           <clr-stack-content>${{meal.price}}</clr-stack-content>
         </clr-stack-block>
 
+<<<<<<< Updated upstream
         <clr-stack-block>
           <clr-stack-label>Course</clr-stack-label>
           <clr-stack-content>{{meal.course}}</clr-stack-content>
@@ -45,6 +64,8 @@
           <clr-stack-content>{{meal.calories}}cal</clr-stack-content>
         </clr-stack-block>
 
+=======
+>>>>>>> Stashed changes
       </clr-stack-block>
 
     </div>
@@ -61,7 +82,12 @@
     <app-meal-form *ngIf="editModal" [meal]="mealToEdit"></app-meal-form>
   </div>
   <div class="modal-footer pr-0">
+<<<<<<< Updated upstream
     <button type="button" class="btn btn-outline btn-sm" (click)="editModal = false; onUpdateMeal($event)">Update</button>
+=======
+    <button type="button" class="btn btn-outline btn-sm" (click)="editModal = false; onUpdateMeal($event)">Update
+    </button>
+>>>>>>> Stashed changes
     <button type="button" class="btn btn-danger btn-sm" (click)="editModal = false; doubleCheck=true">Delete</button>
   </div>
 </clr-modal>
@@ -71,7 +97,12 @@
   <h4 class="modal-body" *ngIf="doubleCheck">Are you sure you want to remove {{mealToEdit.name}}?</h4>
   <div class="modal-footer">
     <button type="button" class="btn btn-secondary btn-sm" (click)="doubleCheck=false; editModal=true">Return</button>
+<<<<<<< Updated upstream
     <button type="button" class="btn btn-danger btn-sm" (click)="doubleCheck=false; onDeleteMeal(mealToEdit)">Confirm</button>
+=======
+    <button type="button" class="btn btn-danger btn-sm" (click)="doubleCheck=false; onDeleteMeal(mealToEdit)">Confirm
+    </button>
+>>>>>>> Stashed changes
   </div>
 </clr-modal>
 
@@ -84,4 +115,8 @@
     <button type="button" class="btn btn-outline btn-sm" (click)="addModal = false; onCreateMeal()">Submit</button>
     <button type="button" class="btn btn-warning btn-sm" (click)="onClear()">Clear</button>
   </div>
+<<<<<<< Updated upstream
 </clr-modal>
+=======
+</clr-modal>
+>>>>>>> Stashed changes

@@ -168,12 +168,25 @@ function addFoodAllergy(rowId, formFields, callback) {
 
 }
 
+<<<<<<< Updated upstream
 function getMenuIds(companyId, callback) {
     var query = "select id from food where company_id =" + companyId;
     db.query(query, function (err, rows, fields) {
         if (err) throw err;
         callback(null, rows)
     })
+=======
+function getMenu(companyId, callback) {
+  var query = "select f.price, food_id, f.description, f.name, " +
+    "GROUP_CONCAT(DISTINCT a.id SEPARATOR ',') AS allergy_ids, " +
+    "GROUP_CONCAT(DISTINCT a.name SEPARATOR ',') AS allergy_names " +
+    "from food as f join food_allergy as fa on f.id = fa.food_id join allergies as a on fa.allergy_id =a.id " +
+    "where company_id =" + companyId + " group by fa.food_id";
+  food.query(query, function(err, rows, fields) {
+    if (err) throw err;
+    callback(rows);
+  });
+>>>>>>> Stashed changes
 }
 
 function getMenuItem(companyId, foodId, callback) {

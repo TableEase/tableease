@@ -19,11 +19,12 @@ export class MealComponent implements OnInit, OnDestroy {
   private ngUnsubscribe: Subject<any> = new Subject();
   private meals$: Observable<Meal[]>;
   private mealSub: any;
-  private meals: Meal[] = [];
+  meals: Meal[];
   private mealToEdit: Meal;
-  private courses: string[] = [];
+  courses: string[];
 
   constructor(
+<<<<<<< Updated upstream
     private mealService: MealsService,
     private allergiesService: AllergiesService,
     public submitService: SubmitFormService
@@ -51,6 +52,37 @@ export class MealComponent implements OnInit, OnDestroy {
             return a;
           }, []);
       });
+=======
+    // private mealService: MealsService,
+    private mealService: MealService,
+    private allergiesService: AllergiesService
+  ) {
+  }
+
+  ngOnInit() {
+    this.mealService.getMenu().subscribe((menu) => {
+      this.meals = menu['data'];
+    });
+    // this.mealSub = this.meals$
+    //   .takeUntil(this.ngUnsubscribe)
+    //   .subscribe(meals => {
+    //     this.meals = meals;
+    //     this.courses = meals
+    //       .map(meal => {
+    //         return meal.course;
+    //       })
+    //       .slice()
+    //       .sort((a: string, b: string): any => {
+    //         return a > b;
+    //       })
+    //       .reduce((a: string[], b: string): any => {
+    //         if (a.slice(-1)[0] !== b) {
+    //           a.push(b);
+    //         }
+    //         return a;
+    //       }, []);
+    //   });
+>>>>>>> Stashed changes
   }
 
   ngOnDestroy() {
