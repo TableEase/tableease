@@ -46,7 +46,7 @@
     <app-meal-form *ngIf="editModal" [meal]="mealToEdit"></app-meal-form>
   </div>
   <div class="modal-footer pr-0">
-    <button type="button" class="btn btn-outline btn-sm" (click)="editModal = false; onUpdateMeal($event)">Update
+    <button type="button" class="btn btn-outline btn-sm" (click)="editModal = false; onUpdateMeal()">Update
     </button>
     <button type="button" class="btn btn-danger btn-sm" (click)="editModal = false; doubleCheck=true">Delete</button>
   </div>

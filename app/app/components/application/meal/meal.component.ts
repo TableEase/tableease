@@ -32,9 +32,7 @@ export class MealComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-    this.mealService.getMenu().subscribe((menu) => {
-      this.meals = menu['data'];
-    });
+    this.getMenu();
     // this.mealSub = this.meals$
     //   .takeUntil(this.ngUnsubscribe)
     //   .subscribe(meals => {
@@ -62,24 +60,32 @@ export class MealComponent implements OnInit, OnDestroy {
   }
 
   onCreateMeal() {
-    this.mealForm.onSubmit();
+    this.mealForm.onSubmit().subscribe((res) => {
+      this.getMenu();
+    });
   }
 
   onReadMeal(meal: Meal) {
     this.mealToEdit = meal;
   }
 
-  // onUpdateMeal(event: Event) {
-  //   if (event.type === 'click') {
-  //     this.submitService.update = true;
-  //   }
-  // }
+  getMenu() {
+    this.mealService.getMenu().subscribe((menu) => {
+      this.meals = menu['data'];
+    });
+  }
+
+  onUpdateMeal() {
+    this.mealForm.onUpdate().subscribe((menu) => {
+      this.meals = menu['data'];
+    });
+  }
 
   // onDeleteMeal(meal: Meal) {
   //   this.mealService.deleteMeal(meal);
   // }
 
-  // onClear() {
-  //   this.submitService.clearForm$.next(true);
-  // }
+  onClear() {
+    this.mealForm.clearForm();
+  }
 }

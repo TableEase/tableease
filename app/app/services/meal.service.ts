@@ -15,4 +15,8 @@ export class MealService {
     return this.http.post('/api/menu/add', formVals);
   }
 
+  updateFood(formVals) {
+    return this.http.post('/api/menu/update/' + formVals.food_id, formVals);
+  }
+
 }

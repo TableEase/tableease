@@ -22,11 +22,10 @@ const FoodAllergy = db.extend({
 router.get("/", myFunctions.isLoggedIn, function(req, res, next) {
   var companyId = req.user.id;
   getMenu(companyId, function(fullMenu) {
-    fullMenu.forEach(function(item) {
-      item["allergy_ids"] = item["allergy_ids"].split(",");
-      item["allergy_names"] = item["allergy_names"].split(",");
+    createAllergies(fullMenu, function(fullMenu) {
+      res.send({ data: fullMenu });
     });
-    res.send({ data: fullMenu });
+
   });
 });
 
@@ -34,9 +33,11 @@ router.post("/add", myFunctions.isLoggedIn, function(req, res, next) {
   var companyId = req.user.id;
   addFood(req, companyId, function(formFields) {
     req.flash("menuMessage", "Added: " + JSON.stringify(formFields));
-    res.send({ messages: req.flash("menuMessage") });
+    // res.send({ messages: req.flash("menuMessage") });
+    res.redirect("/api/menu");
   });
 });
+
 
 router.get("/delete/:id", myFunctions.isLoggedIn, function(req, res, next) {
   var companyId = req.user.id;
@@ -57,14 +58,15 @@ router.get("/delete/:id", myFunctions.isLoggedIn, function(req, res, next) {
 router.post("/update/:id", myFunctions.isLoggedIn, function(req, res, next) {
   var foodId = req.params.id;
   var companyId = req.user.id;
+  var checkedAllergies = req.body.checkedAllergies;
   checkOwnerFood(foodId, companyId, function(row) {
     if (!row) {
       res.render("action", { data: "You do not own that menu item OR it does not exist." });
     }
     else {
-      deleteFoodAllergies(foodId, companyId, function(result) {
-        addFood(req, function(formFields) {
-          res.redirect("/menu/edit");
+      updateFoodAllergies(foodId, companyId, checkedAllergies, function(result) {
+        updateFood(req, companyId, function(formFields) {
+          res.redirect("/api/menu");
         });
       });
     }
@@ -92,6 +94,19 @@ module.exports = router;
 
 // mysql functions related to register
 
+function createAllergies(fullMenu, callback) {
+  fullMenu.forEach(function(item) {
+    if (item["allergy_ids"]) {
+      item["allergy_ids"] = item["allergy_ids"].split(",");
+      item["allergy_names"] = item["allergy_names"].split(",");
+    }
+    else {
+      item["allergy_ids"] = ["none"];
+      item["allergy_names"] = ["none"];
+    }
+  });
+  callback(fullMenu);
+}
 
 function getAllergiesMenu(companyId, rows, callback) {
   var jsonReturn = [];
@@ -131,12 +146,29 @@ function setAllergyList(allergies, row, callback) {
 function getAllergiesFood(row, callback) {
   var foodId = row.id;
   getAllergiesForFood(foodId, function(allergies) {
-    console.log(allergies);
     setAllergyList(allergies, row, function() {
       callback(row);
     });
   });
 }
+
+function updateFood(req, companyId, callback) {
+  const formFields = req.body;
+  const food = new Food({
+    company_id: companyId,
+    name: formFields.name,
+    description: formFields.description,
+    price: formFields.price,
+    id: formFields.food_id
+  });
+
+  food.save(function(err, rows, fields) {
+    if (err) throw err;
+    const rowId = rows.insertId;
+    return callback(addFoodAllergy(food.id, formFields));
+  });
+}
+
 
 function addFood(req, companyId, callback) {
   const formFields = req.body;
@@ -148,32 +180,32 @@ function addFood(req, companyId, callback) {
   });
   food.save(function(err, rows, fields) {
     if (err) throw err;
-    var rowId = rows.insertId;
+    const rowId = rows.insertId;
     return callback(addFoodAllergy(rowId, formFields));
   });
-
-
 }
 
 function addFoodAllergy(foodRowId, formFields, callback) {
   const checkedAllergies = formFields.checkedAllergies;
-  let foodAllergyQuery = "insert into food_allergy (food_id, allergy_id) values ? ";
-  let vals = [];
-  checkedAllergies.forEach(function(allergy) {
-    vals.push([foodRowId, allergy.id]);
-  });
-  foodAllergy.query(foodAllergyQuery, [vals], function(err, rows, fields) {
-    if (err) throw err;
-  });
+  if (checkedAllergies.length > 0) {
+    let foodAllergyQuery = "insert into food_allergy (food_id, allergy_id) values ? ";
+    let vals = [];
+    checkedAllergies.forEach(function(allergy) {
+      vals.push([foodRowId, allergy.id]);
+    });
+    foodAllergy.query(foodAllergyQuery, [vals], function(err, rows, fields) {
+      if (err) throw err;
+    });
+  }
   return formFields;
 }
 
 function getMenu(companyId, callback) {
-  var query = "select f.price, food_id, f.description, f.name, " +
+  var query = "select f.price, f.id as food_id, f.description, f.name, " +
     "GROUP_CONCAT(DISTINCT a.id SEPARATOR ',') AS allergy_ids, " +
     "GROUP_CONCAT(DISTINCT a.name SEPARATOR ',') AS allergy_names " +
-    "from food as f join food_allergy as fa on f.id = fa.food_id join allergies as a on fa.allergy_id =a.id " +
-    "where company_id =" + companyId + " group by fa.food_id";
+    "from food as f left join food_allergy as fa on f.id = fa.food_id left join allergies as a on fa.allergy_id =a.id " +
+    "where company_id =" + companyId + " group by f.id";
   food.query(query, function(err, rows, fields) {
     if (err) throw err;
     callback(rows);
@@ -203,25 +235,37 @@ function convertIdAllergy(allergyId, callback) {
 }
 
 function deleteFood(foodId, companyId) {
-  var query = "delete from food where id =" + foodId + " and company_id=" + companyId;
-  db.query(query, function(err, res, fields) {
+  food.remove("id=" + foodId + " and company_id=" + companyId, function(err, res, fields) {
     if (err) throw err;
     return res;
   });
 }
 
-function deleteFoodAllergies(foodId, companyId, callback) {
-  var query = "delete from food_allergy where food_id =" + foodId;
-  db.query(query, function(err, name, fields) {
-    if (err) throw err;
-    return callback(deleteFood(foodId, companyId));
+
+function updateFoodAllergies(foodId, companyId, checkedAllergies, callback) {
+  foodAllergy.find("all", { where: "food_id=" + foodId }, function(err, res, fields) {
+    res.forEach(function(foodallergy) {
+      foodAllergy.remove("food_id=" + foodallergy['food_id'] + " and allergy_id=" + foodallergy['allergy_id']);
+    });
+    return callback(checkedAllergies);
   });
 }
 
+function deleteFoodAllergies(foodId, companyId, checkedAllergies, callback) {
+  if (checkedAllergies.length > 0) {
+    foodAllergy.remove("food_id=" + foodId, function(err, name, fields) {
+      if (err) throw err;
+      return callback(deleteFood(foodId, companyId));
+    });
+  }
+  else {
+    return callback(deleteFood(foodId, companyId));
+  }
+}
+
 function checkOwnerFood(foodId, companyId, callback) {
-  var query = "SELECT * FROM food WHERE company_id =" + companyId + " and id =" + foodId;
-  db.query(query, function(err, row, fields) {
+  food.find("first", { where: ["company_id=" + companyId + " and id=" + foodId] }, function(err, row, fields) {
     if (err) throw err;
-    return callback(row[0]);
+    return callback(row);
   });
 }

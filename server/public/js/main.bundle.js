@@ -379,7 +379,7 @@ module.exports = ".drop {\r\n  margin-bottom: 0.1rem;\r\n}\r\n"
 /***/ "./app/app/components/application/meal/meal-form/meal-form.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<form class=\"form\" #frm=\"ngForm\">\r\n\r\n  <section class=\"form-block\">\r\n\r\n\r\n    <div class=\"form-group row\">\r\n\r\n      <div class=\"col-sm-2 col-xs-12\">\r\n        <label for=\"mealName\">Name</label>\r\n      </div>\r\n\r\n      <div class=\"col-sm-9 col-xs-11 push-xs-1\">\r\n        <label for=\"mealName\" aria-haspopup=\"true\" role=\"tooltip\" class=\"tooltip tooltip-validation tooltip-sm\">\r\n          <input id=\"mealName\" type=\"text\" size=\"45\" name=\"name\" ngModel>\r\n          <span class=\"tooltip-content\">\r\n            Name is required.\r\n          </span>\r\n        </label>\r\n      </div>\r\n\r\n    </div>\r\n\r\n    <div class=\"form-group row\">\r\n\r\n      <div class=\"col-sm-2 col-xs-12\">\r\n        <label for=\"description\">Description</label>\r\n      </div>\r\n\r\n      <div class=\"col-sm-9 col-xs-11 push-xs-1\">\r\n        <label for=\"description\" aria-haspopup=\"true\" role=\"tooltip\" class=\"tooltip tooltip-validation tooltip-sm\">\r\n          <textarea name=\"description\" id=\"description\" rows=\"2\" cols=\"45\" ngModel></textarea>\r\n          <span class=\"tooltip-content\">\r\n            description code is required.\r\n          </span>\r\n        </label>\r\n      </div>\r\n\r\n    </div>\r\n\r\n    <div class=\"col-xs-1 push-sm-1\">\r\n      <label for=\"price\">Price</label>\r\n    </div>\r\n\r\n    <div class=\"col-xs-4\">\r\n      <label for=\"price\" aria-haspopup=\"true\" role=\"tooltip\" class=\"tooltip tooltip-validation tooltip-sm\">\r\n        <input id=\"price\" type=\"number\" size=\"10\" name=\"price\" ngModel>\r\n        <span class=\"tooltip-content\">\r\n            price is required.\r\n          </span>\r\n      </label>\r\n    </div>\r\n\r\n  </section>\r\n\r\n  <div *ngIf=\"allergiesNames\">\r\n\r\n    <section class=\"form-block\">\r\n      <div>\r\n        <div class=\"form-group row drop\">\r\n          <div class=\"col-xs-12\">\r\n            <label for=\"allergy\">Allergies</label>\r\n          </div>\r\n        </div>\r\n\r\n        <div class=\"form-group row\">\r\n          <div class=\"col-xs-4\" *ngFor=\"let allergy of allergiesNames;\">\r\n            <div class=\"checkbox-inline center\">\r\n              <input id=\"{{allergy.name}}\" name=\"{{allergy.name}}\" type=\"checkbox\"\r\n                     (change)=\"updateSelectedAllergies(allergy)\" ngModel>\r\n              <label [for]=\"allergy.name\">{{allergy.name}}</label>\r\n            </div>\r\n          </div>\r\n        </div>\r\n      </div>\r\n    </section>\r\n  </div>\r\n</form>\r\n\r\n"
+module.exports = "<form class=\"form\" #frm=\"ngForm\">\r\n\r\n  <section class=\"form-block\">\r\n\r\n\r\n    <div class=\"form-group row\">\r\n\r\n      <div class=\"col-sm-2 col-xs-12\">\r\n        <label for=\"mealName\">Name</label>\r\n      </div>\r\n\r\n      <div class=\"col-sm-9 col-xs-11 push-xs-1\">\r\n        <label for=\"mealName\" aria-haspopup=\"true\" role=\"tooltip\" class=\"tooltip tooltip-validation tooltip-sm\">\r\n          <input id=\"mealName\" type=\"text\" size=\"45\" name=\"name\" [ngModel]=\"meal?.name\">\r\n          <span class=\"tooltip-content\">\r\n            Name is required.\r\n          </span>\r\n        </label>\r\n      </div>\r\n\r\n    </div>\r\n\r\n    <div class=\"form-group row\">\r\n\r\n      <div class=\"col-sm-2 col-xs-12\">\r\n        <label for=\"description\">Description</label>\r\n      </div>\r\n\r\n      <div class=\"col-sm-9 col-xs-11 push-xs-1\">\r\n        <label for=\"description\" aria-haspopup=\"true\" role=\"tooltip\" class=\"tooltip tooltip-validation tooltip-sm\">\r\n          <textarea name=\"description\" id=\"description\" rows=\"2\" cols=\"45\" [ngModel]=\"meal?.description\"></textarea>\r\n          <span class=\"tooltip-content\">\r\n            description code is required.\r\n          </span>\r\n        </label>\r\n      </div>\r\n\r\n    </div>\r\n\r\n    <div class=\"col-xs-1 push-sm-1\">\r\n      <label for=\"price\">Price</label>\r\n    </div>\r\n\r\n    <div class=\"col-xs-4\">\r\n      <label for=\"price\" aria-haspopup=\"true\" role=\"tooltip\" class=\"tooltip tooltip-validation tooltip-sm\">\r\n        <input id=\"price\" type=\"number\" size=\"10\" name=\"price\" [ngModel]=\"meal?.price\">\r\n        <span class=\"tooltip-content\">\r\n            price is required.\r\n          </span>\r\n      </label>\r\n    </div>\r\n\r\n  </section>\r\n\r\n  <div *ngIf=\"allergiesNames\">\r\n\r\n    <section class=\"form-block\">\r\n      <div>\r\n        <div class=\"form-group row drop\">\r\n          <div class=\"col-xs-12\">\r\n            <label for=\"allergy\">Allergies</label>\r\n          </div>\r\n        </div>\r\n\r\n        <div class=\"form-group row\">\r\n          <div class=\"col-xs-4\" *ngFor=\"let allergy of allergiesNames;\">\r\n            <div class=\"checkbox-inline center\">\r\n              <input id=\"{{allergy.name}}\" name=\"{{allergy.name}}\" type=\"checkbox\"\r\n                     (change)=\"updateSelectedAllergies(allergy)\" [ngModel]=\"allergy?.checked\">\r\n              <label [for]=\"allergy.name\">{{allergy.name}}</label>\r\n            </div>\r\n          </div>\r\n        </div>\r\n      </div>\r\n    </section>\r\n  </div>\r\n</form>\r\n\r\n"
 
 /***/ }),
 
@@ -415,6 +415,7 @@ var MealFormComponent = /** @class */ (function () {
         var _this = this;
         this.allergiesService.getAllergies().subscribe(function (allergies) {
             _this.allergiesNames = allergies['allergies'];
+            _this.fillForm();
         });
         // this.allergies$.takeUntil(this.ngUnsubscribe).subscribe(allergies => {
         //   this.allergiesArray = allergies;
@@ -442,6 +443,22 @@ var MealFormComponent = /** @class */ (function () {
         //   }
         // })
     };
+    MealFormComponent.prototype.fillForm = function () {
+        if (this.meal) {
+            var selectedMeal_1 = this.meal;
+            var checkedAllergies_1 = this.checkedAllergies;
+            var allergiesNames = this.allergiesNames;
+            allergiesNames.forEach(function (allergy) {
+                if (selectedMeal_1.allergy_names.indexOf(allergy.name) !== -1) {
+                    checkedAllergies_1.push(allergy);
+                    allergy['checked'] = true;
+                }
+                else {
+                    allergy['checked'] = false;
+                }
+            });
+        }
+    };
     MealFormComponent.prototype.ngOnDestroy = function () {
         // const mealToSend = this.mealForm.getRawValue();
         // if (
@@ -456,9 +473,13 @@ var MealFormComponent = /** @class */ (function () {
     MealFormComponent.prototype.onSubmit = function () {
         var formVals = this.form.value;
         formVals['checkedAllergies'] = this.checkedAllergies;
-        this.mealService.addFood(formVals).subscribe(function (res) {
-            console.log(res);
-        });
+        return this.mealService.addFood(formVals);
+    };
+    MealFormComponent.prototype.onUpdate = function () {
+        this.form.value['food_id'] = this.meal['food_id'];
+        var formVals = this.form.value;
+        formVals['checkedAllergies'] = this.checkedAllergies;
+        return this.mealService.updateFood(formVals);
     };
     MealFormComponent.prototype.updateSelectedAllergies = function (allergy) {
         if (this.form.value[allergy.name]) {
@@ -472,7 +493,7 @@ var MealFormComponent = /** @class */ (function () {
         }
     };
     MealFormComponent.prototype.clearForm = function () {
-        // this.mealForm.reset();
+        this.form.reset();
     };
     MealFormComponent.prototype.setAllergies = function (allergies) {
         // const allergyFGs = allergies.map(allergy => this.fb.group(allergy));
@@ -567,7 +588,7 @@ module.exports = ".flexMe {\r\n  display: -webkit-box;\r\n  display: -ms-flexbox
 /***/ "./app/app/components/application/meal/meal.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<div>\r\n  <button class=\"btn btn-primary\" (click)=\"addModal=true\">Add Item</button>\r\n\r\n  <clr-stack-view>\r\n\r\n    <clr-stack-header class=\"cap\">\r\n    </clr-stack-header>\r\n\r\n    <div *ngFor=\"let meal of meals\">\r\n\r\n      <clr-stack-block>\r\n\r\n        <clr-stack-label>{{meal.name}}</clr-stack-label>\r\n        <div class=\"flexMe\">\r\n          <clr-stack-content>{{meal.description}}</clr-stack-content>\r\n          <clr-stack-content>\r\n            <a (click)=\"editModal = true; onReadMeal(meal)\">\r\n              <clr-icon shape=\"pencil\"></clr-icon>\r\n            </a>\r\n          </clr-stack-content>\r\n        </div>\r\n\r\n        <clr-stack-block>\r\n          <clr-stack-label>Allergies</clr-stack-label>\r\n          <clr-stack-content *ngIf=\"meal.allergy_names.length > 0\">\r\n            <span>{{meal.allergy_names.join(\", \")}}</span>\r\n          </clr-stack-content>\r\n        </clr-stack-block>\r\n\r\n        <clr-stack-block>\r\n          <clr-stack-label>Price</clr-stack-label>\r\n          <clr-stack-content>${{meal.price}}</clr-stack-content>\r\n        </clr-stack-block>\r\n\r\n      </clr-stack-block>\r\n\r\n    </div>\r\n\r\n  </clr-stack-view>\r\n\r\n</div>\r\n\r\n<clr-modal [(clrModalOpen)]=\"editModal\">\r\n  <h3 class=\"modal-title\" *ngIf=\"editModal\">{{mealToEdit.name}}</h3>\r\n  <div class=\"modal-body\">\r\n    <app-meal-form *ngIf=\"editModal\" [meal]=\"mealToEdit\"></app-meal-form>\r\n  </div>\r\n  <div class=\"modal-footer pr-0\">\r\n    <button type=\"button\" class=\"btn btn-outline btn-sm\" (click)=\"editModal = false; onUpdateMeal($event)\">Update\r\n    </button>\r\n    <button type=\"button\" class=\"btn btn-danger btn-sm\" (click)=\"editModal = false; doubleCheck=true\">Delete</button>\r\n  </div>\r\n</clr-modal>\r\n\r\n<clr-modal [(clrModalOpen)]=\"doubleCheck\">\r\n  <h3 class=\"modal-title\">Confirm delete confirmation</h3>\r\n  <h4 class=\"modal-body\" *ngIf=\"doubleCheck\">Are you sure you want to remove {{mealToEdit.name}}?</h4>\r\n  <div class=\"modal-footer\">\r\n    <button type=\"button\" class=\"btn btn-secondary btn-sm\" (click)=\"doubleCheck=false; editModal=true\">Return</button>\r\n    <button type=\"button\" class=\"btn btn-danger btn-sm\" (click)=\"doubleCheck=false; onDeleteMeal(mealToEdit)\">Confirm\r\n    </button>\r\n  </div>\r\n</clr-modal>\r\n\r\n<clr-modal [(clrModalOpen)]=\"addModal\">\r\n  <h3 class=\"modal-title\" *ngIf=\"addModal\">Add A Dish</h3>\r\n  <div class=\"modal-body\">\r\n    <app-meal-form *ngIf=\"addModal\"></app-meal-form>\r\n  </div>\r\n\r\n  <div class=\"modal-footer pr-0\">\r\n    <button type=\"button\" class=\"btn btn-outline btn-sm\" (click)=\"addModal = false; onCreateMeal()\">Submit</button>\r\n    <button type=\"button\" class=\"btn btn-warning btn-sm\" (click)=\"onClear()\">Clear</button>\r\n  </div>\r\n\r\n\r\n</clr-modal>\r\n"
+module.exports = "<div>\r\n  <button class=\"btn btn-primary\" (click)=\"addModal=true\">Add Item</button>\r\n\r\n  <clr-stack-view>\r\n\r\n    <clr-stack-header class=\"cap\">\r\n    </clr-stack-header>\r\n\r\n    <div *ngFor=\"let meal of meals\">\r\n\r\n      <clr-stack-block>\r\n\r\n        <clr-stack-label>{{meal.name}}</clr-stack-label>\r\n        <div class=\"flexMe\">\r\n          <clr-stack-content>{{meal.description}}</clr-stack-content>\r\n          <clr-stack-content>\r\n            <a (click)=\"editModal = true; onReadMeal(meal)\">\r\n              <clr-icon shape=\"pencil\"></clr-icon>\r\n            </a>\r\n          </clr-stack-content>\r\n        </div>\r\n\r\n        <clr-stack-block>\r\n          <clr-stack-label>Allergies</clr-stack-label>\r\n          <clr-stack-content *ngIf=\"meal.allergy_names.length > 0\">\r\n            <span>{{meal.allergy_names.join(\", \")}}</span>\r\n          </clr-stack-content>\r\n        </clr-stack-block>\r\n\r\n        <clr-stack-block>\r\n          <clr-stack-label>Price</clr-stack-label>\r\n          <clr-stack-content>${{meal.price}}</clr-stack-content>\r\n        </clr-stack-block>\r\n\r\n      </clr-stack-block>\r\n\r\n    </div>\r\n\r\n  </clr-stack-view>\r\n\r\n</div>\r\n\r\n<clr-modal [(clrModalOpen)]=\"editModal\">\r\n  <h3 class=\"modal-title\" *ngIf=\"editModal\">{{mealToEdit.name}}</h3>\r\n  <div class=\"modal-body\">\r\n    <app-meal-form *ngIf=\"editModal\" [meal]=\"mealToEdit\"></app-meal-form>\r\n  </div>\r\n  <div class=\"modal-footer pr-0\">\r\n    <button type=\"button\" class=\"btn btn-outline btn-sm\" (click)=\"editModal = false; onUpdateMeal()\">Update\r\n    </button>\r\n    <button type=\"button\" class=\"btn btn-danger btn-sm\" (click)=\"editModal = false; doubleCheck=true\">Delete</button>\r\n  </div>\r\n</clr-modal>\r\n\r\n<clr-modal [(clrModalOpen)]=\"doubleCheck\">\r\n  <h3 class=\"modal-title\">Confirm delete confirmation</h3>\r\n  <h4 class=\"modal-body\" *ngIf=\"doubleCheck\">Are you sure you want to remove {{mealToEdit.name}}?</h4>\r\n  <div class=\"modal-footer\">\r\n    <button type=\"button\" class=\"btn btn-secondary btn-sm\" (click)=\"doubleCheck=false; editModal=true\">Return</button>\r\n    <button type=\"button\" class=\"btn btn-danger btn-sm\" (click)=\"doubleCheck=false; onDeleteMeal(mealToEdit)\">Confirm\r\n    </button>\r\n  </div>\r\n</clr-modal>\r\n\r\n<clr-modal [(clrModalOpen)]=\"addModal\">\r\n  <h3 class=\"modal-title\" *ngIf=\"addModal\">Add A Dish</h3>\r\n  <div class=\"modal-body\">\r\n    <app-meal-form *ngIf=\"addModal\"></app-meal-form>\r\n  </div>\r\n\r\n  <div class=\"modal-footer pr-0\">\r\n    <button type=\"button\" class=\"btn btn-outline btn-sm\" (click)=\"addModal = false; onCreateMeal()\">Submit</button>\r\n    <button type=\"button\" class=\"btn btn-warning btn-sm\" (click)=\"onClear()\">Clear</button>\r\n  </div>\r\n\r\n\r\n</clr-modal>\r\n"
 
 /***/ }),
 
@@ -600,10 +621,7 @@ var MealComponent = /** @class */ (function () {
         this.ngUnsubscribe = new Subject_1.Subject();
     }
     MealComponent.prototype.ngOnInit = function () {
-        var _this = this;
-        this.mealService.getMenu().subscribe(function (menu) {
-            _this.meals = menu['data'];
-        });
+        this.getMenu();
         // this.mealSub = this.meals$
         //   .takeUntil(this.ngUnsubscribe)
         //   .subscribe(meals => {
@@ -629,10 +647,31 @@ var MealComponent = /** @class */ (function () {
         this.ngUnsubscribe.complete();
     };
     MealComponent.prototype.onCreateMeal = function () {
-        this.mealForm.onSubmit();
+        var _this = this;
+        this.mealForm.onSubmit().subscribe(function (res) {
+            _this.getMenu();
+        });
     };
     MealComponent.prototype.onReadMeal = function (meal) {
         this.mealToEdit = meal;
+    };
+    MealComponent.prototype.getMenu = function () {
+        var _this = this;
+        this.mealService.getMenu().subscribe(function (menu) {
+            _this.meals = menu['data'];
+        });
+    };
+    MealComponent.prototype.onUpdateMeal = function () {
+        var _this = this;
+        this.mealForm.onUpdate().subscribe(function (menu) {
+            _this.meals = menu['data'];
+        });
+    };
+    // onDeleteMeal(meal: Meal) {
+    //   this.mealService.deleteMeal(meal);
+    // }
+    MealComponent.prototype.onClear = function () {
+        this.mealForm.clearForm();
     };
     __decorate([
         core_1.ViewChild(meal_form_component_1.MealFormComponent),
@@ -1782,6 +1821,9 @@ var MealService = /** @class */ (function () {
     };
     MealService.prototype.addFood = function (formVals) {
         return this.http.post('/api/menu/add', formVals);
+    };
+    MealService.prototype.updateFood = function (formVals) {
+        return this.http.post('/api/menu/update/' + formVals.food_id, formVals);
     };
     MealService = __decorate([
         core_1.Injectable(),

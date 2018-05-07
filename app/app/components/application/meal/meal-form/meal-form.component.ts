@@ -36,6 +36,7 @@ export class MealFormComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.allergiesService.getAllergies().subscribe((allergies) => {
       this.allergiesNames = allergies['allergies'];
+      this.fillForm();
     });
 
     // this.allergies$.takeUntil(this.ngUnsubscribe).subscribe(allergies => {
@@ -66,6 +67,22 @@ export class MealFormComponent implements OnInit, OnDestroy {
     // })
   }
 
+  fillForm() {
+    if (this.meal) {
+      const selectedMeal = this.meal;
+      const checkedAllergies = this.checkedAllergies;
+      const allergiesNames = this.allergiesNames;
+      allergiesNames.forEach(function(allergy) {
+        if (selectedMeal.allergy_names.indexOf(allergy.name) !== -1) {
+          checkedAllergies.push(allergy);
+          allergy['checked'] = true;
+        } else {
+          allergy['checked'] = false;
+        }
+      });
+    }
+  }
+
   ngOnDestroy() {
     // const mealToSend = this.mealForm.getRawValue();
     // if (
@@ -81,10 +98,16 @@ export class MealFormComponent implements OnInit, OnDestroy {
   onSubmit() {
     const formVals = this.form.value;
     formVals['checkedAllergies'] = this.checkedAllergies;
-    this.mealService.addFood(formVals).subscribe((res) => {
-      console.log(res);
-    });
+    return this.mealService.addFood(formVals);
   }
+
+  onUpdate() {
+    this.form.value['food_id'] = this.meal['food_id'];
+    const formVals = this.form.value;
+    formVals['checkedAllergies'] = this.checkedAllergies;
+    return this.mealService.updateFood(formVals);
+  }
+
 
   updateSelectedAllergies(allergy) {
     if (this.form.value[allergy.name]) {
@@ -98,7 +121,7 @@ export class MealFormComponent implements OnInit, OnDestroy {
   }
 
   clearForm() {
-    // this.mealForm.reset();
+    this.form.reset();
   }
 
   setAllergies(allergies) {
