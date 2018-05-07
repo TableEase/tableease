@@ -30,14 +30,12 @@ router.get("/", myFunctions.isLoggedIn, function(req, res, next) {
   });
 });
 
-router.post("/post", myFunctions.isLoggedIn, function(req, res, next) {
+router.post("/add", myFunctions.isLoggedIn, function(req, res, next) {
   var companyId = req.user.id;
-  console.log(req.body);
   addFood(req, companyId, function(formFields) {
     req.flash("menuMessage", "Added: " + JSON.stringify(formFields));
-    res.redirect("/menu");
+    res.send({ messages: req.flash("menuMessage") });
   });
-
 });
 
 router.get("/delete/:id", myFunctions.isLoggedIn, function(req, res, next) {
@@ -141,11 +139,14 @@ function getAllergiesFood(row, callback) {
 }
 
 function addFood(req, companyId, callback) {
-  var formFields = req.body;
-  var name = formFields.name;
-  var description = formFields.description;
-  var foodInsertQuery = "insert into food (name, company_id, description) values ('" + name + "' , '" + companyId + "' , '" + description + "')";
-  db.query(foodInsertQuery, function(err, rows, fields) {
+  const formFields = req.body;
+  const food = new Food({
+    company_id: companyId,
+    name: formFields.name,
+    description: formFields.description,
+    price: formFields.price
+  });
+  food.save(function(err, rows, fields) {
     if (err) throw err;
     var rowId = rows.insertId;
     return callback(addFoodAllergy(rowId, formFields));
@@ -154,17 +155,17 @@ function addFood(req, companyId, callback) {
 
 }
 
-function addFoodAllergy(rowId, formFields, callback) {
-  for (var key in formFields) {
-    if (key !== "name" && key !== "description") {
-      var foodAllergyInsertQuery = "insert into food_allergy (food_id, allergy_id) values ('" + rowId + "' , '" + formFields[key] + "')";
-      db.query(foodAllergyInsertQuery, function(err, rows, fields) {
-        if (err) throw err;
-      });
-    }
-  }
+function addFoodAllergy(foodRowId, formFields, callback) {
+  const checkedAllergies = formFields.checkedAllergies;
+  let foodAllergyQuery = "insert into food_allergy (food_id, allergy_id) values ? ";
+  let vals = [];
+  checkedAllergies.forEach(function(allergy) {
+    vals.push([foodRowId, allergy.id]);
+  });
+  foodAllergy.query(foodAllergyQuery, [vals], function(err, rows, fields) {
+    if (err) throw err;
+  });
   return formFields;
-
 }
 
 function getMenu(companyId, callback) {

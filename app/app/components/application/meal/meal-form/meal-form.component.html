@@ -1,5 +1,8 @@
-<form class="form" #f="ngForm">
+<form class="form" #frm="ngForm">
+
   <section class="form-block">
+
+
     <div class="form-group row">
 
       <div class="col-sm-2 col-xs-12">
@@ -62,7 +65,8 @@
         <div class="form-group row">
           <div class="col-xs-4" *ngFor="let allergy of allergiesNames;">
             <div class="checkbox-inline center">
-              <input [id]="allergy.name" [name]="allergy.name" type="checkbox" ng-false-value="NO" ngModel>
+              <input id="{{allergy.name}}" name="{{allergy.name}}" type="checkbox"
+                     (change)="updateSelectedAllergies(allergy)" ngModel>
               <label [for]="allergy.name">{{allergy.name}}</label>
             </div>
           </div>

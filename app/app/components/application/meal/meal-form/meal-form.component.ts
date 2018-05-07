@@ -1,5 +1,5 @@
-import { Component, OnInit, Input, OnDestroy, OnChanges, Output } from '@angular/core';
-import { FormGroup, FormArray, NgForm } from '@angular/forms';
+import { Component, OnInit, Input, OnDestroy, OnChanges, ViewChild } from '@angular/core';
+import { NgForm } from '@angular/forms';
 import { Observable } from 'rxjs/Observable';
 import { Subject } from 'rxjs/Subject';
 import 'rxjs/add/operator/takeUntil';
@@ -16,18 +16,22 @@ import { Allergy } from '../../../../models/allergy';
   styleUrls: ['./meal-form.component.css'],
   providers: []
 })
+
 export class MealFormComponent implements OnInit, OnDestroy {
   @Input() meal: Meal;
+  @ViewChild('frm') public form: NgForm;
   private meal$: Observable<Meal>;
   allergiesNames: Observable<any>;
   private clearForm$: Subject<boolean>;
   private ngUnsubscribe: Subject<any> = new Subject();
+  private checkedAllergies: Allergy[] = [];
 
   constructor(
     private mealService: MealService,
     private allergiesService: AllergiesService
   ) {
   }
+
 
   ngOnInit() {
     this.allergiesService.getAllergies().subscribe((allergies) => {
@@ -74,10 +78,23 @@ export class MealFormComponent implements OnInit, OnDestroy {
     // this.ngUnsubscribe.complete();
   }
 
-  onCreateMeal(form: NgForm) {
-    console.log(form.value);
-    const formVals = form.value;
-    this.mealService.addFood(formVals);
+  onSubmit() {
+    const formVals = this.form.value;
+    formVals['checkedAllergies'] = this.checkedAllergies;
+    this.mealService.addFood(formVals).subscribe((res) => {
+      console.log(res);
+    });
+  }
+
+  updateSelectedAllergies(allergy) {
+    if (this.form.value[allergy.name]) {
+      this.checkedAllergies.push(allergy);
+    } else {
+      const index: number = this.checkedAllergies.indexOf(allergy);
+      if (index !== -1) {
+        this.checkedAllergies.splice(index, 1);
+      }
+    }
   }
 
   clearForm() {

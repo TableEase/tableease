@@ -59,7 +59,6 @@ const allergies = require("./routes/allergies");
 
 app.use("/api", router);
 
-
 router.use("/", index);
 router.use("/login", login);
 router.use("/signup", signup);
