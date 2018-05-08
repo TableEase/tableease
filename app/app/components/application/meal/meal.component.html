@@ -22,8 +22,8 @@
 
         <clr-stack-block>
           <clr-stack-label>Allergies</clr-stack-label>
-          <clr-stack-content *ngIf="meal.allergy_names.length > 0">
-            <span>{{meal.allergy_names.join(", ")}}</span>
+          <clr-stack-content *ngIf="meal.allergies.length > 0">
+            <span *ngFor="let allergy of meal.allergies;let last=last;let i = index">{{allergy.name}}{{last ? '' : (i==meal.allergies.length-2) ? ' and ' : ', '}}</span>
           </clr-stack-content>
         </clr-stack-block>
 

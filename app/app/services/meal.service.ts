@@ -18,5 +18,8 @@ export class MealService {
   updateFood(formVals) {
     return this.http.post('/api/menu/update/' + formVals.food_id, formVals);
   }
+  deleteFood(food_id) {
+    return this.http.get('/api/menu/delete/' + food_id);
+  }
 
 }
