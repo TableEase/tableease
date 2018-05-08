@@ -379,7 +379,7 @@ module.exports = ".drop {\r\n  margin-bottom: 0.1rem;\r\n}\r\n"
 /***/ "./app/app/components/application/meal/meal-form/meal-form.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<form class=\"form\" #frm=\"ngForm\">\r\n\r\n  <section class=\"form-block\">\r\n\r\n\r\n    <div class=\"form-group row\">\r\n\r\n      <div class=\"col-sm-2 col-xs-12\">\r\n        <label for=\"mealName\">Name</label>\r\n      </div>\r\n\r\n      <div class=\"col-sm-9 col-xs-11 push-xs-1\">\r\n        <label for=\"mealName\" aria-haspopup=\"true\" role=\"tooltip\" class=\"tooltip tooltip-validation tooltip-sm\">\r\n          <input id=\"mealName\" type=\"text\" size=\"45\" name=\"name\" [ngModel]=\"meal?.name\">\r\n          <span class=\"tooltip-content\">\r\n            Name is required.\r\n          </span>\r\n        </label>\r\n      </div>\r\n\r\n    </div>\r\n\r\n    <div class=\"form-group row\">\r\n\r\n      <div class=\"col-sm-2 col-xs-12\">\r\n        <label for=\"description\">Description</label>\r\n      </div>\r\n\r\n      <div class=\"col-sm-9 col-xs-11 push-xs-1\">\r\n        <label for=\"description\" aria-haspopup=\"true\" role=\"tooltip\" class=\"tooltip tooltip-validation tooltip-sm\">\r\n          <textarea name=\"description\" id=\"description\" rows=\"2\" cols=\"45\" [ngModel]=\"meal?.description\"></textarea>\r\n          <span class=\"tooltip-content\">\r\n            description code is required.\r\n          </span>\r\n        </label>\r\n      </div>\r\n\r\n    </div>\r\n\r\n    <div class=\"col-xs-1 push-sm-1\">\r\n      <label for=\"price\">Price</label>\r\n    </div>\r\n\r\n    <div class=\"col-xs-4\">\r\n      <label for=\"price\" aria-haspopup=\"true\" role=\"tooltip\" class=\"tooltip tooltip-validation tooltip-sm\">\r\n        <input id=\"price\" type=\"number\" size=\"10\" name=\"price\" [ngModel]=\"meal?.price\">\r\n        <span class=\"tooltip-content\">\r\n            price is required.\r\n          </span>\r\n      </label>\r\n    </div>\r\n\r\n  </section>\r\n\r\n  <div *ngIf=\"allergiesNames\">\r\n\r\n    <section class=\"form-block\">\r\n      <div>\r\n        <div class=\"form-group row drop\">\r\n          <div class=\"col-xs-12\">\r\n            <label>Allergies</label>\r\n          </div>\r\n        </div>\r\n\r\n        <div class=\"form-group row\">\r\n          <div class=\"col-xs-4\" *ngFor=\"let allergy of allergiesNames;let i = index;\">\r\n            <div class=\"checkbox-inline center\">\r\n              <input id=\"{{allergy.name}}\" name=\"{{allergy.name}}\" type=\"checkbox\"\r\n                     [checked]=\"allergy?.checked\" (change)=\"onCheckboxChange(allergy?.checked, i)\">\r\n              <label [for]=\"allergy.name\">{{allergy.name}}</label>\r\n            </div>\r\n          </div>\r\n        </div>\r\n      </div>\r\n    </section>\r\n  </div>\r\n</form>\r\n\r\n"
+module.exports = "<form class=\"form\" #frm=\"ngForm\">\r\n\r\n  <section class=\"form-block\">\r\n\r\n\r\n    <div class=\"form-group row\">\r\n\r\n      <div class=\"col-sm-2 col-xs-12\">\r\n        <label for=\"mealName\">Name</label>\r\n      </div>\r\n\r\n      <div class=\"col-sm-9 col-xs-11 push-xs-1\">\r\n        <label for=\"mealName\" aria-haspopup=\"true\" role=\"tooltip\" class=\"tooltip tooltip-validation tooltip-sm\">\r\n          <input id=\"mealName\" type=\"text\" size=\"45\" name=\"name\" [ngModel]=\"meal?.name\">\r\n          <span class=\"tooltip-content\">\r\n            Name is required.\r\n          </span>\r\n        </label>\r\n      </div>\r\n\r\n    </div>\r\n\r\n    <div class=\"form-group row\">\r\n\r\n      <div class=\"col-sm-2 col-xs-12\">\r\n        <label for=\"description\">Description</label>\r\n      </div>\r\n\r\n      <div class=\"col-sm-9 col-xs-11 push-xs-1\">\r\n        <label for=\"description\" aria-haspopup=\"true\" role=\"tooltip\" class=\"tooltip tooltip-validation tooltip-sm\">\r\n          <textarea name=\"description\" id=\"description\" rows=\"2\" cols=\"45\" [ngModel]=\"meal?.description\"></textarea>\r\n          <span class=\"tooltip-content\">\r\n            description code is required.\r\n          </span>\r\n        </label>\r\n      </div>\r\n\r\n    </div>\r\n\r\n    <div class=\"col-xs-1 push-sm-1\">\r\n      <label for=\"price\">Price</label>\r\n    </div>\r\n\r\n    <div class=\"col-xs-4\">\r\n      <label for=\"price\" aria-haspopup=\"true\" role=\"tooltip\" class=\"tooltip tooltip-validation tooltip-sm\">\r\n        <input id=\"price\" type=\"number\" size=\"10\" name=\"price\" [ngModel]=\"meal?.price\">\r\n        <span class=\"tooltip-content\">\r\n            price is required.\r\n          </span>\r\n      </label>\r\n    </div>\r\n\r\n  </section>\r\n\r\n  <div *ngIf=\"allergies\">\r\n\r\n    <section class=\"form-block\">\r\n      <div>\r\n        <div class=\"form-group row drop\">\r\n          <div class=\"col-xs-12\">\r\n            <label>Allergies</label>\r\n          </div>\r\n        </div>\r\n\r\n        <div class=\"form-group row\">\r\n          <div class=\"col-xs-4\" *ngFor=\"let allergy of allergies;let i = index;\">\r\n            <div class=\"checkbox-inline center\">\r\n              <input id=\"{{allergy.name}}\" name=\"{{allergy.name}}\" type=\"checkbox\"\r\n                     [checked]=\"allergy?.checked\" (change)=\"onCheckboxChange(allergy?.checked, i)\">\r\n              <label [for]=\"allergy.name\">{{allergy.name}}</label>\r\n            </div>\r\n          </div>\r\n        </div>\r\n      </div>\r\n    </section>\r\n  </div>\r\n</form>\r\n\r\n"
 
 /***/ }),
 
@@ -406,25 +406,24 @@ var MealFormComponent = /** @class */ (function () {
     function MealFormComponent(mealService, allergiesService) {
         this.mealService = mealService;
         this.allergiesService = allergiesService;
-        this.allergiesNames = [];
+        this.allergies = [];
     }
     MealFormComponent.prototype.ngOnInit = function () {
         var _this = this;
         this.allergiesService.getAllergies().subscribe(function (allergies) {
-            _this.allergiesNames = allergies['allergies'];
+            _this.allergies = allergies['allergies'];
             _this.fillForm();
         });
     };
     MealFormComponent.prototype.fillForm = function () {
-        var allergies_names = [];
         if (this.meal) {
-            var selectedMeal = this.meal;
-            var allergiesNames = this.allergiesNames;
+            var allergiesNames_1 = [];
+            var allergies = this.allergies;
             this.meal.allergies.forEach(function (allergy) {
-                allergies_names.push(allergy.name);
+                allergiesNames_1.push(allergy.name);
             });
-            allergiesNames.forEach(function (allergy) {
-                if (allergies_names.indexOf(allergy.name) !== -1) {
+            allergies.forEach(function (allergy) {
+                if (allergiesNames_1.indexOf(allergy.name) !== -1) {
                     allergy['checked'] = true;
                 }
                 else {
@@ -434,10 +433,10 @@ var MealFormComponent = /** @class */ (function () {
         }
     };
     MealFormComponent.prototype.onCheckboxChange = function (val, index) {
-        this.allergiesNames[index]['checked'] = !val;
+        this.allergies[index]['checked'] = !val;
     };
     MealFormComponent.prototype.getSelectedOptions = function () {
-        return this.allergiesNames
+        return this.allergies
             .filter(function (opt) { return opt.checked; });
     };
     MealFormComponent.prototype.onSubmit = function () {

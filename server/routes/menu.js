@@ -42,7 +42,6 @@ router.post("/add", myFunctions.isLoggedIn, function(req, res, next) {
 router.get("/delete/:id", myFunctions.isLoggedIn, function(req, res, next) {
   var foodId = req.params.id;
   var companyId = req.user.id;
-  var checkedAllergies = req.body.checkedAllergies;
   checkOwnerFood(foodId, companyId, function(row) {
     if (!row) {
       res.render("action", { data: "You do not own that menu item OR it does not exist." });
@@ -177,6 +176,7 @@ function updateFood(req, companyId, checkedAllergies, callback) {
 
 function addFood(req, companyId, callback) {
   const formFields = req.body;
+  const checkedAllergies = formFields.checkedAllergies;
   const food = new Food({
     company_id: companyId,
     name: formFields.name,
@@ -186,11 +186,11 @@ function addFood(req, companyId, callback) {
   food.save(function(err, rows, fields) {
     if (err) throw err;
     const rowId = rows.insertId;
-    return callback(addFoodAllergy(rowId, formFields));
+    return callback(addFoodAllergy(rowId, checkedAllergies));
   });
 }
 
-function addFoodAllergy(foodRowId, checkedAllergies, callback) {
+function addFoodAllergy(foodRowId, checkedAllergies) {
   if (checkedAllergies.length > 0) {
     let foodAllergyQuery = "insert into food_allergy (food_id, allergy_id) values ? ";
     let vals = [];
@@ -233,7 +233,7 @@ function getAllergiesForFood(foodId, callback) {
 }
 
 function convertIdAllergy(allergyId, callback) {
-  allergy.find("fist", { field: ["name"], where: "id =" + allergyId }, function(err, name, fields) {
+  allergies.find("fist", { field: ["name"], where: "id =" + allergyId }, function(err, name, fields) {
     if (err) throw err;
     return callback(name[0].name);
   });

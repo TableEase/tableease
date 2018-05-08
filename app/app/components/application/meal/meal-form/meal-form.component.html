@@ -52,7 +52,7 @@
 
   </section>
 
-  <div *ngIf="allergiesNames">
+  <div *ngIf="allergies">
 
     <section class="form-block">
       <div>
@@ -63,7 +63,7 @@
         </div>
 
         <div class="form-group row">
-          <div class="col-xs-4" *ngFor="let allergy of allergiesNames;let i = index;">
+          <div class="col-xs-4" *ngFor="let allergy of allergies;let i = index;">
             <div class="checkbox-inline center">
               <input id="{{allergy.name}}" name="{{allergy.name}}" type="checkbox"
                      [checked]="allergy?.checked" (change)="onCheckboxChange(allergy?.checked, i)">

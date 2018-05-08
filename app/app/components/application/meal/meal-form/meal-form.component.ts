@@ -17,7 +17,7 @@ import { AllergyCheckboxes } from '../../../../models/allergycheckboxes';
 export class MealFormComponent implements OnInit {
   @Input() meal: Meal;
   @ViewChild('frm') public form: NgForm;
-  allergiesNames: AllergyCheckboxes[] = [];
+  allergies: AllergyCheckboxes[] = [];
 
   constructor(
     private mealService: MealService,
@@ -26,22 +26,20 @@ export class MealFormComponent implements OnInit {
 
   ngOnInit() {
     this.allergiesService.getAllergies().subscribe((allergies) => {
-      this.allergiesNames = allergies['allergies'];
+      this.allergies = allergies['allergies'];
       this.fillForm();
     });
   }
 
   fillForm() {
-    const allergies_names = [];
     if (this.meal) {
-      const selectedMeal = this.meal;
-      const allergiesNames = this.allergiesNames;
-
+      const allergiesNames = [];
+      const allergies = this.allergies;
       this.meal.allergies.forEach(function(allergy) {
-        allergies_names.push(allergy.name);
+        allergiesNames.push(allergy.name);
       });
-      allergiesNames.forEach(function(allergy) {
-        if (allergies_names.indexOf(allergy.name) !== -1) {
+      allergies.forEach(function(allergy) {
+        if (allergiesNames.indexOf(allergy.name) !== -1) {
           allergy['checked'] = true;
         } else {
           allergy['checked'] = false;
@@ -51,11 +49,11 @@ export class MealFormComponent implements OnInit {
   }
 
   onCheckboxChange(val: boolean, index: number) {
-    this.allergiesNames[index]['checked'] = !val;
+    this.allergies[index]['checked'] = !val;
   }
 
   getSelectedOptions() { // right now: ['1','3']
-    return this.allergiesNames
+    return this.allergies
       .filter(opt => opt.checked);
   }
 
