@@ -29,8 +29,9 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(expressValidator());
 app.use(cookieParser());
-app.use(express.static(path.join(__dirname, "public/js")));
 
+const angularDir = path.join(__dirname, "public/js/");
+app.use(express.static(angularDir));
 const sessionStore = new MySQLStore(options.dbConfig);
 
 app.use(session({
@@ -69,12 +70,16 @@ router.use("/admin", admin);
 router.use("/users", users);
 router.use("/allergies", allergies);
 
-// catch 404 and forward to error handler
-app.use(function(req, res, next) {
-  const err = new Error("Not Found");
-  err.status = 404;
-  next(err);
+app.get("/*", function(req, res, next) {
+  res.sendFile(angularDir + "/index.html");
 });
+
+// catch 404 and forward to error handler
+// app.use(function(req, res, next) {
+//   const err = new Error("Not Found");
+//   err.status = 404;
+//   next(err);
+// });
 
 // error handler
 app.use(function(err, req, res, next) {

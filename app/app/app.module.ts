@@ -81,7 +81,7 @@ import { MessagesComponent } from './components/form/messages/messages.component
     AppRoutingModule,
     HttpClientModule
   ],
-  providers: [AuthService, AuthGuard, UserService, PassportService, MealService],
+  providers: [UserService, PassportService, MealService],
   bootstrap: [AppComponent]
 })
 export class AppModule {

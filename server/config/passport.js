@@ -30,7 +30,10 @@ module.exports = function(passport) {
 
   // used to deserialize the user
   passport.deserializeUser(function(id, done) {
-    company.find("all", { where: "id = '" + id + "'" }, function(err, rows) {
+    company.find("all", {
+      fields: ["name", "email", "address", "id", "phone_number"],
+      where: "id = '" + id + "'"
+    }, function(err, rows) {
       done(err, rows[0]);
     });
   });

@@ -25,15 +25,15 @@ router.get("/", myFunctions.isLoggedIn, function(req, res, next) {
     createAllergies(fullMenu, function(fullMenu) {
       res.send({ data: fullMenu });
     });
-
   });
+
 });
+
 
 router.post("/add", myFunctions.isLoggedIn, function(req, res, next) {
   var companyId = req.user.id;
   addFood(req, companyId, function(formFields) {
     req.flash("menuMessage", "Added: " + JSON.stringify(formFields));
-    // res.send({ messages: req.flash("menuMessage") });
     res.redirect("/api/menu");
   });
 });

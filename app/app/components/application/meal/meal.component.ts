@@ -4,6 +4,7 @@ import { MealService } from '../../../services/meal.service';
 import { AllergiesService } from '../../../services/allergies.service';
 
 import { Meal } from '../../../models/meal';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-meal',
@@ -16,7 +17,7 @@ export class MealComponent implements OnInit {
   meals: Meal[];
   private mealToEdit: Meal;
 
-  constructor(private mealService: MealService) {
+  constructor(private mealService: MealService, private router: Router) {
   }
 
   ngOnInit() {
@@ -35,6 +36,9 @@ export class MealComponent implements OnInit {
 
   getMenu() {
     this.mealService.getMenu().subscribe((menu) => {
+      if (!menu['data'] && menu['messages']) {
+        this.router.navigate(['/login']);
+      }
       this.meals = menu['data'];
     });
   }

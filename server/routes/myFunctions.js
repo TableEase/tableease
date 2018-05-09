@@ -9,6 +9,7 @@ module.exports = {
       return next();
     }
     // if they aren't redirect them to the home page
+    req.flash("loginMessage", "User is not logged in.");
     res.redirect("/api/login");
   }
 };

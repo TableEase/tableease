@@ -18,6 +18,7 @@ export class MealFormComponent implements OnInit {
   @Input() meal: Meal;
   @ViewChild('frm') public form: NgForm;
   allergies: AllergyCheckboxes[] = [];
+  allDataFetched = false;
 
   constructor(
     private mealService: MealService,
@@ -27,11 +28,11 @@ export class MealFormComponent implements OnInit {
   ngOnInit() {
     this.allergiesService.getAllergies().subscribe((allergies) => {
       this.allergies = allergies['allergies'];
-      this.fillForm();
+      this.fillCheckboxes();
     });
   }
 
-  fillForm() {
+  fillCheckboxes() {
     if (this.meal) {
       const allergiesNames = [];
       const allergies = this.allergies;
@@ -46,13 +47,14 @@ export class MealFormComponent implements OnInit {
         }
       });
     }
+    this.allDataFetched = true;
   }
 
   onCheckboxChange(val: boolean, index: number) {
     this.allergies[index]['checked'] = !val;
   }
 
-  getSelectedOptions() { // right now: ['1','3']
+  getSelectedOptions() {
     return this.allergies
       .filter(opt => opt.checked);
   }

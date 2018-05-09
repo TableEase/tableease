@@ -1,36 +1,23 @@
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs/Observable';
-import { AuthService } from './auth.service';
-import {
-  AngularFirestoreDocument,
-  AngularFirestore
-} from 'angularfire2/firestore';
 import { User } from '../models/user';
+import { HttpClient } from '@angular/common/http';
 
 @Injectable()
 export class UserService {
-  user$: Observable<User>;
 
-  constructor(private afs: AngularFirestore, private authService: AuthService) {
-    this.user$ = this.authService.activeUser();
+  constructor(private http: HttpClient) {
   }
 
   createUser(user: User) {
-    const userRef: AngularFirestoreDocument<User> = this.afs.doc(
-      `users/${user.uid}`
-    );
-    const data: User = {
-      uid: user.uid,
-      email: user.email
-    };
-    return userRef.set(data);
   }
 
-  readUser(user: User) {}
+  getUser() {
+    return this.http.get('/api/users');
+  }
 
   updateUser(user: User, data: User) {
-    return this.afs.doc(`users/${user.uid}`).update(data);
   }
 
-  deleteUser(user: User) {}
+  deleteUser(user: User) {
+  }
 }
