@@ -1,12 +1,12 @@
 <div>
-  <button class="btn btn-primary" (click)="addModal=true">Add Item</button>
+
+  <button *ngIf="meals" class="btn btn-primary" (click)="addModal=true">Add Item</button>
 
   <clr-stack-view>
-
     <clr-stack-header class="cap">
     </clr-stack-header>
-
     <div *ngFor="let meal of meals">
+
 
       <clr-stack-block>
 
