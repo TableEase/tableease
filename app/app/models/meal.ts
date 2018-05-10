@@ -11,4 +11,3 @@ export interface Meal {
   position?: number;
   allergy_names?: Allergy[];
 }
-
