@@ -14,6 +14,7 @@ import { SignupComponent } from './components/auth/signup/signup.component';
 import { HttpClient } from 'selenium-webdriver/http';
 import { MealComponent } from './components/application/meal/meal.component';
 import { SplashComponent } from './components/splash/splash.component';
+import { UserFormComponent } from './components/auth/signup/user-form/user-form.component';
 // import { AuthGuard } from '../../private/auth.guard';
 
 const routes: Routes = [
@@ -24,10 +25,10 @@ const routes: Routes = [
   { path: 'restaurant', component: RestaurantFormComponent },
   {
     path: 'app',
-    // canActivate: [AuthGuard],
     component: ApplicationComponent,
     children: [
       { path: 'homepage', component: DashComponent },
+      { path: 'settings', component: UserFormComponent },
       { path: 'menu', component: MealComponent },
       { path: '**', redirectTo: '/homepage', pathMatch: 'full' }
     ]

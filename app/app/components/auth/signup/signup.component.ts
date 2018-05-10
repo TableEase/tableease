@@ -1,8 +1,9 @@
-import { Component, OnInit } from '@angular/core';
-import { NgForm, FormBuilder, FormGroup, Validators, Form } from '@angular/forms';
-import { roles } from '../../../models/roles';
+import { Component, OnInit, ViewChild } from '@angular/core';
+import { NgForm } from '@angular/forms';
 import { PassportService } from '../../../services/passport.service';
+import { UserService } from '../../../services/user.service';
 import { Router } from '@angular/router';
+import { User } from '../../../models/user';
 
 @Component({
   selector: 'app-signup',
@@ -11,16 +12,22 @@ import { Router } from '@angular/router';
 })
 export class SignupComponent implements OnInit {
   messages: string[];
+  user: User;
+
 
   constructor(
-    private fb: FormBuilder,
     private passport: PassportService,
+    private userService: UserService,
     private router: Router
   ) {
 
   }
 
   ngOnInit() {
+    this.userService.getUser().subscribe((user) => {
+      console.log(user);
+      this.user = user['user'];
+    });
   }
 
   onSignup(form: NgForm) {
@@ -28,25 +35,8 @@ export class SignupComponent implements OnInit {
     this.passport.signup(formVals).subscribe(res => {
       this.messages = res['messages'];
       if (this.messages.length === 0) {
-        this.router.navigate(['/login']);
+        this.router.navigate(['/app/homepage']);
       }
     });
   }
-
-  // setDetails(user: User) {
-  //   return this.userService.updateUser(user, this.detailForm.getRawValue());
-  // }
-  //
-  // get email() {
-  //   return this.signupForm.get('email');
-  // }
-  // get password() {
-  //   return this.signupForm.get('password');
-  // }
-  // get first() {
-  //   return this.detailForm.get('name').get('first');
-  // }
-  // get last() {
-  //   return this.detailForm.get('name').get('last');
-  // }
 }

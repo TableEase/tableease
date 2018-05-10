@@ -2,63 +2,46 @@ const express = require("express");
 const router = express.Router();
 const db = require("../config/db");
 const bcrypt = require("bcrypt-nodejs");
+const myFunctions = require("./myFunctions");
+const companies = new db({ tableName: "companies" });
+const Company = db.extend({
+  tableName: "companies"
+});
 
 module.exports = function(passport) {
   /* GET home page. */
   router.get("/", function(req, res, next) {
+    console.log(req.user);
     res.send({ formVals: req.flash("formVals")[0] || {}, messages: req.flash("signupMessage") });
   });
 
-  router.post("/", function(req, res) {
-    validateCompany(req, res, function(errors) {
-      if (errors) {
-        var err_msg = [];
-        errors.forEach(function(err) {
-          err_msg.push(err.msg);
-        });
-        req.flash("signupMessage", err_msg);
-        req.flash("formVals", req.body);
-        return res.redirect("/api/signup");
-      }
-      else {
-        passport.authenticate("local-signup", {
-          successRedirect: "/api/signup", // redirect to the secure profile section
-          failureRedirect: "/api/signup", // redirect back to the signup page if there is an error
-          failureFlash: true // allow flash messages
-        })(req, res);
-      }
-    });
-
+  router.post("/", function(req, res, next) {
+    // validateCompany(req, res, function() {
+    passport.authenticate("local-signup", {
+      successRedirect: "/api/signup", // redirect to the secure profile section
+      failureRedirect: "/api/signup/1", // redirect back to the signup page if there is an error
+      failureFlash: true // allow flash messages
+    }, function(req) {
+      next();
+    })(req, res, next);
+    // });
   });
   return router;
 };
 
-router.post("/restaurant/edit", function(req, res, next) {
-  validateCompany(req, res, function(errors) {
-    if (errors) {
-      var err_msg = [];
-      errors.forEach(function(err) {
-        err_msg.push(err.msg);
-      });
-      req.flash("signupMessage", err_msg);
-      req.flash("formVals", req.body);
-      return res.redirect("/profile");
-    }
-    else {
-      var newUserMysql = {
-        email: req.body.email,
-        password: bcrypt.hashSync(req.body.password, null, null),  // use the generateHash function in our user model
-        phoneNumber: req.body.phoneNumber,
-        address: req.body.address,
-        name: req.body.name
-      };
+router.post("/update", function(req, res, next) {
+  validateCompany(req, res, function() {
+    const company = new Company({
+      email: req.body.email,
+      password: bcrypt.hashSync(req.body.password, null, null),  // use the generateHash function in our user model
+      phoneNumber: req.body.phoneNumber,
+      address: req.body.address,
+      name: req.body.name,
+      id: req.user.id
+    });
+    company.save();
+    res.send({ user: req.user, message: req.flash("signupMessage") });
 
-      var insertQuery = "Update companies set email='" + newUserMysql.email + "', password='" + newUserMysql.password +
-        "', address='" + newUserMysql.address + "', phone_number='" + newUserMysql.phoneNumber + "', name='" + newUserMysql.name +
-        "' where id=" + req.user.id;
-      db.query(insertQuery);
-      res.render("profile", { user: req.user, message: req.flash("signupMessage") });
-    }
   });
 
 });
@@ -85,7 +68,16 @@ function validateCompany(req, res, callback) {
   req.assert("confirmPassword", "Please make sure your passwords match!").equals(req.body.password);
   req.assert("phoneNumber", "Phone number must be 10 digits!").isLength(10);
   var errors = req.validationErrors();
-  return callback(errors);
-
-
+  if (errors) {
+    var err_msg = [];
+    errors.forEach(function(err) {
+      err_msg.push(err.msg);
+    });
+    req.flash("signupMessage", err_msg);
+    req.flash("formVals", req.body);
+    return res.redirect("/api/signup");
+  }
+  else {
+    return callback();
+  }
 }

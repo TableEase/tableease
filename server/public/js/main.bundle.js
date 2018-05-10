@@ -41,6 +41,7 @@ var restaurant_form_component_1 = __webpack_require__("./app/app/components/appl
 var signup_component_1 = __webpack_require__("./app/app/components/auth/signup/signup.component.ts");
 var meal_component_1 = __webpack_require__("./app/app/components/application/meal/meal.component.ts");
 var splash_component_1 = __webpack_require__("./app/app/components/splash/splash.component.ts");
+var user_form_component_1 = __webpack_require__("./app/app/components/auth/signup/user-form/user-form.component.ts");
 // import { AuthGuard } from '../../private/auth.guard';
 var routes = [
     { path: '', component: home_component_1.HomeComponent },
@@ -50,10 +51,10 @@ var routes = [
     { path: 'restaurant', component: restaurant_form_component_1.RestaurantFormComponent },
     {
         path: 'app',
-        // canActivate: [AuthGuard],
         component: application_component_1.ApplicationComponent,
         children: [
             { path: 'homepage', component: dash_component_1.DashComponent },
+            { path: 'settings', component: user_form_component_1.UserFormComponent },
             { path: 'menu', component: meal_component_1.MealComponent },
             { path: '**', redirectTo: '/homepage', pathMatch: 'full' }
         ]
@@ -747,7 +748,7 @@ module.exports = ""
 /***/ "./app/app/components/application/nav/sidenav/sidenav.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<a clrVerticalNavLink routerLink=\"homepage\" routerLinkActive=\"active\">\r\n  <clr-icon clrVerticalNavIcon shape=\"user\"></clr-icon>\r\n  Dashboard\r\n</a>\r\n<a clrVerticalNavLink routerLink=\"menu\" routerLinkActive=\"active\">\r\n  <clr-icon clrVerticalNavIcon shape=\"bolt\"></clr-icon>\r\n  Menu\r\n</a>\r\n<a clrVerticalNavLink routerLink=\"homepage\" routerLinkActive=\"active\">\r\n  <clr-icon clrVerticalNavIcon shape=\"sad-face\"></clr-icon>\r\n  Poison\r\n</a>\r\n<a clrVerticalNavLink routerLink=\"homepage\" routerLinkActive=\"active\">\r\n  <clr-icon clrVerticalNavIcon shape=\"bug\"></clr-icon>\r\n  Grass\r\n</a>\r\n<a clrVerticalNavLink routerLink=\"homepage\" routerLinkActive=\"active\">\r\n  <clr-icon clrVerticalNavIcon shape=\"shield\"></clr-icon>\r\n  Fighting\r\n</a>\r\n<a clrVerticalNavLink routerLink=\"homepage\" routerLinkActive=\"active\">\r\n  <clr-icon clrVerticalNavIcon shape=\"certificate\"></clr-icon>\r\n  Credit\r\n</a>"
+module.exports = "<clr-vertical-nav>\r\n  <a clrVerticalNavLink routerLink=\"/app/test\" routerLinkActive=\"active\">\r\n    <clr-icon clrVerticalNavIcon shape=\"user\"></clr-icon>\r\n    Dashboard\r\n  </a>\r\n  <a clrVerticalNavLink routerLink=\"/app/menu\" routerLinkActive=\"active\">\r\n    <clr-icon clrVerticalNavIcon shape=\"bolt\"></clr-icon>\r\n    Menu\r\n  </a>\r\n\r\n  <a clrVerticalNavLink routerLink=\"/app/test\" routerLinkActive=\"active\">\r\n    <clr-icon clrVerticalNavIcon shape=\"sad-face\"></clr-icon>\r\n    Poison\r\n  </a>\r\n  <a clrVerticalNavLink routerLink=\"/app/test\" routerLinkActive=\"active\">\r\n    <clr-icon clrVerticalNavIcon shape=\"bug\"></clr-icon>\r\n    Grass\r\n  </a>\r\n  <a clrVerticalNavLink routerLink=\"/app/test\" routerLinkActive=\"active\">\r\n    <clr-icon clrVerticalNavIcon shape=\"shield\"></clr-icon>\r\n    Fighting\r\n  </a>\r\n  <a clrVerticalNavLink routerLink=\"/app/settings\" routerLinkActive=\"active\">\r\n    <clr-icon clrVerticalNavIcon shape=\"certificate\"></clr-icon>\r\n    Settings\r\n  </a>\r\n</clr-vertical-nav>\r\n"
 
 /***/ }),
 
@@ -1127,7 +1128,7 @@ module.exports = ""
 /***/ "./app/app/components/auth/signup/signup.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<app-home></app-home>\r\n\r\n\r\n<div class=\"row\">\r\n  <div class=\"col-xs-12 col-sm-10 col-md-8 push-md-2\">\r\n    <ng-container>\r\n\r\n      <!-- Initial SignupForm -->\r\n      <form class=\"form\" (ngSubmit)=\"onSignup(f)\" #f=\"ngForm\">\r\n        <div class=\"signup-group\">\r\n          <app-messages [messages]=messages></app-messages>\r\n\r\n          <section class=\"form-block\">\r\n            <div class=\"form-group\">\r\n              <label for=\"name\">Name</label>\r\n              <input type=\"text\" id=\"name\" name=\"name\" class=\"form-control\" ngModel>\r\n            </div>\r\n            <div class=\"form-group\">\r\n              <label for=\"address\">Address</label>\r\n              <input type=\"text\" id=\"address\" name=\"address\" class=\"form-control\" ngModel>\r\n            </div>\r\n\r\n            <div class=\"form-group\">\r\n              <label for=\"phoneNumber\">Phone Number</label>\r\n              <input type=\"number\" id=\"phoneNumber\" name=\"phoneNumber\" class=\"form-control\" ngModel>\r\n            </div>\r\n\r\n            <div class=\"form-group\">\r\n              <label for=\"email\">Email</label>\r\n              <input type=\"email\" id=\"email\" name=\"email\" class=\"form-control\" ngModel>\r\n            </div>\r\n\r\n            <div class=\"form-group\">\r\n              <label for=\"password\">Password</label>\r\n              <input type=\"password\" id=\"password\" name=\"password\" class=\"form-control\" ngModel>\r\n            </div>\r\n\r\n            <div class=\"form-group\">\r\n              <label for=\"confirmPassword\">Confirm Password</label>\r\n              <input type=\"password\" id=\"confirmPassword\" name=\"confirmPassword\" class=\"form-control\" ngModel>\r\n            </div>\r\n\r\n            <button class=\"btn btn-primary\" type=\"submit\" [disabled]=\"!f.valid\">Sign Up</button>\r\n          </section>\r\n        </div>\r\n      </form>\r\n    </ng-container>\r\n  </div>\r\n</div>\r\n"
+module.exports = "<app-home></app-home>\r\n<app-user-form></app-user-form>\r\n"
 
 /***/ }),
 
@@ -1147,16 +1148,21 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 var core_1 = __webpack_require__("./node_modules/@angular/core/esm5/core.js");
-var forms_1 = __webpack_require__("./node_modules/@angular/forms/esm5/forms.js");
 var passport_service_1 = __webpack_require__("./app/app/services/passport.service.ts");
+var user_service_1 = __webpack_require__("./app/app/services/user.service.ts");
 var router_1 = __webpack_require__("./node_modules/@angular/router/esm5/router.js");
 var SignupComponent = /** @class */ (function () {
-    function SignupComponent(fb, passport, router) {
-        this.fb = fb;
+    function SignupComponent(passport, userService, router) {
         this.passport = passport;
+        this.userService = userService;
         this.router = router;
     }
     SignupComponent.prototype.ngOnInit = function () {
+        var _this = this;
+        this.userService.getUser().subscribe(function (user) {
+            console.log(user);
+            _this.user = user['user'];
+        });
     };
     SignupComponent.prototype.onSignup = function (form) {
         var _this = this;
@@ -1164,7 +1170,7 @@ var SignupComponent = /** @class */ (function () {
         this.passport.signup(formVals).subscribe(function (res) {
             _this.messages = res['messages'];
             if (_this.messages.length === 0) {
-                _this.router.navigate(['/login']);
+                _this.router.navigate(['/app/homepage']);
             }
         });
     };
@@ -1174,8 +1180,8 @@ var SignupComponent = /** @class */ (function () {
             template: __webpack_require__("./app/app/components/auth/signup/signup.component.html"),
             styles: [__webpack_require__("./app/app/components/auth/signup/signup.component.css")]
         }),
-        __metadata("design:paramtypes", [forms_1.FormBuilder,
-            passport_service_1.PassportService,
+        __metadata("design:paramtypes", [passport_service_1.PassportService,
+            user_service_1.UserService,
             router_1.Router])
     ], SignupComponent);
     return SignupComponent;
@@ -1195,7 +1201,7 @@ module.exports = ""
 /***/ "./app/app/components/auth/signup/user-form/user-form.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<!-- <ng-container *ngIf=\"(auth.user | async) || {} as user\"> -->\r\n\r\n<form [formGroup]=\"signupForm\" (ngSubmit)=\"signup()\">\r\n  <section class=\"form-block\">\r\n    <h3>Create an Account</h3>\r\n  </section>\r\n  <section class=\"form-block\">\r\n    <div class=\"form-group\">\r\n      <label for=\"validFirstName\" aria-haspopup=\"true\" role=\"tooltip\" class=\"tooltip tooltip-validation invalid tooltip-md\">\r\n        <input placeholder=\"First Name\" id=\"validFirstName\" type=\"text\" formControlName=\"first\">\r\n        <span class=\"tooltip-content\">\r\n          This field cannot be empty!\r\n        </span>\r\n      </label>\r\n    </div>\r\n    <div class=\"form-group\">\r\n      <label for=\"validFirstName\" aria-haspopup=\"true\" role=\"tooltip\" class=\"tooltip tooltip-validation invalid tooltip-md\">\r\n        <input placeholder=\"Last Name\" type=\"text\" formControlName=\"last\">\r\n        <span class=\"tooltip-content\">\r\n          This field cannot be empty!\r\n        </span>\r\n      </label>\r\n    </div>\r\n    <div class=\"form-group\">\r\n      <label for=\"validFirstName\" aria-haspopup=\"true\" role=\"tooltip\" class=\"tooltip tooltip-validation invalid tooltip-md\">\r\n        <input placeholder=\"Email Address\" type=\"email\" formControlName=\"email\">\r\n        <span class=\"tooltip-content\">\r\n          This field cannot be empty!\r\n        </span>\r\n      </label>\r\n    </div>\r\n    <div class=\"form-group\">\r\n      <label for=\"validFirstName\" aria-haspopup=\"true\" role=\"tooltip\" class=\"tooltip tooltip-validation invalid tooltip-md\">\r\n        <input placeholder=\"Confirm Email Address\" type=\"email\" formControlName=\"email\">\r\n        <span class=\"tooltip-content\">\r\n          This field cannot be empty!\r\n        </span>\r\n      </label>\r\n    </div>\r\n    <div class=\"form-group\">\r\n      <label for=\"validFirstName\" aria-haspopup=\"true\" role=\"tooltip\" class=\"tooltip tooltip-validation invalid tooltip-md\">\r\n        <input placeholder=\"Password\" type=\"password\" formControlName=\"password\">\r\n        <span class=\"tooltip-content\">\r\n          This field cannot be empty!\r\n        </span>\r\n      </label>\r\n    </div>\r\n  </section>\r\n\r\n  <!-- <div *ngIf=\"email.invalid && email.dirty\">\r\n      Your email doesn't look quite right...\r\n    </div>\r\n\r\n    <label for=\"passowrd\">Password</label>\r\n    <input type=\"password\" formControlName=\"password\" required>\r\n\r\n    <div *ngIf=\"password.invalid && password.touched\">\r\n      Password must be between 6 and 24 chars and have at least one number\r\n    </div>\r\n\r\n    <div *ngIf=\"signupForm.valid\">Form looks good! Let's do this.</div> -->\r\n\r\n  <button type=\"submit\" class=\"btn btn-link btn-block\">Create Account</button>\r\n\r\n</form>\r\n\r\n<!-- </ng-container> -->"
+module.exports = "<div class=\"row\">\r\n  <div class=\"col-xs-12 col-sm-10 col-md-8 push-md-2\">\r\n    <ng-container>\r\n\r\n      <!-- Initial SignupForm -->\r\n      <form class=\"form\" #f=\"ngForm\">\r\n        <div class=\"signup-group\">\r\n          <app-messages [messages]=messages></app-messages>\r\n\r\n          <section class=\"form-block\">\r\n            <div class=\"form-group\">\r\n              <label for=\"name\">Name</label>\r\n              <input type=\"text\" id=\"name\" name=\"name\" class=\"form-control\" [ngModel]=\"user?.name\">\r\n            </div>\r\n            <div class=\"form-group\">\r\n              <label for=\"address\">Address</label>\r\n              <input type=\"text\" id=\"address\" name=\"address\" class=\"form-control\" [ngModel]=\"user?.address\">\r\n            </div>\r\n\r\n            <div class=\"form-group\">\r\n              <label for=\"phoneNumber\">Phone Number</label>\r\n              <input type=\"number\" id=\"phoneNumber\" name=\"phoneNumber\" class=\"form-control\"\r\n                     [ngModel]=\"user?.phone_number\">\r\n            </div>\r\n\r\n            <div class=\"form-group\">\r\n              <label for=\"email\">Email</label>\r\n              <input type=\"email\" id=\"email\" name=\"email\" class=\"form-control\" [ngModel]=\"user?.email\">\r\n            </div>\r\n\r\n            <div class=\"form-group\">\r\n              <label for=\"password\">Password</label>\r\n              <input type=\"password\" id=\"password\" name=\"password\" class=\"form-control\" [ngModel]>\r\n            </div>\r\n\r\n            <div class=\"form-group\">\r\n              <label for=\"confirmPassword\">Confirm Password</label>\r\n              <input type=\"password\" id=\"confirmPassword\" name=\"confirmPassword\" class=\"form-control\" [ngModel]>\r\n            </div>\r\n\r\n\r\n            <div *ngIf=\"allDataFetched\">\r\n              <div *ngIf=\"user;then edit else new\">\r\n              </div>\r\n            </div>\r\n            <ng-template #edit>\r\n              <button class=\"btn btn-primary\" type=\"submit\" (click)=\"onUpdate(f)\" [disabled]=\"!f.valid\">Save</button>\r\n            </ng-template>\r\n\r\n            <ng-template #new>\r\n              <button class=\"btn btn-primary\" type=\"submit\" (click)=\"onSignup(f)\" [disabled]=\"!f.valid\">Sign Up</button>\r\n            </ng-template>\r\n          </section>\r\n        </div>\r\n      </form>\r\n    </ng-container>\r\n  </div>\r\n</div>\r\n"
 
 /***/ }),
 
@@ -1215,66 +1221,52 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 var core_1 = __webpack_require__("./node_modules/@angular/core/esm5/core.js");
-var forms_1 = __webpack_require__("./node_modules/@angular/forms/esm5/forms.js");
-__webpack_require__("./node_modules/rxjs/_esm5/add/operator/switchMap.js");
-var auth_service_1 = __webpack_require__("./app/app/services/auth.service.ts");
+var passport_service_1 = __webpack_require__("./app/app/services/passport.service.ts");
+var user_service_1 = __webpack_require__("./app/app/services/user.service.ts");
+var router_1 = __webpack_require__("./node_modules/@angular/router/esm5/router.js");
 var UserFormComponent = /** @class */ (function () {
-    // ### TODO Add Auth Service
-    function UserFormComponent(fb, authService) {
-        this.fb = fb;
-        this.authService = authService;
-        this.createForm();
+    function UserFormComponent(passport, userService, router) {
+        this.passport = passport;
+        this.userService = userService;
+        this.router = router;
+        this.allDataFetched = false;
     }
     UserFormComponent.prototype.ngOnInit = function () {
-        // Second Step
-        // this.detailForm = this.fb.group({
-        //   catchPhrase: ['', Validators.required]
-        // });
-    };
-    UserFormComponent.prototype.createForm = function () {
-        this.signupForm = this.fb.group({
-            first: ['', [forms_1.Validators.required, forms_1.Validators.minLength(2)]],
-            last: ['', [forms_1.Validators.required, forms_1.Validators.minLength(2)]],
-            email: ['', [forms_1.Validators.required, forms_1.Validators.email]],
-            password: [
-                '',
-                [
-                    forms_1.Validators.required,
-                    forms_1.Validators.pattern('^(?=.*[0-9])(?=.*[a-zA-Z])([a-zA-Z0-9]+)$'),
-                    forms_1.Validators.minLength(6),
-                    forms_1.Validators.maxLength(25)
-                ]
-            ]
+        var _this = this;
+        this.userService.getUser().subscribe(function (user) {
+            _this.user = user['user'];
+            _this.allDataFetched = true;
         });
     };
-    Object.defineProperty(UserFormComponent.prototype, "email", {
-        get: function () {
-            return this.signupForm.get('email');
-        },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(UserFormComponent.prototype, "password", {
-        get: function () {
-            return this.signupForm.get('password');
-        },
-        enumerable: true,
-        configurable: true
-    });
-    UserFormComponent.prototype.onSignup = function () {
-        return this.authService.emailSignup(this.email.value, this.password.value);
+    UserFormComponent.prototype.onSignup = function (form) {
+        var _this = this;
+        var formVals = form.value;
+        this.passport.signup(formVals).subscribe(function (res) {
+            _this.messages = res['messages'];
+            if (_this.messages.length === 0) {
+                _this.router.navigate(['/app/homepage']);
+            }
+        });
     };
-    __decorate([
-        core_1.Input(),
-        __metadata("design:type", Object)
-    ], UserFormComponent.prototype, "user", void 0);
+    UserFormComponent.prototype.onUpdate = function (form) {
+        var _this = this;
+        var formVals = form.value;
+        this.userService.updateUser(formVals).subscribe(function (res) {
+            _this.messages = res['messages'];
+            if (_this.messages.length === 0) {
+                _this.router.navigate(['/app/homepage']);
+            }
+        });
+    };
     UserFormComponent = __decorate([
         core_1.Component({
             selector: 'app-user-form',
             template: __webpack_require__("./app/app/components/auth/signup/user-form/user-form.component.html"),
             styles: [__webpack_require__("./app/app/components/auth/signup/user-form/user-form.component.css")]
         }),
-        __metadata("design:paramtypes", [forms_1.FormBuilder, auth_service_1.AuthService])
+        __metadata("design:paramtypes", [passport_service_1.PassportService,
+            user_service_1.UserService,
+            router_1.Router])
     ], UserFormComponent);
     return UserFormComponent;
 }());
@@ -1347,7 +1339,7 @@ module.exports = ""
 /***/ "./app/app/components/home/home.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<header class=\"header-1\">\r\n  <div class=\"branding\">\r\n    <a class=\"nav-link\" routerLink=\"/\">\r\n      <clr-icon shape=\"dna\"></clr-icon>\r\n      <span class=\"title\">Tableease</span>\r\n    </a>\r\n  </div>\r\n  <div style=\"display: contents;\" *ngIf=\"allDataFetched\">\r\n    <div *ngIf=\"user;then yesuser else nouser\">\r\n    </div>\r\n  </div>\r\n\r\n  <ng-template #yesuser>\r\n\r\n    <div class=\"header-actions\">\r\n      <a class=\"nav-link nav-text\">\r\n        Hi, {{user.name}}\r\n      </a>\r\n      <a (click)=\"logout()\" class=\"nav-link nav-text\">\r\n        Logout\r\n      </a>\r\n      <a routerLink=\"/app/homepage\" class=\"nav-link nav-text\">\r\n        Go To App\r\n      </a>\r\n      <a routerLink=\"/search\" class=\"nav-link nav-text\">\r\n        SEARCH\r\n      </a>\r\n    </div>\r\n\r\n  </ng-template>\r\n\r\n\r\n  <ng-template #nouser>\r\n\r\n    <div class=\"header-actions\">\r\n      <a routerLink=\"login\" class=\"nav-link nav-text\">\r\n        Log In\r\n      </a>\r\n      <a routerLink=\"/signup\" class=\"nav-link nav-text\">\r\n        Signup\r\n      </a>\r\n      <a routerLink=\"/search\" class=\"nav-link nav-text\">\r\n        SEARCH\r\n      </a>\r\n    </div>\r\n\r\n  </ng-template>\r\n</header>\r\n"
+module.exports = "<header class=\"header-1\">\r\n  <div class=\"branding\">\r\n    <a class=\"nav-link\" routerLink=\"/\">\r\n      <clr-icon shape=\"dna\"></clr-icon>\r\n      <span class=\"title\">Tableease</span>\r\n    </a>\r\n  </div>\r\n  <div style=\"display: contents;\" *ngIf=\"allDataFetched\">\r\n    <div *ngIf=\"user;then yesuser else nouser\">\r\n    </div>\r\n  </div>\r\n\r\n  <ng-template #yesuser>\r\n\r\n    <div class=\"header-actions\">\r\n      <a class=\"nav-link nav-text\">\r\n        Hi, {{user.name}}\r\n      </a>\r\n      <a (click)=\"logout()\" class=\"nav-link nav-text\">\r\n        Logout\r\n      </a>\r\n      <a routerLink=\"/app/homepage\" class=\"nav-link nav-text\">\r\n        Go To App\r\n      </a>\r\n      <a routerLink=\"/search\" class=\"nav-link nav-text\">\r\n        SEARCH\r\n      </a>\r\n    </div>\r\n\r\n  </ng-template>\r\n\r\n\r\n  <ng-template #nouser>\r\n\r\n    <div class=\"header-actions\">\r\n      <a routerLink=\"/login\" class=\"nav-link nav-text\">\r\n        Log In\r\n      </a>\r\n      <a routerLink=\"/signup\" class=\"nav-link nav-text\">\r\n        Signup\r\n      </a>\r\n      <a routerLink=\"/search\" class=\"nav-link nav-text\">\r\n        SEARCH\r\n      </a>\r\n    </div>\r\n\r\n  </ng-template>\r\n</header>\r\n"
 
 /***/ }),
 
@@ -1875,7 +1867,8 @@ var UserService = /** @class */ (function () {
     UserService.prototype.getUser = function () {
         return this.http.get('/api/users');
     };
-    UserService.prototype.updateUser = function (user, data) {
+    UserService.prototype.updateUser = function (formVals) {
+        return this.http.post('/api/signup/update', formVals);
     };
     UserService.prototype.deleteUser = function (user) {
     };
