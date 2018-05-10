@@ -40,11 +40,13 @@ var not_found_component_1 = __webpack_require__("./app/app/components/not-found/
 var restaurant_form_component_1 = __webpack_require__("./app/app/components/application/restaurant/restaurant-form/restaurant-form.component.ts");
 var signup_component_1 = __webpack_require__("./app/app/components/auth/signup/signup.component.ts");
 var meal_component_1 = __webpack_require__("./app/app/components/application/meal/meal.component.ts");
+var splash_component_1 = __webpack_require__("./app/app/components/splash/splash.component.ts");
 // import { AuthGuard } from '../../private/auth.guard';
 var routes = [
     { path: '', component: home_component_1.HomeComponent },
     { path: 'login', component: login_component_1.LoginComponent },
     { path: 'signup', component: signup_component_1.SignupComponent },
+    { path: 'search', component: splash_component_1.SplashComponent },
     { path: 'restaurant', component: restaurant_form_component_1.RestaurantFormComponent },
     {
         path: 'app',
@@ -161,6 +163,7 @@ var splash_component_1 = __webpack_require__("./app/app/components/splash/splash
 var application_component_1 = __webpack_require__("./app/app/components/application/application.component.ts");
 var dash_component_1 = __webpack_require__("./app/app/components/application/dash/dash.component.ts");
 var not_found_component_1 = __webpack_require__("./app/app/components/not-found/not-found.component.ts");
+var auth_service_1 = __webpack_require__("./app/app/services/auth.service.ts");
 var restaurant_component_1 = __webpack_require__("./app/app/components/application/restaurant/restaurant.component.ts");
 var restaurant_form_component_1 = __webpack_require__("./app/app/components/application/restaurant/restaurant-form/restaurant-form.component.ts");
 var user_service_1 = __webpack_require__("./app/app/services/user.service.ts");
@@ -168,6 +171,7 @@ var user_form_component_1 = __webpack_require__("./app/app/components/auth/signu
 var passport_service_1 = __webpack_require__("./app/app/services/passport.service.ts");
 var meal_service_1 = __webpack_require__("./app/app/services/meal.service.ts");
 var messages_component_1 = __webpack_require__("./app/app/components/form/messages/messages.component.ts");
+var slider_1 = __webpack_require__("./node_modules/primeng/slider.js");
 var AppModule = /** @class */ (function () {
     function AppModule() {
     }
@@ -197,6 +201,7 @@ var AppModule = /** @class */ (function () {
                 messages_component_1.MessagesComponent
             ],
             imports: [
+                slider_1.SliderModule,
                 platform_browser_1.BrowserModule,
                 angular_1.ClarityModule,
                 forms_1.FormsModule,
@@ -208,7 +213,7 @@ var AppModule = /** @class */ (function () {
                 app_routing_module_1.AppRoutingModule,
                 http_1.HttpClientModule
             ],
-            providers: [user_service_1.UserService, passport_service_1.PassportService, meal_service_1.MealService],
+            providers: [auth_service_1.AuthService, user_service_1.UserService, passport_service_1.PassportService, meal_service_1.MealService],
             bootstrap: [app_component_1.AppComponent]
         })
     ], AppModule);
@@ -229,7 +234,7 @@ module.exports = ""
 /***/ "./app/app/components/application/application.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<clr-main-container>\r\n  <app-header></app-header>\r\n  <div class=\"content-container\">\r\n    <div class=\"content-area\">\r\n      <router-outlet></router-outlet>\r\n    </div>\r\n    <clr-vertical-nav [clrVerticalNavCollapsible]=\"true\" [(clrVerticalNavCollapsed)]=\"collapsed\">\r\n      <app-sidenav></app-sidenav>\r\n    </clr-vertical-nav>\r\n  </div>\r\n</clr-main-container>"
+module.exports = "<clr-main-container>\r\n  <app-home></app-home>\r\n  <div class=\"content-container\">\r\n    <div class=\"content-area\">\r\n      <router-outlet></router-outlet>\r\n    </div>\r\n    <clr-vertical-nav [clrVerticalNavCollapsible]=\"true\" [(clrVerticalNavCollapsed)]=\"collapsed\">\r\n      <app-sidenav></app-sidenav>\r\n    </clr-vertical-nav>\r\n  </div>\r\n</clr-main-container>\r\n"
 
 /***/ }),
 
@@ -1342,7 +1347,7 @@ module.exports = ""
 /***/ "./app/app/components/home/home.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<clr-main-container>\r\n\r\n  <header class=\"header-1\">\r\n    <div class=\"branding\">\r\n      <a class=\"nav-link\">\r\n        <clr-icon shape=\"dna\"></clr-icon>\r\n        <span class=\"title\">Tableease</span>\r\n      </a>\r\n    </div>\r\n    <div style=\"display: contents;\" *ngIf=\"allDataFetched\">\r\n      <div *ngIf=\"user;then yesuser else nouser\">\r\n      </div>\r\n    </div>\r\n\r\n    <ng-template #yesuser>\r\n      <div class=\"header-actions\">\r\n        <a class=\"nav-link nav-text\">\r\n          Hi, {{user.name}}\r\n        </a>\r\n        <a routerLink=\"app/homepage\" class=\"nav-link nav-text\">\r\n          Go To App\r\n        </a>\r\n      </div>\r\n    </ng-template>\r\n\r\n\r\n    <ng-template #nouser>\r\n      <div class=\"header-actions\">\r\n        <a routerLink=\"login\" class=\"nav-link nav-text\">\r\n          Log In\r\n        </a>\r\n        <a routerLink=\"signup\" class=\"nav-link nav-text\">\r\n          Signup\r\n        </a>\r\n        <a routerLink=\"app/homepage\" class=\"nav-link nav-text\">\r\n          Go To App\r\n        </a>\r\n      </div>\r\n    </ng-template>\r\n  </header>\r\n  <p>\r\n    This is the main home page\r\n  </p>\r\n\r\n</clr-main-container>\r\n"
+module.exports = "<header class=\"header-1\">\r\n  <div class=\"branding\">\r\n    <a class=\"nav-link\" routerLink=\"/\">\r\n      <clr-icon shape=\"dna\"></clr-icon>\r\n      <span class=\"title\">Tableease</span>\r\n    </a>\r\n  </div>\r\n  <div style=\"display: contents;\" *ngIf=\"allDataFetched\">\r\n    <div *ngIf=\"user;then yesuser else nouser\">\r\n    </div>\r\n  </div>\r\n\r\n  <ng-template #yesuser>\r\n\r\n    <div class=\"header-actions\">\r\n      <a class=\"nav-link nav-text\">\r\n        Hi, {{user.name}}\r\n      </a>\r\n      <a routerLink=\"/app/homepage\" class=\"nav-link nav-text\">\r\n        Go To App\r\n      </a>\r\n      <a routerLink=\"/search\" class=\"nav-link nav-text\">\r\n        SEARCH\r\n      </a>\r\n    </div>\r\n\r\n  </ng-template>\r\n\r\n\r\n  <ng-template #nouser>\r\n\r\n    <div class=\"header-actions\">\r\n      <a routerLink=\"login\" class=\"nav-link nav-text\">\r\n        Log In\r\n      </a>\r\n      <a routerLink=\"/signup\" class=\"nav-link nav-text\">\r\n        Signup\r\n      </a>\r\n      <a routerLink=\"/app/homepage\" class=\"nav-link nav-text\">\r\n        Go To App\r\n      </a>\r\n      <a routerLink=\"/search\" class=\"nav-link nav-text\">\r\n        SEARCH\r\n      </a>\r\n    </div>\r\n\r\n  </ng-template>\r\n</header>\r\n"
 
 /***/ }),
 
@@ -1442,14 +1447,14 @@ exports.NotFoundComponent = NotFoundComponent;
 /***/ "./app/app/components/splash/splash.component.css":
 /***/ (function(module, exports) {
 
-module.exports = ""
+module.exports = "\r\n"
 
 /***/ }),
 
 /***/ "./app/app/components/splash/splash.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<p>\r\n  splash works!\r\n</p>\r\n"
+module.exports = "<app-home></app-home>\r\n<div *ngIf=\"allDataFetched\">\r\n  <form class=\"form\" #frm=\"ngForm\" (ngSubmit)=\"onSearch()\">\r\n    <div>\r\n      <section class=\"form-block\">\r\n        <div>\r\n          <div class=\"form-group row drop\">\r\n            <div class=\"col-xs-5\">\r\n              <label>Allergies</label>\r\n            </div>\r\n          </div>\r\n\r\n          <div class=\"form-group row\">\r\n            <div class=\"col-xs-1\" *ngFor=\"let allergy of allergies;let i = index;\">\r\n              <div class=\"checkbox-inline center\">\r\n                <input id=\"{{allergy.name}}\" name=\"{{allergy.name}}\" type=\"checkbox\"\r\n                       [checked]=\"allergy?.checked\" (change)=\"onCheckboxChange(allergy?.checked, i)\">\r\n                <label [for]=\"allergy.name\">{{allergy.name}}</label>\r\n              </div>\r\n            </div>\r\n          </div>\r\n        </div>\r\n\r\n\r\n        <div class=\"form-group row drop\">\r\n          <div class=\"col-xs-5\">\r\n            <label>Price Range: {{rangeValues[0] + ' - ' + rangeValues[1]}}</label>\r\n          </div>\r\n        </div>\r\n\r\n\r\n        <div class=\"col-xs-1\">\r\n          <div class=\"center\">\r\n            <p-slider name=\"price\" [ngModel]=\"rangeValues\" [style]=\"{'width':'200px'}\" range=\"true\"></p-slider>\r\n          </div>\r\n        </div>\r\n\r\n\r\n      </section>\r\n    </div>\r\n    <button type=\"submit\" class=\"btn btn-primary\" [disabled]=\"!frm.valid\">Search</button>\r\n  </form>\r\n\r\n  <clr-stack-view>\r\n    <clr-stack-header class=\"cap\">\r\n    </clr-stack-header>\r\n    <div *ngFor=\"let meal of meals\">\r\n\r\n\r\n      <clr-stack-block>\r\n\r\n        <clr-stack-label>{{meal.name}}</clr-stack-label>\r\n        <div class=\"flexMe\">\r\n          <clr-stack-content>{{meal.description}}</clr-stack-content>\r\n          <clr-stack-content>\r\n          </clr-stack-content>\r\n        </div>\r\n\r\n        <clr-stack-block>\r\n          <clr-stack-label>Allergies</clr-stack-label>\r\n          <clr-stack-content *ngIf=\"meal.allergies.length > 0\">\r\n            <span *ngFor=\"let allergy of meal.allergies;let last=last;let i = index\">{{allergy.name}}{{last ? '' : (i==meal.allergies.length-2) ? ' and ' : ', '}}</span>\r\n          </clr-stack-content>\r\n        </clr-stack-block>\r\n\r\n        <clr-stack-block>\r\n          <clr-stack-label>Price</clr-stack-label>\r\n          <clr-stack-content>${{meal.price}}</clr-stack-content>\r\n        </clr-stack-block>\r\n\r\n      </clr-stack-block>\r\n\r\n    </div>\r\n\r\n  </clr-stack-view>\r\n</div>\r\n"
 
 /***/ }),
 
@@ -1469,17 +1474,92 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 var core_1 = __webpack_require__("./node_modules/@angular/core/esm5/core.js");
+var allergies_service_1 = __webpack_require__("./app/app/services/allergies.service.ts");
+var meal_service_1 = __webpack_require__("./app/app/services/meal.service.ts");
+var router_1 = __webpack_require__("./node_modules/@angular/router/esm5/router.js");
 var SplashComponent = /** @class */ (function () {
-    function SplashComponent() {
+    function SplashComponent(allergiesService, mealService, router) {
+        this.allergiesService = allergiesService;
+        this.mealService = mealService;
+        this.router = router;
+        this.allergies = [];
+        this.meals = [];
+        this.rangeValues = [];
+        this.allDataFetched = false;
     }
-    SplashComponent.prototype.ngOnInit = function () { };
+    SplashComponent.prototype.ngOnInit = function () {
+        var _this = this;
+        this.allergiesService.getAllergies().subscribe(function (allergies) {
+            _this.allergies = allergies['allergies'];
+        });
+        this.getMenuSetup();
+    };
+    SplashComponent.prototype.onCheckboxChange = function (val, index) {
+        this.allergies[index]['checked'] = !val;
+    };
+    SplashComponent.prototype.getSelectedOptionNames = function () {
+        return this.allergies
+            .filter(function (opt) { return opt.checked; }).map(function (opt) { return opt.name; });
+    };
+    SplashComponent.prototype.getminPrice = function (meals) {
+        var minPrice = Math.min.apply(Math, meals.map(function (item) {
+            return item.price;
+        }));
+        return minPrice;
+    };
+    SplashComponent.prototype.getmaxPrice = function (meals) {
+        var maxPrice = Math.max.apply(Math, meals.map(function (item) {
+            return item.price;
+        }));
+        return maxPrice;
+    };
+    SplashComponent.prototype.onSearch = function () {
+        this.getMenu();
+    };
+    SplashComponent.prototype.getMenu = function () {
+        var _this = this;
+        var selectedNames = this.getSelectedOptionNames();
+        this.mealService.getMenu().subscribe(function (menu) {
+            if (!menu['data'] && menu['messages']) {
+                _this.router.navigate(['/login']);
+            }
+            _this.meals = menu['data'];
+            for (var i = 0; i < _this.meals.length; i++) {
+                var price = parseInt(_this.meals[i].price, 10);
+                if (price > _this.rangeValues[1] || price < _this.rangeValues[0]) {
+                    _this.meals.splice(i, 1);
+                    i--;
+                    continue;
+                }
+                for (var j = 0; j < _this.meals[i].allergies.length; j++) {
+                    if (selectedNames.indexOf(_this.meals[i].allergies[j].name) !== -1) {
+                        _this.meals.splice(i, 1);
+                        i--;
+                        break;
+                    }
+                }
+            }
+        });
+    };
+    SplashComponent.prototype.getMenuSetup = function () {
+        var _this = this;
+        this.mealService.getMenu().subscribe(function (menu) {
+            if (!menu['data'] && menu['messages']) {
+                _this.router.navigate(['/login']);
+            }
+            _this.meals = menu['data'];
+            _this.rangeValues = [_this.getminPrice(_this.meals), _this.getmaxPrice(_this.meals)];
+            _this.allDataFetched = true;
+        });
+    };
     SplashComponent = __decorate([
         core_1.Component({
             selector: 'app-splash',
             template: __webpack_require__("./app/app/components/splash/splash.component.html"),
-            styles: [__webpack_require__("./app/app/components/splash/splash.component.css")]
+            styles: [__webpack_require__("./app/app/components/splash/splash.component.css")],
+            providers: [allergies_service_1.AllergiesService]
         }),
-        __metadata("design:paramtypes", [])
+        __metadata("design:paramtypes", [allergies_service_1.AllergiesService, meal_service_1.MealService, router_1.Router])
     ], SplashComponent);
     return SplashComponent;
 }());
@@ -1643,12 +1723,6 @@ var AuthService = /** @class */ (function () {
     AuthService.prototype.checkAuth = function (user, allowedRoles) {
         if (!user) {
             return false;
-        }
-        for (var _i = 0, allowedRoles_1 = allowedRoles; _i < allowedRoles_1.length; _i++) {
-            var role = allowedRoles_1[_i];
-            if (user.role === role) {
-                return true;
-            }
         }
         return false;
     };

@@ -13,12 +13,14 @@ import { RestaurantFormComponent } from './components/application/restaurant/res
 import { SignupComponent } from './components/auth/signup/signup.component';
 import { HttpClient } from 'selenium-webdriver/http';
 import { MealComponent } from './components/application/meal/meal.component';
+import { SplashComponent } from './components/splash/splash.component';
 // import { AuthGuard } from '../../private/auth.guard';
 
 const routes: Routes = [
   { path: '', component: HomeComponent },
   { path: 'login', component: LoginComponent },
   { path: 'signup', component: SignupComponent },
+  { path: 'search', component: SplashComponent },
   { path: 'restaurant', component: RestaurantFormComponent },
   {
     path: 'app',
@@ -40,4 +42,6 @@ const routes: Routes = [
   exports: [RouterModule]
   // declarations: [AuthGuard]
 })
-export class AppRoutingModule {}
+export class AppRoutingModule {
+}
+

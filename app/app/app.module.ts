@@ -45,6 +45,8 @@ import { PassportService } from './services/passport.service';
 import { MealService } from './services/meal.service';
 import { MessagesComponent } from './components/form/messages/messages.component';
 
+import { SliderModule } from 'primeng/slider';
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -70,6 +72,7 @@ import { MessagesComponent } from './components/form/messages/messages.component
     MessagesComponent
   ],
   imports: [
+    SliderModule,
     BrowserModule,
     ClarityModule,
     FormsModule,
@@ -81,7 +84,7 @@ import { MessagesComponent } from './components/form/messages/messages.component
     AppRoutingModule,
     HttpClientModule
   ],
-  providers: [UserService, PassportService, MealService],
+  providers: [AuthService, UserService, PassportService, MealService],
   bootstrap: [AppComponent]
 })
 export class AppModule {
