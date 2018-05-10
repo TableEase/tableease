@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { UserService } from '../../services/user.service';
 import { User } from '../../models/user';
+import { PassportService } from '../../services/passport.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-home',
@@ -12,7 +14,7 @@ export class HomeComponent implements OnInit {
   allDataFetched = false;
 
 
-  constructor(private userservice: UserService) {
+  constructor(private userservice: UserService, private passport: PassportService, private router: Router) {
   }
 
   ngOnInit() {
@@ -22,4 +24,10 @@ export class HomeComponent implements OnInit {
     });
   }
 
+  logout() {
+    this.passport.logout().subscribe((res) => {
+      this.router.navigate(['/login']);
+    });
+
+  }
 }

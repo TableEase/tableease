@@ -16,6 +16,9 @@
       <a class="nav-link nav-text">
         Hi, {{user.name}}
       </a>
+      <a (click)="logout()" class="nav-link nav-text">
+        Logout
+      </a>
       <a routerLink="/app/homepage" class="nav-link nav-text">
         Go To App
       </a>
@@ -35,9 +38,6 @@
       </a>
       <a routerLink="/signup" class="nav-link nav-text">
         Signup
-      </a>
-      <a routerLink="/app/homepage" class="nav-link nav-text">
-        Go To App
       </a>
       <a routerLink="/search" class="nav-link nav-text">
         SEARCH
