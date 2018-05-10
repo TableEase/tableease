@@ -9,5 +9,5 @@ export interface Meal {
   price?: string;
   id?: string;
   position?: number;
-  allergies?: Allergy[];
+  allergy_names?: Allergy[];
 }
