@@ -9,10 +9,12 @@ const expressValidator = require('express-validator');
 
 const cookieParser = require('cookie-parser'); // While a cookie is fine, storing needed data on local storage would be better.
 app.use(cookieParser()); // cookie middleware
-const flash = require('connect-flash'); // this should be handled on the client side, not the server side
 
 // THIS SHOUDL BE REMOVED. FLASH MESSAGES SHOULD BE HANDLED BY CLIENT
+const flash = require('connect-flash'); // this should be handled on the client side, not the server side
 app.use(flash()); // use connect-flash for flash messages stored in session
+
+// what is this?
 // require('./routes/routes.js')(app, passport); // load our routes and pass in our app and fully configured passport
 
 // PASSPORT MIDDLEWARE
