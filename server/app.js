@@ -1,21 +1,17 @@
 const express = require('express');
+const app = express();
 const path = require('path');
-const logger = require('morgan');
 const cookieParser = require('cookie-parser');
 const bodyParser = require('body-parser');
 const expressValidator = require('express-validator');
-
 const session = require('express-session');
 const MySQLStore = require('express-mysql-session')(session);
-
 const morgan = require('morgan');
 const passport = require('passport');
 const flash = require('connect-flash');
 const router = express.Router({});
 
 require('./config/passport')(passport); // pass passport for configuration
-
-const app = express();
 
 // view engine setup
 // app.set("views", path.join(__dirname, "views"));
@@ -24,7 +20,6 @@ const app = express();
 // uncomment after placing your favicon in /public
 //app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
 app.use(morgan('dev')); // log every request to the console
-app.use(logger('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(expressValidator());
