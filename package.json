@@ -75,6 +75,13 @@
     "typescript": "~2.5.3"
   },
   "prettier": {
-    "singleQuote": true
+    "overrides": [
+      {
+        "files": "*",
+        "options": {
+          "singleQuote": true
+        }
+      }
+    ]
   }
 }
