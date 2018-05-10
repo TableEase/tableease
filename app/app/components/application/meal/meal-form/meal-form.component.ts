@@ -1,21 +1,10 @@
-import { Component, OnInit, Input, OnDestroy, OnChanges } from '@angular/core';
-import {
-  FormGroup,
-  FormControl,
-  FormArray,
-  Validators,
-  FormBuilder
-} from '@angular/forms';
-import { Observable } from 'rxjs/Observable';
-import { Subject } from 'rxjs/Subject';
-import 'rxjs/add/operator/takeUntil';
-
-import { MealsService } from '../../../../services/meals.service';
+import { Component, OnInit, Input, OnDestroy, OnChanges, ViewChild } from '@angular/core';
+import { NgForm } from '@angular/forms';
+import { MealService } from '../../../../services/meal.service';
 import { AllergiesService } from '../../../../services/allergies.service';
-import { SubmitFormService } from '../../../../services/submit-form.service';
 
 import { Meal } from '../../../../models/meal';
-import { Allergy } from '../../../../models/allergy';
+import { AllergyCheckboxes } from '../../../../models/allergycheckboxes';
 
 @Component({
   selector: 'app-meal-form',
@@ -23,116 +12,67 @@ import { Allergy } from '../../../../models/allergy';
   styleUrls: ['./meal-form.component.css'],
   providers: []
 })
-export class MealFormComponent implements OnInit, OnDestroy, OnChanges {
-  @Input() meal: Meal;
-  private meal$: Observable<Meal>;
-  private allergies$: Observable<any>;
-  private clearForm$: Subject<boolean>;
-  private ngUnsubscribe: Subject<any> = new Subject();
 
-  mealForm: FormGroup;
-  allergiesArray: Allergy[] = [];
+
+export class MealFormComponent implements OnInit {
+  @Input() meal: Meal;
+  @ViewChild('frm') public form: NgForm;
+  allergies: AllergyCheckboxes[] = [];
+  allDataFetched = false;
 
   constructor(
-    private mealsService: MealsService,
-    private allergiesService: AllergiesService,
-    private submitService: SubmitFormService,
-    private fb: FormBuilder
-  ) {
-    this.createForm();
+    private mealService: MealService,
+    private allergiesService: AllergiesService) {
   }
 
   ngOnInit() {
-    this.allergies$ = this.allergiesService.readAllergies().map(array =>
-      array.map(obj => {
-        obj.active = false;
-        return obj;
-      })
-    );
-
-    this.allergies$.takeUntil(this.ngUnsubscribe).subscribe(allergies => {
-      this.allergiesArray = allergies;
-      if (this.meal) {
-        allergies = allergies.reduce((acc, curr) => {
-          this.meal.allergies.map(i => {
-            if (curr.name === i.name) {
-              if (i.active !== false) {
-                curr.active = true;
-              }
-            }
-            return i;
-          });
-          acc.push(curr);
-          return acc;
-        }, []);
-        this.setAllergies(allergies);
-      }
-      this.setAllergies(allergies);
-    });
-
-    this.clearForm$ = this.submitService.clearForm$;
-    this.clearForm$.takeUntil(this.ngUnsubscribe).subscribe(val => {
-      if (val) {
-        this.clearForm();
-      }
+    this.allergiesService.getAllergies().subscribe((allergies) => {
+      this.allergies = allergies['allergies'];
+      this.fillCheckboxes();
     });
   }
 
-  ngOnChanges() {
-    this.rebuildForm();
-  }
-
-  ngOnDestroy() {
-    const mealToSend = this.mealForm.getRawValue();
-    if (
-      this.mealForm.valid &&
-      (this.submitService.update === true || this.submitService.create === true)
-    ) {
-      this.submitService.formMeal$.next(mealToSend);
+  fillCheckboxes() {
+    if (this.meal) {
+      const allergiesNames = [];
+      const allergies = this.allergies;
+      this.meal.allergies.forEach(function(allergy) {
+        allergiesNames.push(allergy.name);
+      });
+      allergies.forEach(function(allergy) {
+        if (allergiesNames.indexOf(allergy.name) !== -1) {
+          allergy['checked'] = true;
+        } else {
+          allergy['checked'] = false;
+        }
+      });
     }
-    this.ngUnsubscribe.next();
-    this.ngUnsubscribe.complete();
+    this.allDataFetched = true;
   }
 
-  createForm() {
-    this.mealForm = this.fb.group({
-      name: '',
-      description: '',
-      course: '',
-      price: '',
-      calories: '',
-      id: '',
-      allergies: this.fb.array([])
-    });
+  onCheckboxChange(val: boolean, index: number) {
+    this.allergies[index]['checked'] = !val;
   }
 
-  rebuildForm() {
-    this.mealForm.reset({
-      name: this.meal.name,
-      description: this.meal.description,
-      course: this.meal.course,
-      price: this.meal.price,
-      calories: this.meal.calories,
-      id: this.meal.id,
-      allergies: this.allergies[0] || new Allergy()
-    });
+  getSelectedOptions() {
+    return this.allergies
+      .filter(opt => opt.checked);
+  }
+
+  onSubmit() {
+    const formVals = this.form.value;
+    formVals['checkedAllergies'] = this.getSelectedOptions();
+    return this.mealService.addFood(formVals);
+  }
+
+  onUpdate() {
+    this.form.value['food_id'] = this.meal['food_id'];
+    const formVals = this.form.value;
+    formVals['checkedAllergies'] = this.getSelectedOptions();
+    return this.mealService.updateFood(formVals);
   }
 
   clearForm() {
-    this.mealForm.reset();
-  }
-
-  setAllergies(allergies) {
-    const allergyFGs = allergies.map(allergy => this.fb.group(allergy));
-    const allergyFormArray = this.fb.array(allergyFGs);
-    this.mealForm.setControl('allergies', allergyFormArray);
-  }
-
-  checkAllergies(allergies) {
-    return allergies.map(allergy => {});
-  }
-
-  get allergies(): FormArray {
-    return this.mealForm.get('allergies') as FormArray;
+    this.form.reset();
   }
 }

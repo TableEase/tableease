@@ -1,26 +1,48 @@
-<clr-main-container>
+<header class="header-1">
+  <div class="branding">
+    <a class="nav-link" routerLink="/">
+      <clr-icon shape="dna"></clr-icon>
+      <span class="title">Tableease</span>
+    </a>
+  </div>
+  <div style="display: contents;" *ngIf="allDataFetched">
+    <div *ngIf="user;then yesuser else nouser">
+    </div>
+  </div>
 
-  <header class="header-1">
-    <div class="branding">
-      <a class="nav-link">
-        <clr-icon shape="dna"></clr-icon>
-        <span class="title">Tableease</span>
+  <ng-template #yesuser>
+
+    <div class="header-actions">
+      <a class="nav-link nav-text">
+        Hi, {{user.name}}
+      </a>
+      <a routerLink="/app/homepage" class="nav-link nav-text">
+        Go To App
+      </a>
+      <a routerLink="/search" class="nav-link nav-text">
+        SEARCH
       </a>
     </div>
+
+  </ng-template>
+
+
+  <ng-template #nouser>
+
     <div class="header-actions">
       <a routerLink="login" class="nav-link nav-text">
         Log In
       </a>
-      <a routerLink="signup" class="nav-link nav-text">
+      <a routerLink="/signup" class="nav-link nav-text">
         Signup
       </a>
-      <a routerLink="app/homepage" class="nav-link nav-text">
+      <a routerLink="/app/homepage" class="nav-link nav-text">
         Go To App
       </a>
+      <a routerLink="/search" class="nav-link nav-text">
+        SEARCH
+      </a>
     </div>
-  </header>
-  <p>
-    This is the main home page
-  </p>
 
-</clr-main-container>
+  </ng-template>
+</header>

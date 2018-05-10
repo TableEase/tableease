@@ -42,6 +42,10 @@ import { RestaurantFormComponent } from './components/application/restaurant/res
 import { UserService } from './services/user.service';
 import { UserFormComponent } from './components/auth/signup/user-form/user-form.component';
 import { PassportService } from './services/passport.service';
+import { MealService } from './services/meal.service';
+import { MessagesComponent } from './components/form/messages/messages.component';
+
+import { SliderModule } from 'primeng/slider';
 
 @NgModule({
   declarations: [
@@ -64,9 +68,11 @@ import { PassportService } from './services/passport.service';
     MealComponent,
     MealDetailComponent,
     MealFormComponent,
-    MealItemComponent
+    MealItemComponent,
+    MessagesComponent
   ],
   imports: [
+    SliderModule,
     BrowserModule,
     ClarityModule,
     FormsModule,
@@ -78,7 +84,8 @@ import { PassportService } from './services/passport.service';
     AppRoutingModule,
     HttpClientModule
   ],
-  providers: [AuthService, AuthGuard, UserService, PassportService],
+  providers: [AuthService, UserService, PassportService, MealService],
   bootstrap: [AppComponent]
 })
-export class AppModule {}
+export class AppModule {
+}

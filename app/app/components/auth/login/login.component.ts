@@ -18,9 +18,8 @@ export class LoginComponent implements OnInit {
   }
 
   onLogin(form: NgForm) {
-    const email = form.value.email;
-    const password = form.value.password;
-    this.passport.login(email, password).subscribe((res) => {
+    const formVals = form.value;
+    this.passport.login(formVals).subscribe((res) => {
       this.messages = res['messages'];
       if (this.messages.length === 0) {
         this.router.navigate(['app/homepage']);

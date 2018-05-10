@@ -5,19 +5,8 @@
       Company Product Name
       <h5 class="hint">Use your Company ID to sign in or create one now</h5>
     </label>
-
     <div class="login-group">
-      <div *ngIf="messages?.length > 0" class="alert alert-danger">
-        <div class="alert-items">
-          <div class="alert-item static" *ngFor="let message of messages">
-            <div class="alert-icon-wrapper">
-              <clr-icon class="alert-icon" shape="exclamation-circle"></clr-icon>
-            </div>
-            <span class="alert-text">{{message}}</span>
-
-          </div>
-        </div>
-      </div>
+      <app-messages [messages]=messages></app-messages>
 
       <input class="email" type="email" id="email" name="email" placeholder="Email" ngModel>
       <input class="password" type="password" id="login_password" name="password" placeholder="Password" ngModel>
@@ -32,4 +21,3 @@
 
     </div>
   </form>
-</div>

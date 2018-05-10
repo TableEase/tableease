@@ -1,18 +1,17 @@
-<form class="form" [formGroup]="mealForm" (ngSubmit)="onSubmit()" [hidden]="submitted">
-
-  <!-- <div *ngIf="allergies$ | async; else loading"> -->
+<form class="form" #frm="ngForm" *ngIf="allDataFetched">
 
   <section class="form-block">
+
 
     <div class="form-group row">
 
       <div class="col-sm-2 col-xs-12">
-        <label for="mealName">Title</label>
+        <label for="mealName">Name</label>
       </div>
 
       <div class="col-sm-9 col-xs-11 push-xs-1">
         <label for="mealName" aria-haspopup="true" role="tooltip" class="tooltip tooltip-validation tooltip-sm">
-          <input id="mealName" type="text" size="45" formControlName="name">
+          <input id="mealName" type="text" size="45" name="name" [ngModel]="meal?.name">
           <span class="tooltip-content">
             Name is required.
           </span>
@@ -29,7 +28,7 @@
 
       <div class="col-sm-9 col-xs-11 push-xs-1">
         <label for="description" aria-haspopup="true" role="tooltip" class="tooltip tooltip-validation tooltip-sm">
-          <textarea name="description" id="description" rows="2" cols="45" formControlName="description"></textarea>
+          <textarea name="description" id="description" rows="2" cols="45" [ngModel]="meal?.description"></textarea>
           <span class="tooltip-content">
             description code is required.
           </span>
@@ -38,80 +37,42 @@
 
     </div>
 
-    <div class="form-group row">
-
-      <div class="col-xs-2">
-        <label for="course">Course</label>
-      </div>
-
-      <div class="col-xs-4 push-sm-1">
-        <label for="course" aria-haspopup="true" role="tooltip" class="tooltip tooltip-validation tooltip-sm">
-          <input id="course" type="text" size="10" formControlName="course">
-          <span class="tooltip-content">
-            course is required.
-          </span>
-        </label>
-      </div>
-
-
-      <div class="col-xs-2 push-sm-1">
-        <label for="price">Price</label>
-      </div>
-
-      <div class="col-xs-4">
-        <label for="price" aria-haspopup="true" role="tooltip" class="tooltip tooltip-validation tooltip-sm">
-          <input id="price" type="text" size="10" formControlName="price">
-          <span class="tooltip-content">
-            price is required.
-          </span>
-        </label>
-      </div>
-
+    <div class="col-xs-1 push-sm-1">
+      <label for="price">Price</label>
     </div>
 
-    <div class="form-group row">
-
-      <div class="col-xs-2">
-        <label for="calories">Calories</label>
-      </div>
-
-      <div class="col-xs-4 push-xs-1">
-        <label for="calories" aria-haspopup="true" role="tooltip" class="tooltip tooltip-validation tooltip-sm">
-          <input id="calories" type="text" size="10" formControlName="calories">
-          <span class="tooltip-content">
-            Calories is required.
+    <div class="col-xs-4">
+      <label for="price" aria-haspopup="true" role="tooltip" class="tooltip tooltip-validation tooltip-sm">
+        <input id="price" type="number" size="10" name="price" [ngModel]="meal?.price">
+        <span class="tooltip-content">
+            price is required.
           </span>
-        </label>
-      </div>
-
+      </label>
     </div>
 
   </section>
 
-  <div *ngIf="allergies$ | async; else loading">
+  <div *ngIf="allergies">
 
     <section class="form-block">
-      <div formArrayName="allergies">
-
+      <div>
         <div class="form-group row drop">
           <div class="col-xs-12">
-            <label for="allergy">Allergies</label>
+            <label>Allergies</label>
           </div>
         </div>
 
         <div class="form-group row">
-          <div class="col-xs-4" *ngFor="let allergy of allergies.controls; let i = index" [formGroupName]="i">
+          <div class="col-xs-4" *ngFor="let allergy of allergies;let i = index;">
             <div class="checkbox-inline center">
-              <input [id]="allergiesArray[i].name" type="checkbox" formControlName="active">
-              <label [for]="allergiesArray[i].name">{{allergiesArray[i].name}}</label>
+              <input id="{{allergy.name}}" name="{{allergy.name}}" type="checkbox"
+                     [checked]="allergy?.checked" (change)="onCheckboxChange(allergy?.checked, i)">
+              <label [for]="allergy.name">{{allergy.name}}</label>
             </div>
           </div>
         </div>
-
       </div>
     </section>
-
   </div>
-  <ng-template #loading>Loading&hellip;</ng-template>
-
 </form>
+
