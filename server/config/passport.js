@@ -70,8 +70,11 @@ module.exports = function(passport) {
               name: req.body.name
             });
 
-            company.save();
-            return done(null, false, company);
+            company.save(function(err, res) {
+              company.attributes.id = res.insertId;
+              delete company.attributes.password;
+              return done(null, company.attributes);
+            });
           }
         });
       })

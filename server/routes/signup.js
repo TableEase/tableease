@@ -11,39 +11,35 @@ const Company = db.extend({
 module.exports = function(passport) {
   /* GET home page. */
   router.get("/", function(req, res, next) {
-    console.log(req.user);
     res.send({ formVals: req.flash("formVals")[0] || {}, messages: req.flash("signupMessage") });
   });
 
   router.post("/", function(req, res, next) {
-    // validateCompany(req, res, function() {
-    passport.authenticate("local-signup", {
-      successRedirect: "/api/signup", // redirect to the secure profile section
-      failureRedirect: "/api/signup/1", // redirect back to the signup page if there is an error
-      failureFlash: true // allow flash messages
-    }, function(req) {
-      next();
-    })(req, res, next);
-    // });
+    validateCompany(req, res, function() {
+      passport.authenticate("local-signup", {
+        successRedirect: "/api/signup", // redirect to the secure profile section
+        failureRedirect: "/api/signup", // redirect back to the signup page if there is an error
+        failureFlash: true // allow flash messages
+      })(req, res);
+    });
   });
   return router;
 };
 
-router.post("/update", function(req, res, next) {
+router.post("/update", myFunctions.isLoggedIn, function(req, res, next) {
   validateCompany(req, res, function() {
     const company = new Company({
       email: req.body.email,
       password: bcrypt.hashSync(req.body.password, null, null),  // use the generateHash function in our user model
-      phoneNumber: req.body.phoneNumber,
+      phone_number: req.body.phoneNumber,
       address: req.body.address,
       name: req.body.name,
       id: req.user.id
     });
-    company.save();
-    res.send({ user: req.user, message: req.flash("signupMessage") });
-
+    company.save(function(err, result) {
+      res.redirect("/api/signup");
+    });
   });
-
 });
 
 router.get("/restaurant/:id", function(req, res, next) {
@@ -78,6 +74,6 @@ function validateCompany(req, res, callback) {
     return res.redirect("/api/signup");
   }
   else {
-    return callback();
+    callback();
   }
 }
