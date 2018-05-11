@@ -56,6 +56,7 @@ const logout = require("./routes/logout");
 const admin = require("./routes/admin");
 const users = require("./routes/users");
 const allergies = require("./routes/allergies");
+const restaurant = require("./routes/restaurant");
 
 app.use("/api", router);
 
@@ -68,6 +69,7 @@ router.use("/logout", logout);
 router.use("/admin", admin);
 router.use("/users", users);
 router.use("/allergies", allergies);
+router.use("/restaurant", restaurant);
 
 app.get("/*", function(req, res, next) {
   res.sendFile(angularDir + "/index.html");

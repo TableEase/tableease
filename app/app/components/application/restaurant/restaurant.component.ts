@@ -1,4 +1,8 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
+import { Restaurant } from '../../../models/restaurants';
+import { RestaurantFormComponent } from './restaurant-form/restaurant-form.component';
+import { RestaurantService } from '../../../services/restaurant.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-restaurant',
@@ -6,10 +10,49 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./restaurant.component.css']
 })
 export class RestaurantComponent implements OnInit {
+  restaurants: Restaurant[];
+  @ViewChild(RestaurantFormComponent) restaurantForm: RestaurantFormComponent;
+  private restaurantToEdit: Restaurant;
 
-  constructor() { }
-
-  ngOnInit() {
+  constructor(private restaurantService: RestaurantService, private router: Router) {
   }
 
+  ngOnInit() {
+    this.getRestaurants();
+  }
+
+  getRestaurants() {
+    this.restaurantService.getRestaurants().subscribe((restaurants) => {
+      if (!restaurants['data'] && restaurants['messages']) {
+        console.log('Error: ');
+        console.log(restaurants);
+      }
+      this.restaurants = restaurants['data'];
+    });
+  }
+
+  onReadRestaurant(restaurant: Restaurant) {
+    this.restaurantToEdit = restaurant;
+  }
+
+  onUpdateRestaurant() {
+    this.restaurantForm.onUpdate().subscribe((restaurants) => {
+      this.restaurants = restaurants['data'];
+    });
+  }
+
+  onDeleteRestaurant(restaurant) {
+    this.restaurantService.deleteRestaurant(restaurant['id']).subscribe((res) => {
+      this.restaurants = res['data'];
+    });
+  }
+  onCreateRestaurant() {
+    this.restaurantForm.onSubmit().subscribe((res) => {
+      this.getRestaurants();
+    });
+  }
+
+  onClear() {
+    this.restaurantForm.clearForm();
+  }
 }

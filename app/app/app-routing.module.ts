@@ -10,6 +10,7 @@ import { DashComponent } from './components/application/dash/dash.component';
 import { NotFoundComponent } from './components/not-found/not-found.component';
 import { AuthGuard } from './private/auth.guard';
 import { RestaurantFormComponent } from './components/application/restaurant/restaurant-form/restaurant-form.component';
+import { RestaurantComponent } from './components/application/restaurant/restaurant.component';
 import { SignupComponent } from './components/auth/signup/signup.component';
 import { HttpClient } from 'selenium-webdriver/http';
 import { MealComponent } from './components/application/meal/meal.component';
@@ -22,7 +23,6 @@ const routes: Routes = [
   { path: 'login', component: LoginComponent },
   { path: 'signup', component: SignupComponent },
   { path: 'search', component: SplashComponent },
-  { path: 'restaurant', component: RestaurantFormComponent },
   {
     path: 'app',
     component: ApplicationComponent,
@@ -30,6 +30,7 @@ const routes: Routes = [
       { path: 'homepage', component: DashComponent },
       { path: 'settings', component: UserFormComponent },
       { path: 'menu', component: MealComponent },
+      { path: 'restaurant', component: RestaurantComponent },
       { path: '**', redirectTo: '/homepage', pathMatch: 'full' }
     ]
   },

@@ -42,6 +42,7 @@ import { RestaurantFormComponent } from './components/application/restaurant/res
 import { UserService } from './services/user.service';
 import { UserFormComponent } from './components/auth/signup/user-form/user-form.component';
 import { PassportService } from './services/passport.service';
+import { RestaurantService } from './services/restaurant.service';
 import { MealService } from './services/meal.service';
 import { MessagesComponent } from './components/form/messages/messages.component';
 
@@ -84,7 +85,7 @@ import { SliderModule } from 'primeng/slider';
     AppRoutingModule,
     HttpClientModule
   ],
-  providers: [AuthService, UserService, PassportService, MealService],
+  providers: [AuthService, UserService, PassportService, MealService, RestaurantService],
   bootstrap: [AppComponent]
 })
 export class AppModule {

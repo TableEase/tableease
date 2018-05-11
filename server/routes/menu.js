@@ -2,9 +2,8 @@ const express = require("express");
 const router = express.Router();
 const db = require("../config/db");
 const myFunctions = require("./myFunctions");
-const async = require("async");
 
-
+const restaurant = new db({ tableName: "restaurants" });
 const allergies = new db({ tableName: "allergies" });
 const Allergy = db.extend({
   tableName: "allergies"
@@ -32,9 +31,17 @@ router.get("/", myFunctions.isLoggedIn, function(req, res, next) {
 
 router.post("/add", myFunctions.isLoggedIn, function(req, res, next) {
   var companyId = req.user.id;
-  addFood(req, companyId, function(formFields) {
-    req.flash("menuMessage", "Added: " + JSON.stringify(formFields));
-    res.redirect("/api/menu");
+  var restaurantId = req.body.restaurant_id;
+  checkOwnerRestaurant(restaurantId, companyId, function(row) {
+    if (!row) {
+      res.send({ message: "You do not own that restaurant." });
+    }
+    else {
+      addFood(req, companyId, function(formFields) {
+        req.flash("menuMessage", "Added: " + JSON.stringify(formFields));
+        res.redirect("/api/menu");
+      });
+    }
   });
 });
 
@@ -44,7 +51,7 @@ router.get("/delete/:id", myFunctions.isLoggedIn, function(req, res, next) {
   var companyId = req.user.id;
   checkOwnerFood(foodId, companyId, function(row) {
     if (!row) {
-      res.render("action", { data: "You do not own that menu item OR it does not exist." });
+      res.send({ message: "You do not own that menu item OR it does not exist." });
     }
     else {
       getAllergiesForFood(foodId, function(checkedAllergies) {
@@ -77,22 +84,6 @@ router.post("/update/:id", myFunctions.isLoggedIn, function(req, res, next) {
   });
 });
 
-
-router.get("/:id", myFunctions.isLoggedIn, function(req, res, next) {
-  var companyId = req.user.id;
-  var foodId = req.params.id;
-  async.waterfall([
-    async.apply(getMenuItem, companyId, foodId),
-    getAllergiesFood,
-    function(row) {
-      getAllergies(function(allergies) {
-        res.render("food", { allergies: allergies, data: row });
-      });
-    }
-  ], function(err, row) {
-    res.render("action", { data: err });
-  });
-});
 module.exports = router;
 
 
@@ -164,7 +155,8 @@ function updateFood(req, companyId, checkedAllergies, callback) {
     name: formFields.name,
     description: formFields.description,
     price: formFields.price,
-    id: formFields.food_id
+    id: formFields.food_id,
+    restaurant_id: formFields.restaurant_id
   });
 
   food.save(function(err, rows, fields) {
@@ -181,7 +173,8 @@ function addFood(req, companyId, callback) {
     company_id: companyId,
     name: formFields.name,
     description: formFields.description,
-    price: formFields.price
+    price: formFields.price,
+    restaurant_id: formFields.restaurant_id
   });
   food.save(function(err, rows, fields) {
     if (err) throw err;
@@ -205,7 +198,7 @@ function addFoodAllergy(foodRowId, checkedAllergies) {
 }
 
 function getMenu(companyId, callback) {
-  var query = "select f.price, f.id as food_id, f.description, f.name, " +
+  var query = "select f.restaurant_id, f.price, f.id as food_id, f.description, f.name, " +
     "GROUP_CONCAT(DISTINCT a.id SEPARATOR ',') AS allergy_ids, " +
     "GROUP_CONCAT(DISTINCT a.name SEPARATOR ',') AS allergy_names, " +
     "GROUP_CONCAT(DISTINCT a.active SEPARATOR ',') AS allergy_active " +
@@ -216,7 +209,6 @@ function getMenu(companyId, callback) {
     callback(rows);
   });
 }
-
 
 function getMenuItem(companyId, foodId, callback) {
   food.find("first", { where: "company_id =" + companyId + " and id=" + foodId }, function(err, row, fields) {
@@ -282,6 +274,13 @@ function deleteFoodAllergies(foodId, companyId, checkedAllergies, callback) {
 
 function checkOwnerFood(foodId, companyId, callback) {
   food.find("first", { where: ["company_id=" + companyId + " and id=" + foodId] }, function(err, row, fields) {
+    if (err) throw err;
+    return callback(row);
+  });
+}
+
+function checkOwnerRestaurant(restaurantId, companyId, callback) {
+  restaurant.find("first", { where: ["company_id=" + companyId + " and id=" + restaurantId] }, function(err, row, fields) {
     if (err) throw err;
     return callback(row);
   });
