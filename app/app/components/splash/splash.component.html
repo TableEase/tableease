@@ -1,5 +1,7 @@
 <app-home></app-home>
 <div *ngIf="allDataFetched">
+  <app-map></app-map>
+
   <form class="form" #frm="ngForm" (ngSubmit)="onSearch()">
     <div>
       <section class="form-block">

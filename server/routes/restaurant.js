@@ -2,12 +2,14 @@ const express = require("express");
 const router = express.Router();
 const db = require("../config/db");
 const myFunctions = require("./myFunctions");
+const menuFunctions = require("./menu");
 
 
 const restaurant = new db({ tableName: "restaurants" });
 const Restaurant = db.extend({
   tableName: "restaurants"
 });
+const food = new db({ tableName: "food" });
 
 
 /* GET home page. */
@@ -36,13 +38,28 @@ router.get("/delete/:id", myFunctions.isLoggedIn, function(req, res, next) {
       res.render("action", { data: "You do not own that menu item OR it does not exist." });
     }
     else {
-      deleteRestaurant(restaurantId, companyId, function(result) {
-        res.redirect("/api/restaurant");
+      getFoodForRestaurant(restaurantId, function(foods) {
+
+        if (foods.length > 0) {
+          foods.forEach(function(food) {
+            let foodId = food["id"];
+            menuFunctions.getAllergiesForFood(foodId, function(checkedAllergies) {
+              menuFunctions.deleteFoodAllergies(foodId, companyId, checkedAllergies, function(result) {
+              });
+            });
+          });
+          deleteRestaurant(restaurantId, companyId, function(result) {
+          });
+        }
+        else {
+          deleteRestaurant(restaurantId, companyId, function(result) {
+          });
+        }
       });
+      res.redirect("/api/restaurant");
     }
   });
 });
-
 
 router.post("/update/:id", myFunctions.isLoggedIn, function(req, res, next) {
   var restaurantId = req.params.id;
@@ -65,6 +82,8 @@ function updateRestaurant(req, companyId, callback) {
   const formFields = req.body;
   const restaurant = new Restaurant({
     address: formFields.address,
+    lat: formFields.lat,
+    lon: formFields.lon,
     name: formFields.name,
     company_id: companyId,
     phone_number: formFields.phone_number,
@@ -80,6 +99,8 @@ function addRestaurant(req, companyId, callback) {
   const formFields = req.body;
   const restaurant = new Restaurant({
     address: formFields.address,
+    lat: formFields.lat,
+    lon: formFields.lon,
     name: formFields.name,
     company_id: companyId,
     phone_number: formFields.phone_number
@@ -112,5 +133,12 @@ function checkOwnerRestaurant(restaurantId, companyId, callback) {
   restaurant.find("first", { where: ["company_id=" + companyId + " and id=" + restaurantId] }, function(err, row, fields) {
     if (err) throw err;
     return callback(row);
+  });
+}
+
+function getFoodForRestaurant(restaurantId, callback) {
+  food.find("all", { where: "restaurant_id=" + restaurantId }, function(err, foods, fields) {
+    if (err) throw err;
+    return callback(foods);
   });
 }

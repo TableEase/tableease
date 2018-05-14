@@ -27,6 +27,9 @@ export class RestaurantComponent implements OnInit {
         console.log('Error: ');
         console.log(restaurants);
       }
+      restaurants['data'].forEach(function(restaurant) {
+        restaurant['address'] = { address: restaurant['address'], lat: restaurant['lat'], lon: restaurant['lon'] };
+      });
       this.restaurants = restaurants['data'];
     });
   }
@@ -37,15 +40,16 @@ export class RestaurantComponent implements OnInit {
 
   onUpdateRestaurant() {
     this.restaurantForm.onUpdate().subscribe((restaurants) => {
-      this.restaurants = restaurants['data'];
+      this.getRestaurants();
     });
   }
 
   onDeleteRestaurant(restaurant) {
     this.restaurantService.deleteRestaurant(restaurant['id']).subscribe((res) => {
-      this.restaurants = res['data'];
+      this.getRestaurants();
     });
   }
+
   onCreateRestaurant() {
     this.restaurantForm.onSubmit().subscribe((res) => {
       this.getRestaurants();

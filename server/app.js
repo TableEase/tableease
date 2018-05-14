@@ -51,12 +51,12 @@ const index = require("./routes/index");
 const login = require("./routes/login")(passport);
 const signup = require("./routes/signup")(passport);
 const profile = require("./routes/profile");
-const menu = require("./routes/menu");
 const logout = require("./routes/logout");
 const admin = require("./routes/admin");
 const users = require("./routes/users");
 const allergies = require("./routes/allergies");
 const restaurant = require("./routes/restaurant");
+const menu = require("./routes/menu");
 
 app.use("/api", router);
 
@@ -64,12 +64,14 @@ router.use("/", index);
 router.use("/login", login);
 router.use("/signup", signup);
 router.use("/profile", profile);
-router.use("/menu", menu);
+
 router.use("/logout", logout);
 router.use("/admin", admin);
 router.use("/users", users);
 router.use("/allergies", allergies);
 router.use("/restaurant", restaurant);
+router.use("/menu", menu);
+
 
 app.get("/*", function(req, res, next) {
   res.sendFile(angularDir + "/index.html");

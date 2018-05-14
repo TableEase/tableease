@@ -11,7 +11,7 @@
 
         <clr-stack-label>{{restaurant.name}}</clr-stack-label>
         <div class="flexMe">
-          <clr-stack-content>{{restaurant.address}}</clr-stack-content>
+          <clr-stack-content>{{restaurant.address.address}}</clr-stack-content>
           <clr-stack-content>
             <a (click)="editModal = true; onReadRestaurant(restaurant)">
               <clr-icon shape="pencil"></clr-icon>
@@ -49,14 +49,15 @@
   <h4 class="modal-body" *ngIf="doubleCheck">Are you sure you want to remove {{restaurantToEdit.name}}?</h4>
   <div class="modal-footer">
     <button type="button" class="btn btn-secondary btn-sm" (click)="doubleCheck=false; editModal=true">Return</button>
-    <button type="button" class="btn btn-danger btn-sm" (click)="doubleCheck=false; onDeleteRestaurant(restaurantToEdit)">
+    <button type="button" class="btn btn-danger btn-sm"
+            (click)="doubleCheck=false; onDeleteRestaurant(restaurantToEdit)">
       Confirm
     </button>
   </div>
 </clr-modal>
 
 <clr-modal [(clrModalOpen)]="addModal">
-  <h3 class="modal-title" *ngIf="addModal">Add A Dish</h3>
+  <h3 class="modal-title" *ngIf="addModal">Add A Restaurant</h3>
   <div class="modal-body">
     <app-restaurant-form *ngIf="addModal"></app-restaurant-form>
   </div>

@@ -84,8 +84,6 @@ router.post("/update/:id", myFunctions.isLoggedIn, function(req, res, next) {
   });
 });
 
-module.exports = router;
-
 
 // mysql functions related to register
 
@@ -126,11 +124,7 @@ function setAllergyList(allergies, row, callback) {
   var allergyIds = [];
 
   allergies.forEach(function(allergy) {
-    // console.log(allergy)
     convertIdAllergy(allergy.allergy_id, function(name) {
-      //   allergyList.push(name);
-      //   allergyIds.push(allergy.allergy_id);
-      //   callback1();
     });
   }, function(err) {
     row.allergyNames = allergyList;
@@ -285,3 +279,5 @@ function checkOwnerRestaurant(restaurantId, companyId, callback) {
     return callback(row);
   });
 }
+module.exports = router;
+// module.exports = {getAllergiesForFood: getAllergiesForFood, deleteFoodAllergies: deleteFoodAllergies };

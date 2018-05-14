@@ -47,6 +47,9 @@ import { MealService } from './services/meal.service';
 import { MessagesComponent } from './components/form/messages/messages.component';
 
 import { SliderModule } from 'primeng/slider';
+import { AddressComponent } from './components/form/address/address.component';
+import { AgmCoreModule } from '@agm/core';
+import { MapComponent } from './components/form/map/map.component';
 
 @NgModule({
   declarations: [
@@ -70,7 +73,9 @@ import { SliderModule } from 'primeng/slider';
     MealDetailComponent,
     MealFormComponent,
     MealItemComponent,
-    MessagesComponent
+    MessagesComponent,
+    AddressComponent,
+    MapComponent
   ],
   imports: [
     SliderModule,
@@ -79,7 +84,7 @@ import { SliderModule } from 'primeng/slider';
     FormsModule,
     BrowserAnimationsModule,
     ReactiveFormsModule,
-    AngularFireModule.initializeApp(environment.firebase, 'tableease'),
+    AgmCoreModule.forRoot({ apiKey: 'AIzaSyAZuS7tPa0NZZ5citvjDqzFxJvKngke7Gc', libraries: ['places'] }),
     AngularFirestoreModule,
     AngularFireAuthModule,
     AppRoutingModule,
