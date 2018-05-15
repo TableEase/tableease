@@ -1,0 +1,22 @@
+<div *ngIf="allDataFetched">
+  <agm-map (mapClick)="mapClicked($event)" [latitude]="latitude" [longitude]="longitude" [scrollwheel]="false"
+           [zoom]="zoom">
+
+    <agm-marker
+      *ngFor="let m of markers; let i = index"
+      (markerClick)="clickedMarker(m, infoWindow, i)"
+      [latitude]="m.lat"
+      [longitude]="m.lon">
+
+      <agm-info-window #infoWindow>
+
+        <div><strong>Name:</strong> {{m.name}}</div>
+        <div><strong>Address:</strong> {{m.address}}</div>
+        <div><strong>Phone Number: </strong> {{m.phone_number}}</div>
+
+      </agm-info-window>
+
+    </agm-marker>
+
+  </agm-map>
+</div>
