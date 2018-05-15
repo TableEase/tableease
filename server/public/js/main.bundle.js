@@ -547,7 +547,7 @@ module.exports = ".flexMe {\r\n  display: -webkit-box;\r\n  display: -ms-flexbox
 /***/ "./app/app/components/application/meal/meal.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<div *ngIf=\"allDataFetched\">\r\n  <button *ngIf=\"meals\" class=\"btn btn-primary\" (click)=\"addModal=true\">Add Item</button>\r\n  Restaurant:\r\n  <select (change)=\"getMenu()\" [(ngModel)]=\"selectedRestaurant\" required>\r\n    <option *ngFor=\"let r of restaurants\" [ngValue]=\"r\">{{r.name}} - {{r.address}}</option>\r\n  </select>\r\n\r\n  <clr-stack-view>\r\n    <clr-stack-header class=\"cap\">\r\n    </clr-stack-header>\r\n    <div *ngFor=\"let meal of meals\">\r\n\r\n      <clr-stack-block>\r\n\r\n        <clr-stack-label>{{meal.name}}</clr-stack-label>\r\n        <div class=\"flexMe\">\r\n          <clr-stack-content>{{meal.description}}</clr-stack-content>\r\n          <clr-stack-content>\r\n            <a (click)=\"editModal = true; onReadMeal(meal)\">\r\n              <clr-icon shape=\"pencil\"></clr-icon>\r\n            </a>\r\n          </clr-stack-content>\r\n        </div>\r\n\r\n        <clr-stack-block>\r\n          <clr-stack-label>Allergies</clr-stack-label>\r\n          <clr-stack-content *ngIf=\"meal.allergies.length > 0\">\r\n            <span *ngFor=\"let allergy of meal.allergies;let last=last;let i = index\">{{allergy.name}}{{last ? '' : (i==meal.allergies.length-2) ? ' and ' : ', '}}</span>\r\n          </clr-stack-content>\r\n        </clr-stack-block>\r\n\r\n        <clr-stack-block>\r\n          <clr-stack-label>Price</clr-stack-label>\r\n          <clr-stack-content>${{meal.price}}</clr-stack-content>\r\n        </clr-stack-block>\r\n\r\n      </clr-stack-block>\r\n\r\n    </div>\r\n\r\n  </clr-stack-view>\r\n\r\n</div>\r\n\r\n<clr-modal [(clrModalOpen)]=\"editModal\">\r\n  <h3 class=\"modal-title\" *ngIf=\"editModal\">{{mealToEdit.name}}</h3>\r\n  <div class=\"modal-body\">\r\n    <app-meal-form *ngIf=\"editModal\" [meal]=\"mealToEdit\"></app-meal-form>\r\n  </div>\r\n  <div class=\"modal-footer pr-0\">\r\n    <button type=\"button\" class=\"btn btn-outline btn-sm\" (click)=\"editModal = false; onUpdateMeal()\">Update\r\n    </button>\r\n    <button type=\"button\" class=\"btn btn-danger btn-sm\" (click)=\"editModal = false; doubleCheck=true\">Delete</button>\r\n  </div>\r\n</clr-modal>\r\n\r\n<clr-modal [(clrModalOpen)]=\"doubleCheck\">\r\n  <h3 class=\"modal-title\">Confirm delete confirmation</h3>\r\n  <h4 class=\"modal-body\" *ngIf=\"doubleCheck\">Are you sure you want to remove {{mealToEdit.name}}?</h4>\r\n  <div class=\"modal-footer\">\r\n    <button type=\"button\" class=\"btn btn-secondary btn-sm\" (click)=\"doubleCheck=false; editModal=true\">Return</button>\r\n    <button type=\"button\" class=\"btn btn-danger btn-sm\" (click)=\"doubleCheck=false; onDeleteMeal(mealToEdit)\">Confirm\r\n    </button>\r\n  </div>\r\n</clr-modal>\r\n\r\n<clr-modal [(clrModalOpen)]=\"addModal\">\r\n  <h3 class=\"modal-title\" *ngIf=\"addModal\">Add A Dish</h3>\r\n  <div class=\"modal-body\">\r\n    <app-meal-form *ngIf=\"addModal\"></app-meal-form>\r\n  </div>\r\n\r\n  <div class=\"modal-footer pr-0\">\r\n    <button type=\"button\" class=\"btn btn-outline btn-sm\" (click)=\"addModal = false; onCreateMeal()\">Submit</button>\r\n    <button type=\"button\" class=\"btn btn-warning btn-sm\" (click)=\"onClear()\">Clear</button>\r\n  </div>\r\n\r\n\r\n</clr-modal>\r\n"
+module.exports = "<div *ngIf=\"allDataFetched\">\r\n  <div *ngIf=\"restaurantExists;then restaurant else norestaurant\">\r\n  </div>\r\n</div>\r\n\r\n<ng-template #norestaurant>\r\n  <div>First <a routerLink=\"/app/restaurant\"> create a restaurant</a> before creating a menu.</div>\r\n</ng-template>\r\n<ng-template #restaurant>\r\n  <button *ngIf=\"meals\" class=\"btn btn-primary\" (click)=\"addModal=true\">Add Item</button>\r\n  Restaurant:\r\n  <select (change)=\"getMenu()\" [(ngModel)]=\"selectedRestaurant\" required>\r\n    <option *ngFor=\"let r of restaurants\" [ngValue]=\"r\">{{r.name}} - {{r.address}}</option>\r\n  </select>\r\n\r\n  <clr-stack-view>\r\n    <clr-stack-header class=\"cap\">\r\n    </clr-stack-header>\r\n    <div *ngFor=\"let meal of meals\">\r\n\r\n      <clr-stack-block>\r\n\r\n        <clr-stack-label>{{meal.name}}</clr-stack-label>\r\n        <div class=\"flexMe\">\r\n          <clr-stack-content>{{meal.description}}</clr-stack-content>\r\n          <clr-stack-content>\r\n            <a (click)=\"editModal = true; onReadMeal(meal)\">\r\n              <clr-icon shape=\"pencil\"></clr-icon>\r\n            </a>\r\n          </clr-stack-content>\r\n        </div>\r\n\r\n        <clr-stack-block>\r\n          <clr-stack-label>Allergies</clr-stack-label>\r\n          <clr-stack-content *ngIf=\"meal.allergies.length > 0\">\r\n            <span *ngFor=\"let allergy of meal.allergies;let last=last;let i = index\">{{allergy.name}}{{last ? '' : (i==meal.allergies.length-2) ? ' and ' : ', '}}</span>\r\n          </clr-stack-content>\r\n        </clr-stack-block>\r\n\r\n        <clr-stack-block>\r\n          <clr-stack-label>Price</clr-stack-label>\r\n          <clr-stack-content>${{meal.price}}</clr-stack-content>\r\n        </clr-stack-block>\r\n\r\n      </clr-stack-block>\r\n\r\n    </div>\r\n\r\n  </clr-stack-view>\r\n</ng-template>\r\n\r\n<clr-modal [(clrModalOpen)]=\"editModal\">\r\n  <h3 class=\"modal-title\" *ngIf=\"editModal\">{{mealToEdit.name}}</h3>\r\n  <div class=\"modal-body\">\r\n    <app-meal-form *ngIf=\"editModal\" [meal]=\"mealToEdit\"></app-meal-form>\r\n  </div>\r\n  <div class=\"modal-footer pr-0\">\r\n    <button type=\"button\" class=\"btn btn-outline btn-sm\" (click)=\"editModal = false; onUpdateMeal()\">Update\r\n    </button>\r\n    <button type=\"button\" class=\"btn btn-danger btn-sm\" (click)=\"editModal = false; doubleCheck=true\">Delete</button>\r\n  </div>\r\n</clr-modal>\r\n\r\n<clr-modal [(clrModalOpen)]=\"doubleCheck\">\r\n  <h3 class=\"modal-title\">Confirm delete confirmation</h3>\r\n  <h4 class=\"modal-body\" *ngIf=\"doubleCheck\">Are you sure you want to remove {{mealToEdit.name}}?</h4>\r\n  <div class=\"modal-footer\">\r\n    <button type=\"button\" class=\"btn btn-secondary btn-sm\" (click)=\"doubleCheck=false; editModal=true\">Return</button>\r\n    <button type=\"button\" class=\"btn btn-danger btn-sm\" (click)=\"doubleCheck=false; onDeleteMeal(mealToEdit)\">Confirm\r\n    </button>\r\n  </div>\r\n</clr-modal>\r\n\r\n<clr-modal [(clrModalOpen)]=\"addModal\">\r\n  <h3 class=\"modal-title\" *ngIf=\"addModal\">Add A Dish</h3>\r\n  <div class=\"modal-body\">\r\n    <app-meal-form *ngIf=\"addModal\"></app-meal-form>\r\n  </div>\r\n\r\n  <div class=\"modal-footer pr-0\">\r\n    <button type=\"button\" class=\"btn btn-outline btn-sm\" (click)=\"addModal = false; onCreateMeal()\">Submit</button>\r\n    <button type=\"button\" class=\"btn btn-warning btn-sm\" (click)=\"onClear()\">Clear</button>\r\n  </div>\r\n\r\n</clr-modal>\r\n\r\n"
 
 /***/ }),
 
@@ -578,6 +578,7 @@ var MealComponent = /** @class */ (function () {
         this.router = router;
         this.restaurantService = restaurantService;
         this.allDataFetched = false;
+        this.restaurantExists = false;
     }
     MealComponent.prototype.ngOnInit = function () {
         this.getRestaurants();
@@ -598,11 +599,12 @@ var MealComponent = /** @class */ (function () {
             if (!menu['data'] && menu['messages']) {
                 _this.router.navigate(['/login']);
             }
-            var selRes = _this.selectedRestaurant.id;
-            var mealsForRestaurant = menu['data'].filter(function (restaurant) {
-                return restaurant.restaurant_id === selRes;
-            });
-            _this.meals = mealsForRestaurant;
+            if (_this.restaurantExists) {
+                var selRes_1 = _this.selectedRestaurant.id;
+                _this.meals = menu['data'].filter(function (restaurant) {
+                    return restaurant.restaurant_id === selRes_1;
+                });
+            }
         });
     };
     MealComponent.prototype.getRestaurants = function () {
@@ -612,6 +614,10 @@ var MealComponent = /** @class */ (function () {
                 _this.router.navigate(['/login']);
             }
             _this.restaurants = restaurants['data'];
+            if (_this.restaurants.length > 0) {
+                _this.selectedRestaurant = restaurants['data'][0];
+                _this.restaurantExists = true;
+            }
             _this.selectedRestaurant = restaurants['data'][0];
             _this.allDataFetched = true;
             _this.getMenu();
@@ -1403,7 +1409,7 @@ module.exports = "agm-map {\r\n  height: 300px;\r\n  width: 50%;\r\n}\r\n"
 /***/ "./app/app/components/form/map/map.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<agm-map [latitude]=\"latitude\" [longitude]=\"longitude\" [scrollwheel]=\"false\" [zoom]=\"zoom\">\n\n  <agm-marker\n    *ngFor=\"let m of markers; let i = index\"\n    (markerClick)=\"clickedMarker(m.label, i)\"\n    [latitude]=\"m.lat\"\n    [longitude]=\"m.lng\">\n\n    <agm-info-window>\n      <strong>InfoWindow content</strong>\n    </agm-info-window>\n\n  </agm-marker>\n\n</agm-map>\n"
+module.exports = "<div *ngIf=\"allDataFetched\">\n  <agm-map (mapClick)=\"mapClicked($event)\" [latitude]=\"latitude\" [longitude]=\"longitude\" [scrollwheel]=\"false\"\n           [zoom]=\"zoom\">\n\n    <agm-marker\n      *ngFor=\"let m of markers; let i = index\"\n      (markerClick)=\"clickedMarker(m, infoWindow, i)\"\n      [latitude]=\"m.lat\"\n      [longitude]=\"m.lon\">\n\n      <agm-info-window #infoWindow>\n\n        <div><strong>Name:</strong> {{m.name}}</div>\n        <div><strong>Address:</strong> {{m.address}}</div>\n        <div><strong>Phone Number: </strong> {{m.phone_number}}</div>\n\n      </agm-info-window>\n\n    </agm-marker>\n\n  </agm-map>\n</div>\n"
 
 /***/ }),
 
@@ -1429,38 +1435,47 @@ var MapComponent = /** @class */ (function () {
         this.restaurantService = restaurantService;
         this.markers = [];
         this.restaurants = [];
+        this.allDataFetched = false;
+        this.infoWindowOpened = null;
     }
     MapComponent.prototype.ngOnInit = function () {
-        this.restaurantService.getRestaurants().subscribe(function (restaurants) {
-            console.log(restaurants);
-        });
         // set google maps defaults
         this.zoom = 4;
         this.latitude = 39.8282;
         this.longitude = -98.5795;
         // set current position
         this.setCurrentPosition();
-        this.markers = [
-            {
-                lat: 40.7829,
-                lng: -74
-            },
-            {
-                lat: 51.673858,
-                lng: 7.815982
-            },
-            {
-                lat: 51.373858,
-                lng: 7.215982
-            },
-            {
-                lat: 51.723858,
-                lng: 7.895982
-            }
-        ];
+        this.setMarkers();
     };
-    MapComponent.prototype.clickedMarker = function (label, index) {
-        console.log("clicked the marker: " + (label || index));
+    MapComponent.prototype.setMarkers = function () {
+        var _this = this;
+        var markers = this.markers;
+        this.restaurantService.getRestaurants().subscribe(function (restaurants) {
+            restaurants['data'].forEach(function (restaurant) {
+                markers.push({
+                    lat: restaurant['lat'],
+                    lon: restaurant['lon'],
+                    name: restaurant['name'],
+                    address: restaurant['address'],
+                    phone_number: restaurant['phone_number']
+                });
+            });
+            _this.allDataFetched = true;
+            console.log(markers);
+            console.log(_this.markers);
+        });
+    };
+    MapComponent.prototype.clickedMarker = function (label, infoWindow, index) {
+        if (this.infoWindowOpened === infoWindow) {
+            return;
+        }
+        if (this.infoWindowOpened !== null) {
+            this.infoWindowOpened.close();
+        }
+        this.infoWindowOpened = infoWindow;
+    };
+    MapComponent.prototype.mapClicked = function ($event) {
+        this.infoWindowOpened.close();
     };
     MapComponent.prototype.setCurrentPosition = function () {
         var _this = this;
@@ -1668,7 +1683,7 @@ module.exports = ""
 /***/ "./app/app/components/splash/splash.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<app-home></app-home>\r\n<div *ngIf=\"allDataFetched\">\r\n  <app-map></app-map>\r\n\r\n  <form class=\"form\" #frm=\"ngForm\" (ngSubmit)=\"onSearch()\">\r\n    <div>\r\n      <section class=\"form-block\">\r\n        <div>\r\n          <div class=\"form-group row drop\">\r\n            <div class=\"col-xs-5\">\r\n              <label>Allergies</label>\r\n            </div>\r\n          </div>\r\n\r\n          <div class=\"form-group row\">\r\n            <div class=\"col-xs-1\" *ngFor=\"let allergy of allergies;let i = index;\">\r\n              <div class=\"checkbox-inline center\">\r\n                <input id=\"{{allergy.name}}\" name=\"{{allergy.name}}\" type=\"checkbox\"\r\n                       [checked]=\"allergy?.checked\" (change)=\"onCheckboxChange(allergy?.checked, i)\">\r\n                <label [for]=\"allergy.name\">{{allergy.name}}</label>\r\n              </div>\r\n            </div>\r\n          </div>\r\n        </div>\r\n\r\n\r\n        <div class=\"form-group row drop\">\r\n          <div class=\"col-xs-5\">\r\n            <label>Price Range: {{rangeValues[0] + ' - ' + rangeValues[1]}}</label>\r\n          </div>\r\n        </div>\r\n\r\n\r\n        <div class=\"col-xs-1\">\r\n          <div class=\"center\">\r\n            <p-slider name=\"price\" [ngModel]=\"rangeValues\" [style]=\"{'width':'200px'}\" range=\"true\"></p-slider>\r\n          </div>\r\n        </div>\r\n\r\n\r\n      </section>\r\n    </div>\r\n    <button type=\"submit\" class=\"btn btn-primary\" [disabled]=\"!frm.valid\">Search</button>\r\n  </form>\r\n\r\n  <clr-stack-view>\r\n    <clr-stack-header class=\"cap\">\r\n    </clr-stack-header>\r\n    <div *ngFor=\"let meal of meals\">\r\n\r\n\r\n      <clr-stack-block>\r\n\r\n        <clr-stack-label>{{meal.name}}</clr-stack-label>\r\n        <div class=\"flexMe\">\r\n          <clr-stack-content>{{meal.description}}</clr-stack-content>\r\n          <clr-stack-content>\r\n          </clr-stack-content>\r\n        </div>\r\n\r\n        <clr-stack-block>\r\n          <clr-stack-label>Allergies</clr-stack-label>\r\n          <clr-stack-content *ngIf=\"meal.allergies.length > 0\">\r\n            <span *ngFor=\"let allergy of meal.allergies;let last=last;let i = index\">{{allergy.name}}{{last ? '' : (i==meal.allergies.length-2) ? ' and ' : ', '}}</span>\r\n          </clr-stack-content>\r\n        </clr-stack-block>\r\n\r\n        <clr-stack-block>\r\n          <clr-stack-label>Price</clr-stack-label>\r\n          <clr-stack-content>${{meal.price}}</clr-stack-content>\r\n        </clr-stack-block>\r\n\r\n      </clr-stack-block>\r\n\r\n    </div>\r\n\r\n  </clr-stack-view>\r\n</div>\r\n"
+module.exports = "<app-home></app-home>\r\n<div *ngIf=\"allDataFetched\">\r\n\r\n  <form class=\"form\" #frm=\"ngForm\" (ngSubmit)=\"onSearch()\" style=\"width: 50%;float: left\">\r\n\r\n    <div>\r\n      <label>Allergies</label>\r\n      <div class=\"col-xs-4\" *ngFor=\"let allergy of allergies;let i = index;\">\r\n        <div class=\"checkbox-inline center\">\r\n          <input name=\"{{allergy.name}}\" type=\"checkbox\"\r\n                 [checked]=\"allergy?.checked\" (change)=\"onCheckboxChange(allergy?.checked, i)\">\r\n          <label [for]=\"allergy.name\">{{allergy.name}}</label>\r\n        </div>\r\n      </div>\r\n    </div>\r\n\r\n\r\n    <div>\r\n      <label>Price Range: {{rangeValues[0] + ' - ' + rangeValues[1]}}</label>\r\n      <p-slider name=\"price\" [ngModel]=\"rangeValues\" [style]=\"{'width':'200px'}\" range=\"true\"></p-slider>\r\n    </div>\r\n\r\n\r\n    <button type=\"submit\" class=\"btn btn-primary\" [disabled]=\"!frm.valid\">Search</button>\r\n  </form>\r\n  <app-map></app-map>\r\n  <hr>\r\n  <h1>Results</h1>\r\n  <clr-stack-view>\r\n    <clr-stack-header class=\"cap\">\r\n    </clr-stack-header>\r\n    <div *ngFor=\"let meal of meals\">\r\n\r\n\r\n      <clr-stack-block>\r\n\r\n        <clr-stack-label>{{meal.name}}</clr-stack-label>\r\n        <div class=\"flexMe\">\r\n          <clr-stack-content>{{meal.description}}</clr-stack-content>\r\n          <clr-stack-content>\r\n          </clr-stack-content>\r\n        </div>\r\n\r\n        <clr-stack-block>\r\n          <clr-stack-label>Allergies</clr-stack-label>\r\n          <clr-stack-content *ngIf=\"meal.allergies.length > 0\">\r\n            <span *ngFor=\"let allergy of meal.allergies;let last=last;let i = index\">{{allergy.name}}{{last ? '' : (i==meal.allergies.length-2) ? ' and ' : ', '}}</span>\r\n          </clr-stack-content>\r\n        </clr-stack-block>\r\n\r\n        <clr-stack-block>\r\n          <clr-stack-label>Price</clr-stack-label>\r\n          <clr-stack-content>${{meal.price}}</clr-stack-content>\r\n        </clr-stack-block>\r\n\r\n      </clr-stack-block>\r\n\r\n    </div>\r\n\r\n  </clr-stack-view>\r\n</div>\r\n"
 
 /***/ }),
 

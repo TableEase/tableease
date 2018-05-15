@@ -1,5 +1,7 @@
 export interface Marker {
   lat: number;
-  lng: number;
-  label?: string;
+  lon: number;
+  name: string;
+  address: string;
+  phone_number: number;
 }

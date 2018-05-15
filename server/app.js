@@ -72,7 +72,6 @@ router.use("/allergies", allergies);
 router.use("/restaurant", restaurant);
 router.use("/menu", menu);
 
-
 app.get("/*", function(req, res, next) {
   res.sendFile(angularDir + "/index.html");
 });

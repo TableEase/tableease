@@ -1,4 +1,12 @@
 <div *ngIf="allDataFetched">
+  <div *ngIf="restaurantExists;then restaurant else norestaurant">
+  </div>
+</div>
+
+<ng-template #norestaurant>
+  <div>First <a routerLink="/app/restaurant"> create a restaurant</a> before creating a menu.</div>
+</ng-template>
+<ng-template #restaurant>
   <button *ngIf="meals" class="btn btn-primary" (click)="addModal=true">Add Item</button>
   Restaurant:
   <select (change)="getMenu()" [(ngModel)]="selectedRestaurant" required>
@@ -39,8 +47,7 @@
     </div>
 
   </clr-stack-view>
-
-</div>
+</ng-template>
 
 <clr-modal [(clrModalOpen)]="editModal">
   <h3 class="modal-title" *ngIf="editModal">{{mealToEdit.name}}</h3>
@@ -75,5 +82,5 @@
     <button type="button" class="btn btn-warning btn-sm" (click)="onClear()">Clear</button>
   </div>
 
-
 </clr-modal>
+

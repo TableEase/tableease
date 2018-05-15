@@ -21,6 +21,7 @@ export class MealComponent implements OnInit {
   selectedRestaurant: Restaurant;
   private mealToEdit: Meal;
   allDataFetched = false;
+  restaurantExists = false;
 
   constructor(private mealService: MealService, private router: Router, private restaurantService: RestaurantService) {
   }
@@ -45,14 +46,14 @@ export class MealComponent implements OnInit {
       if (!menu['data'] && menu['messages']) {
         this.router.navigate(['/login']);
       }
-      const selRes = this.selectedRestaurant.id;
-      const mealsForRestaurant = menu['data'].filter(function(restaurant) {
-        return restaurant.restaurant_id === selRes;
-      });
-
-      this.meals = mealsForRestaurant;
-
+      if (this.restaurantExists) {
+        const selRes = this.selectedRestaurant.id;
+        this.meals = menu['data'].filter(function(restaurant) {
+          return restaurant.restaurant_id === selRes;
+        });
+      }
     });
+
   }
 
   getRestaurants() {
@@ -61,6 +62,10 @@ export class MealComponent implements OnInit {
         this.router.navigate(['/login']);
       }
       this.restaurants = restaurants['data'];
+      if (this.restaurants.length > 0) {
+        this.selectedRestaurant = restaurants['data'][0];
+        this.restaurantExists = true;
+      }
       this.selectedRestaurant = restaurants['data'][0];
       this.allDataFetched = true;
       this.getMenu();

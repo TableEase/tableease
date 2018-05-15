@@ -2,7 +2,7 @@ const express = require("express");
 const router = express.Router();
 const db = require("../config/db");
 const myFunctions = require("./myFunctions");
-const menuFunctions = require("./menu");
+const foodAllergyFunctions = require("./functions/foodAllergiesController");
 
 
 const restaurant = new db({ tableName: "restaurants" });
@@ -38,25 +38,9 @@ router.get("/delete/:id", myFunctions.isLoggedIn, function(req, res, next) {
       res.render("action", { data: "You do not own that menu item OR it does not exist." });
     }
     else {
-      getFoodForRestaurant(restaurantId, function(foods) {
-
-        if (foods.length > 0) {
-          foods.forEach(function(food) {
-            let foodId = food["id"];
-            menuFunctions.getAllergiesForFood(foodId, function(checkedAllergies) {
-              menuFunctions.deleteFoodAllergies(foodId, companyId, checkedAllergies, function(result) {
-              });
-            });
-          });
-          deleteRestaurant(restaurantId, companyId, function(result) {
-          });
-        }
-        else {
-          deleteRestaurant(restaurantId, companyId, function(result) {
-          });
-        }
+      deleteRestaurant(restaurantId, companyId, function(result) {
+        res.redirect("/api/restaurant");
       });
-      res.redirect("/api/restaurant");
     }
   });
 });
@@ -122,12 +106,13 @@ function getRestaurants(companyId, callback) {
 }
 
 
-function deleteRestaurant(restaurantId, companyId) {
+function deleteRestaurant(restaurantId, companyId, callback) {
   restaurant.remove("id=" + restaurantId + " and company_id=" + companyId, function(err, res, fields) {
     if (err) throw err;
-    return res;
+    return callback(res);
   });
 }
+
 
 function checkOwnerRestaurant(restaurantId, companyId, callback) {
   restaurant.find("first", { where: ["company_id=" + companyId + " and id=" + restaurantId] }, function(err, row, fields) {

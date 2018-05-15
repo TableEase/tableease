@@ -4,7 +4,6 @@ import { AllergiesService } from '../../services/allergies.service';
 import { MealService } from '../../services/meal.service';
 import { Router } from '@angular/router';
 import { Meal } from '../../models/meal';
-import { NgForm } from '@angular/forms';
 
 
 @Component({
