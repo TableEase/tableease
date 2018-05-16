@@ -1,12 +1,11 @@
 const express = require("express");
-const router = express.Router();
+const router = express.Router({});
 
 const myFunctions = require("./myFunctions");
 const foodFunctions = require("./functions/foodController");
 const allergyFunctions = require("./functions/allergiesController");
 const restaurantFunctions = require("./functions/restaurantController");
 const foodAllergiesFunctions = require("./functions/foodAllergiesController");
-
 
 /* GET home page. */
 router.get("/", myFunctions.isLoggedIn, function(req, res, next) {
@@ -18,6 +17,14 @@ router.get("/", myFunctions.isLoggedIn, function(req, res, next) {
   });
 });
 
+router.get("/all", function(req, res, next) {
+  const companyId = req.user.id;
+  foodFunctions.getMenuAll(companyId, function(fullMenu) {
+    allergyFunctions.createAllergies(fullMenu, function(fullMenu) {
+      res.send({ data: fullMenu });
+    });
+  });
+});
 
 router.post("/add", myFunctions.isLoggedIn, function(req, res, next) {
   const companyId = req.user.id;
@@ -50,6 +57,7 @@ router.get("/delete/:id", myFunctions.isLoggedIn, function(req, res, next) {
     }
   });
 });
+
 
 router.post("/update/:id", myFunctions.isLoggedIn, function(req, res, next) {
   const foodId = req.params.id;

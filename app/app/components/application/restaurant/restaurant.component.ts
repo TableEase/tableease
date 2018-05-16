@@ -27,9 +27,6 @@ export class RestaurantComponent implements OnInit {
         console.log('Error: ');
         console.log(restaurants);
       }
-      restaurants['data'].forEach(function(restaurant) {
-        restaurant['address'] = { address: restaurant['address'], lat: restaurant['lat'], lon: restaurant['lon'] };
-      });
       this.restaurants = restaurants['data'];
     });
   }

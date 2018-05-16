@@ -42,7 +42,6 @@ var signup_component_1 = __webpack_require__("./app/app/components/auth/signup/s
 var meal_component_1 = __webpack_require__("./app/app/components/application/meal/meal.component.ts");
 var splash_component_1 = __webpack_require__("./app/app/components/splash/splash.component.ts");
 var user_form_component_1 = __webpack_require__("./app/app/components/auth/signup/user-form/user-form.component.ts");
-// import { AuthGuard } from '../../private/auth.guard';
 var routes = [
     { path: '', component: home_component_1.HomeComponent },
     { path: 'login', component: login_component_1.LoginComponent },
@@ -141,8 +140,6 @@ var platform_browser_1 = __webpack_require__("./node_modules/@angular/platform-b
 var animations_1 = __webpack_require__("./node_modules/@angular/platform-browser/esm5/animations.js");
 var angular_1 = __webpack_require__("./node_modules/@clr/angular/esm5/clr-angular.js");
 var forms_1 = __webpack_require__("./node_modules/@angular/forms/esm5/forms.js");
-var firestore_1 = __webpack_require__("./node_modules/angularfire2/firestore/index.js");
-var auth_1 = __webpack_require__("./node_modules/angularfire2/auth/index.js");
 var app_routing_module_1 = __webpack_require__("./app/app/app-routing.module.ts");
 var http_1 = __webpack_require__("./node_modules/@angular/common/esm5/http.js");
 var app_component_1 = __webpack_require__("./app/app/app.component.ts");
@@ -162,7 +159,6 @@ var splash_component_1 = __webpack_require__("./app/app/components/splash/splash
 var application_component_1 = __webpack_require__("./app/app/components/application/application.component.ts");
 var dash_component_1 = __webpack_require__("./app/app/components/application/dash/dash.component.ts");
 var not_found_component_1 = __webpack_require__("./app/app/components/not-found/not-found.component.ts");
-var auth_service_1 = __webpack_require__("./app/app/services/auth.service.ts");
 var restaurant_component_1 = __webpack_require__("./app/app/components/application/restaurant/restaurant.component.ts");
 var restaurant_form_component_1 = __webpack_require__("./app/app/components/application/restaurant/restaurant-form/restaurant-form.component.ts");
 var user_service_1 = __webpack_require__("./app/app/services/user.service.ts");
@@ -213,12 +209,10 @@ var AppModule = /** @class */ (function () {
                 animations_1.BrowserAnimationsModule,
                 forms_1.ReactiveFormsModule,
                 core_2.AgmCoreModule.forRoot({ apiKey: 'AIzaSyAZuS7tPa0NZZ5citvjDqzFxJvKngke7Gc', libraries: ['places'] }),
-                firestore_1.AngularFirestoreModule,
-                auth_1.AngularFireAuthModule,
                 app_routing_module_1.AppRoutingModule,
                 http_1.HttpClientModule
             ],
-            providers: [auth_service_1.AuthService, user_service_1.UserService, passport_service_1.PassportService, meal_service_1.MealService, restaurant_service_1.RestaurantService],
+            providers: [user_service_1.UserService, passport_service_1.PassportService, meal_service_1.MealService, restaurant_service_1.RestaurantService],
             bootstrap: [app_component_1.AppComponent]
         })
     ], AppModule);
@@ -547,7 +541,7 @@ module.exports = ".flexMe {\r\n  display: -webkit-box;\r\n  display: -ms-flexbox
 /***/ "./app/app/components/application/meal/meal.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<div *ngIf=\"allDataFetched\">\r\n  <div *ngIf=\"restaurantExists;then restaurant else norestaurant\">\r\n  </div>\r\n</div>\r\n\r\n<ng-template #norestaurant>\r\n  <div>First <a routerLink=\"/app/restaurant\"> create a restaurant</a> before creating a menu.</div>\r\n</ng-template>\r\n<ng-template #restaurant>\r\n  <button *ngIf=\"meals\" class=\"btn btn-primary\" (click)=\"addModal=true\">Add Item</button>\r\n  Restaurant:\r\n  <select (change)=\"getMenu()\" [(ngModel)]=\"selectedRestaurant\" required>\r\n    <option *ngFor=\"let r of restaurants\" [ngValue]=\"r\">{{r.name}} - {{r.address}}</option>\r\n  </select>\r\n\r\n  <clr-stack-view>\r\n    <clr-stack-header class=\"cap\">\r\n    </clr-stack-header>\r\n    <div *ngFor=\"let meal of meals\">\r\n\r\n      <clr-stack-block>\r\n\r\n        <clr-stack-label>{{meal.name}}</clr-stack-label>\r\n        <div class=\"flexMe\">\r\n          <clr-stack-content>{{meal.description}}</clr-stack-content>\r\n          <clr-stack-content>\r\n            <a (click)=\"editModal = true; onReadMeal(meal)\">\r\n              <clr-icon shape=\"pencil\"></clr-icon>\r\n            </a>\r\n          </clr-stack-content>\r\n        </div>\r\n\r\n        <clr-stack-block>\r\n          <clr-stack-label>Allergies</clr-stack-label>\r\n          <clr-stack-content *ngIf=\"meal.allergies.length > 0\">\r\n            <span *ngFor=\"let allergy of meal.allergies;let last=last;let i = index\">{{allergy.name}}{{last ? '' : (i==meal.allergies.length-2) ? ' and ' : ', '}}</span>\r\n          </clr-stack-content>\r\n        </clr-stack-block>\r\n\r\n        <clr-stack-block>\r\n          <clr-stack-label>Price</clr-stack-label>\r\n          <clr-stack-content>${{meal.price}}</clr-stack-content>\r\n        </clr-stack-block>\r\n\r\n      </clr-stack-block>\r\n\r\n    </div>\r\n\r\n  </clr-stack-view>\r\n</ng-template>\r\n\r\n<clr-modal [(clrModalOpen)]=\"editModal\">\r\n  <h3 class=\"modal-title\" *ngIf=\"editModal\">{{mealToEdit.name}}</h3>\r\n  <div class=\"modal-body\">\r\n    <app-meal-form *ngIf=\"editModal\" [meal]=\"mealToEdit\"></app-meal-form>\r\n  </div>\r\n  <div class=\"modal-footer pr-0\">\r\n    <button type=\"button\" class=\"btn btn-outline btn-sm\" (click)=\"editModal = false; onUpdateMeal()\">Update\r\n    </button>\r\n    <button type=\"button\" class=\"btn btn-danger btn-sm\" (click)=\"editModal = false; doubleCheck=true\">Delete</button>\r\n  </div>\r\n</clr-modal>\r\n\r\n<clr-modal [(clrModalOpen)]=\"doubleCheck\">\r\n  <h3 class=\"modal-title\">Confirm delete confirmation</h3>\r\n  <h4 class=\"modal-body\" *ngIf=\"doubleCheck\">Are you sure you want to remove {{mealToEdit.name}}?</h4>\r\n  <div class=\"modal-footer\">\r\n    <button type=\"button\" class=\"btn btn-secondary btn-sm\" (click)=\"doubleCheck=false; editModal=true\">Return</button>\r\n    <button type=\"button\" class=\"btn btn-danger btn-sm\" (click)=\"doubleCheck=false; onDeleteMeal(mealToEdit)\">Confirm\r\n    </button>\r\n  </div>\r\n</clr-modal>\r\n\r\n<clr-modal [(clrModalOpen)]=\"addModal\">\r\n  <h3 class=\"modal-title\" *ngIf=\"addModal\">Add A Dish</h3>\r\n  <div class=\"modal-body\">\r\n    <app-meal-form *ngIf=\"addModal\"></app-meal-form>\r\n  </div>\r\n\r\n  <div class=\"modal-footer pr-0\">\r\n    <button type=\"button\" class=\"btn btn-outline btn-sm\" (click)=\"addModal = false; onCreateMeal()\">Submit</button>\r\n    <button type=\"button\" class=\"btn btn-warning btn-sm\" (click)=\"onClear()\">Clear</button>\r\n  </div>\r\n\r\n</clr-modal>\r\n\r\n"
+module.exports = "<div *ngIf=\"allDataFetched\">\r\n  <div *ngIf=\"restaurantExists;then restaurant else norestaurant\">\r\n  </div>\r\n</div>\r\n\r\n<ng-template #norestaurant>\r\n  <div>First <a routerLink=\"/app/restaurant\"> create a restaurant</a> before creating a menu.</div>\r\n</ng-template>\r\n<ng-template #restaurant>\r\n  <button *ngIf=\"meals\" class=\"btn btn-primary\" (click)=\"addModal=true\">Add Item</button>\r\n  Restaurant:\r\n  <select (change)=\"getMenu()\" [(ngModel)]=\"selectedRestaurant\" required>\r\n    <option *ngFor=\"let r of restaurants\" [ngValue]=\"r\">{{r.name}} - {{r.address.address}}</option>\r\n  </select>\r\n\r\n  <clr-stack-view>\r\n    <clr-stack-header class=\"cap\">\r\n    </clr-stack-header>\r\n    <div *ngFor=\"let meal of meals\">\r\n\r\n      <clr-stack-block>\r\n\r\n        <clr-stack-label>{{meal.name}}</clr-stack-label>\r\n        <div class=\"flexMe\">\r\n          <clr-stack-content>{{meal.description}}</clr-stack-content>\r\n          <clr-stack-content>\r\n            <a (click)=\"editModal = true; onReadMeal(meal)\">\r\n              <clr-icon shape=\"pencil\"></clr-icon>\r\n            </a>\r\n          </clr-stack-content>\r\n        </div>\r\n\r\n        <clr-stack-block>\r\n          <clr-stack-label>Allergies</clr-stack-label>\r\n          <clr-stack-content *ngIf=\"meal.allergies.length > 0\">\r\n            <span *ngFor=\"let allergy of meal.allergies;let last=last;let i = index\">{{allergy.name}}{{last ? '' : (i==meal.allergies.length-2) ? ' and ' : ', '}}</span>\r\n          </clr-stack-content>\r\n        </clr-stack-block>\r\n\r\n        <clr-stack-block>\r\n          <clr-stack-label>Price</clr-stack-label>\r\n          <clr-stack-content>${{meal.price}}</clr-stack-content>\r\n        </clr-stack-block>\r\n\r\n      </clr-stack-block>\r\n\r\n    </div>\r\n\r\n  </clr-stack-view>\r\n</ng-template>\r\n\r\n<clr-modal [(clrModalOpen)]=\"editModal\">\r\n  <h3 class=\"modal-title\" *ngIf=\"editModal\">{{mealToEdit.name}}</h3>\r\n  <div class=\"modal-body\">\r\n    <app-meal-form *ngIf=\"editModal\" [meal]=\"mealToEdit\"></app-meal-form>\r\n  </div>\r\n  <div class=\"modal-footer pr-0\">\r\n    <button type=\"button\" class=\"btn btn-outline btn-sm\" (click)=\"editModal = false; onUpdateMeal()\">Update\r\n    </button>\r\n    <button type=\"button\" class=\"btn btn-danger btn-sm\" (click)=\"editModal = false; doubleCheck=true\">Delete</button>\r\n  </div>\r\n</clr-modal>\r\n\r\n<clr-modal [(clrModalOpen)]=\"doubleCheck\">\r\n  <h3 class=\"modal-title\">Confirm delete confirmation</h3>\r\n  <h4 class=\"modal-body\" *ngIf=\"doubleCheck\">Are you sure you want to remove {{mealToEdit.name}}?</h4>\r\n  <div class=\"modal-footer\">\r\n    <button type=\"button\" class=\"btn btn-secondary btn-sm\" (click)=\"doubleCheck=false; editModal=true\">Return</button>\r\n    <button type=\"button\" class=\"btn btn-danger btn-sm\" (click)=\"doubleCheck=false; onDeleteMeal(mealToEdit)\">Confirm\r\n    </button>\r\n  </div>\r\n</clr-modal>\r\n\r\n<clr-modal [(clrModalOpen)]=\"addModal\">\r\n  <h3 class=\"modal-title\" *ngIf=\"addModal\">Add A Dish</h3>\r\n  <div class=\"modal-body\">\r\n    <app-meal-form *ngIf=\"addModal\"></app-meal-form>\r\n  </div>\r\n\r\n  <div class=\"modal-footer pr-0\">\r\n    <button type=\"button\" class=\"btn btn-outline btn-sm\" (click)=\"addModal = false; onCreateMeal()\">Submit</button>\r\n    <button type=\"button\" class=\"btn btn-warning btn-sm\" (click)=\"onClear()\">Clear</button>\r\n  </div>\r\n\r\n</clr-modal>\r\n\r\n"
 
 /***/ }),
 
@@ -959,7 +953,7 @@ module.exports = "clr-icon {\r\n  float: right;\r\n}\r\n"
 /***/ "./app/app/components/application/restaurant/restaurant.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<div>\r\n  <button *ngIf=\"restaurants\" class=\"btn btn-primary\" (click)=\"addModal=true\">Add Restaurant</button>\r\n\r\n  <clr-stack-view>\r\n    <clr-stack-header class=\"cap\">\r\n    </clr-stack-header>\r\n    <div *ngFor=\"let restaurant of restaurants\">\r\n\r\n\r\n      <clr-stack-block>\r\n\r\n        <clr-stack-label>{{restaurant.name}}</clr-stack-label>\r\n        <div class=\"flexMe\">\r\n          <clr-stack-content>{{restaurant.address.address}}</clr-stack-content>\r\n          <clr-stack-content>\r\n            <a (click)=\"editModal = true; onReadRestaurant(restaurant)\">\r\n              <clr-icon shape=\"pencil\"></clr-icon>\r\n            </a>\r\n          </clr-stack-content>\r\n        </div>\r\n\r\n        <clr-stack-block>\r\n          <clr-stack-label>Phone Number</clr-stack-label>\r\n          <clr-stack-content>\r\n            <span>{{restaurant.phone_number}}</span>\r\n          </clr-stack-content>\r\n        </clr-stack-block>\r\n      </clr-stack-block>\r\n\r\n    </div>\r\n  </clr-stack-view>\r\n\r\n</div>\r\n\r\n<clr-modal [(clrModalOpen)]=\"editModal\">\r\n  <h3 class=\"modal-title\" *ngIf=\"editModal\">{{restaurantToEdit.name}}</h3>\r\n  <div class=\"modal-body\">\r\n    <app-restaurant-form *ngIf=\"editModal\" [restaurant]=\"restaurantToEdit\"></app-restaurant-form>\r\n  </div>\r\n  <div class=\"modal-footer pr-0\">\r\n    <button type=\"button\" class=\"btn btn-outline btn-sm\" (click)=\"editModal = false; onUpdateRestaurant()\">Update\r\n    </button>\r\n    <button type=\"button\" class=\"btn btn-danger btn-sm\" (click)=\"editModal = false; doubleCheck=true\">Delete</button>\r\n  </div>\r\n</clr-modal>\r\n\r\n<clr-modal [(clrModalOpen)]=\"doubleCheck\">\r\n  <h3 class=\"modal-title\">Confirm delete confirmation</h3>\r\n  <h4 class=\"modal-body\" *ngIf=\"doubleCheck\">Are you sure you want to remove {{restaurantToEdit.name}}?</h4>\r\n  <div class=\"modal-footer\">\r\n    <button type=\"button\" class=\"btn btn-secondary btn-sm\" (click)=\"doubleCheck=false; editModal=true\">Return</button>\r\n    <button type=\"button\" class=\"btn btn-danger btn-sm\"\r\n            (click)=\"doubleCheck=false; onDeleteRestaurant(restaurantToEdit)\">\r\n      Confirm\r\n    </button>\r\n  </div>\r\n</clr-modal>\r\n\r\n<clr-modal [(clrModalOpen)]=\"addModal\">\r\n  <h3 class=\"modal-title\" *ngIf=\"addModal\">Add A Restaurant</h3>\r\n  <div class=\"modal-body\">\r\n    <app-restaurant-form *ngIf=\"addModal\"></app-restaurant-form>\r\n  </div>\r\n\r\n  <div class=\"modal-footer pr-0\">\r\n    <button type=\"button\" class=\"btn btn-outline btn-sm\" (click)=\"addModal = false; onCreateRestaurant()\">Submit\r\n    </button>\r\n    <button type=\"button\" class=\"btn btn-warning btn-sm\" (click)=\"onClear()\">Clear</button>\r\n  </div>\r\n\r\n\r\n</clr-modal>\r\n"
+module.exports = "<div>\r\n  <button *ngIf=\"restaurants\" class=\"btn btn-primary\" (click)=\"addModal=true\">Add Restaurant</button>\r\n\r\n  <clr-stack-view>\r\n    <clr-stack-header class=\"cap\">\r\n    </clr-stack-header>\r\n    <div *ngFor=\"let restaurant of restaurants\">\r\n\r\n      <clr-stack-block>\r\n\r\n        <clr-stack-label>{{restaurant.name}}</clr-stack-label>\r\n        <div class=\"flexMe\">\r\n          <clr-stack-content>{{restaurant.address.address}}</clr-stack-content>\r\n          <clr-stack-content>\r\n            <a (click)=\"editModal = true; onReadRestaurant(restaurant)\">\r\n              <clr-icon shape=\"pencil\"></clr-icon>\r\n            </a>\r\n          </clr-stack-content>\r\n        </div>\r\n\r\n        <clr-stack-block>\r\n          <clr-stack-label>Phone Number</clr-stack-label>\r\n          <clr-stack-content>\r\n            <span>{{restaurant.phone_number}}</span>\r\n          </clr-stack-content>\r\n        </clr-stack-block>\r\n      </clr-stack-block>\r\n\r\n    </div>\r\n  </clr-stack-view>\r\n\r\n</div>\r\n\r\n<clr-modal [(clrModalOpen)]=\"editModal\">\r\n  <h3 class=\"modal-title\" *ngIf=\"editModal\">{{restaurantToEdit.name}}</h3>\r\n  <div class=\"modal-body\">\r\n    <app-restaurant-form *ngIf=\"editModal\" [restaurant]=\"restaurantToEdit\"></app-restaurant-form>\r\n  </div>\r\n  <div class=\"modal-footer pr-0\">\r\n    <button type=\"button\" class=\"btn btn-outline btn-sm\" (click)=\"editModal = false; onUpdateRestaurant()\">Update\r\n    </button>\r\n    <button type=\"button\" class=\"btn btn-danger btn-sm\" (click)=\"editModal = false; doubleCheck=true\">Delete</button>\r\n  </div>\r\n</clr-modal>\r\n\r\n<clr-modal [(clrModalOpen)]=\"doubleCheck\">\r\n  <h3 class=\"modal-title\">Confirm delete confirmation</h3>\r\n  <h4 class=\"modal-body\" *ngIf=\"doubleCheck\">Are you sure you want to remove {{restaurantToEdit.name}}?</h4>\r\n  <div class=\"modal-footer\">\r\n    <button type=\"button\" class=\"btn btn-secondary btn-sm\" (click)=\"doubleCheck=false; editModal=true\">Return</button>\r\n    <button type=\"button\" class=\"btn btn-danger btn-sm\"\r\n            (click)=\"doubleCheck=false; onDeleteRestaurant(restaurantToEdit)\">\r\n      Confirm\r\n    </button>\r\n  </div>\r\n</clr-modal>\r\n\r\n<clr-modal [(clrModalOpen)]=\"addModal\">\r\n  <h3 class=\"modal-title\" *ngIf=\"addModal\">Add A Restaurant</h3>\r\n  <div class=\"modal-body\">\r\n    <app-restaurant-form *ngIf=\"addModal\"></app-restaurant-form>\r\n  </div>\r\n\r\n  <div class=\"modal-footer pr-0\">\r\n    <button type=\"button\" class=\"btn btn-outline btn-sm\" (click)=\"addModal = false; onCreateRestaurant()\">Submit\r\n    </button>\r\n    <button type=\"button\" class=\"btn btn-warning btn-sm\" (click)=\"onClear()\">Clear</button>\r\n  </div>\r\n\r\n\r\n</clr-modal>\r\n"
 
 /***/ }),
 
@@ -997,9 +991,6 @@ var RestaurantComponent = /** @class */ (function () {
                 console.log('Error: ');
                 console.log(restaurants);
             }
-            restaurants['data'].forEach(function (restaurant) {
-                restaurant['address'] = { address: restaurant['address'], lat: restaurant['lat'], lon: restaurant['lon'] };
-            });
             _this.restaurants = restaurants['data'];
         });
     };
@@ -1202,7 +1193,6 @@ var SignupComponent = /** @class */ (function () {
     SignupComponent.prototype.ngOnInit = function () {
         var _this = this;
         this.userService.getUser().subscribe(function (user) {
-            console.log(user);
             _this.user = user['user'];
         });
     };
@@ -1243,7 +1233,7 @@ module.exports = ""
 /***/ "./app/app/components/auth/signup/user-form/user-form.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<div class=\"row\">\r\n  <div class=\"col-xs-12 col-sm-10 col-md-8 push-md-2\">\r\n    <ng-container>\r\n\r\n      <!-- Initial SignupForm -->\r\n      <form class=\"form\" #f=\"ngForm\">\r\n        <div class=\"signup-group\">\r\n          <app-messages [messages]=messages></app-messages>\r\n\r\n          <section class=\"form-block\">\r\n            <div class=\"form-group\">\r\n              <label for=\"name\">Name</label>\r\n              <input type=\"text\" id=\"name\" name=\"name\" class=\"form-control\" [ngModel]=\"user?.name\">\r\n            </div>\r\n            <div class=\"form-group\">\r\n              <label for=\"address\">Address</label>\r\n              <input type=\"text\" id=\"address\" name=\"address\" class=\"form-control\" [ngModel]=\"user?.address\">\r\n            </div>\r\n\r\n            <div class=\"form-group\">\r\n              <label for=\"phoneNumber\">Phone Number</label>\r\n              <input type=\"number\" id=\"phoneNumber\" name=\"phoneNumber\" class=\"form-control\"\r\n                     [ngModel]=\"user?.phone_number\">\r\n            </div>\r\n\r\n            <div class=\"form-group\">\r\n              <label for=\"email\">Email</label>\r\n              <input type=\"email\" id=\"email\" name=\"email\" class=\"form-control\" [ngModel]=\"user?.email\">\r\n            </div>\r\n\r\n            <div class=\"form-group\">\r\n              <label for=\"password\">Password</label>\r\n              <input type=\"password\" id=\"password\" name=\"password\" class=\"form-control\" [ngModel]>\r\n            </div>\r\n\r\n            <div class=\"form-group\">\r\n              <label for=\"confirmPassword\">Confirm Password</label>\r\n              <input type=\"password\" id=\"confirmPassword\" name=\"confirmPassword\" class=\"form-control\" [ngModel]>\r\n            </div>\r\n\r\n\r\n            <div *ngIf=\"allDataFetched\">\r\n              <div *ngIf=\"user;then edit else new\">\r\n              </div>\r\n            </div>\r\n            <ng-template #edit>\r\n              <button class=\"btn btn-primary\" type=\"submit\" (click)=\"onUpdate(f)\" [disabled]=\"!f.valid\">Save</button>\r\n            </ng-template>\r\n\r\n            <ng-template #new>\r\n              <button class=\"btn btn-primary\" type=\"submit\" (click)=\"onSignup(f)\" [disabled]=\"!f.valid\">Sign Up</button>\r\n            </ng-template>\r\n          </section>\r\n        </div>\r\n      </form>\r\n    </ng-container>\r\n  </div>\r\n</div>\r\n"
+module.exports = "<div class=\"row\">\r\n  <div class=\"col-xs-12 col-sm-10 col-md-8 push-md-2\">\r\n    <ng-container>\r\n\r\n      <!-- Initial SignupForm -->\r\n      <form class=\"form\" #f=\"ngForm\">\r\n        <div class=\"signup-group\">\r\n          <app-messages [messages]=messages></app-messages>\r\n\r\n          <section class=\"form-block\">\r\n            <div class=\"form-group\">\r\n              <label for=\"name\">Name</label>\r\n              <input type=\"text\" id=\"name\" name=\"name\" class=\"form-control\" [ngModel]=\"user?.name\">\r\n            </div>\r\n\r\n            <div class=\"form-group\">\r\n              <label for=\"phoneNumber\">Phone Number</label>\r\n              <input type=\"number\" id=\"phoneNumber\" name=\"phoneNumber\" class=\"form-control\"\r\n                     [ngModel]=\"user?.phone_number\">\r\n            </div>\r\n\r\n            <div class=\"form-group\">\r\n              <label for=\"email\">Email</label>\r\n              <input type=\"email\" id=\"email\" name=\"email\" class=\"form-control\" [ngModel]=\"user?.email\">\r\n            </div>\r\n\r\n            <div class=\"form-group\">\r\n              <label for=\"password\">Password</label>\r\n              <input type=\"password\" id=\"password\" name=\"password\" class=\"form-control\" [ngModel]>\r\n            </div>\r\n\r\n            <div class=\"form-group\">\r\n              <label for=\"confirmPassword\">Confirm Password</label>\r\n              <input type=\"password\" id=\"confirmPassword\" name=\"confirmPassword\" class=\"form-control\" [ngModel]>\r\n            </div>\r\n\r\n\r\n            <div *ngIf=\"allDataFetched\">\r\n              <div *ngIf=\"user;then edit else new\">\r\n              </div>\r\n            </div>\r\n            <ng-template #edit>\r\n              <button class=\"btn btn-primary\" type=\"submit\" (click)=\"onUpdate(f)\" [disabled]=\"!f.valid\">Save</button>\r\n            </ng-template>\r\n\r\n            <ng-template #new>\r\n              <button class=\"btn btn-primary\" type=\"submit\" (click)=\"onSignup(f)\" [disabled]=\"!f.valid\">Sign Up</button>\r\n            </ng-template>\r\n          </section>\r\n        </div>\r\n      </form>\r\n    </ng-container>\r\n  </div>\r\n</div>\r\n"
 
 /***/ }),
 
@@ -1409,7 +1399,7 @@ module.exports = "agm-map {\r\n  height: 300px;\r\n  width: 50%;\r\n}\r\n"
 /***/ "./app/app/components/form/map/map.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<div *ngIf=\"allDataFetched\">\n  <agm-map (mapClick)=\"mapClicked($event)\" [latitude]=\"latitude\" [longitude]=\"longitude\" [scrollwheel]=\"false\"\n           [zoom]=\"zoom\">\n\n    <agm-marker\n      *ngFor=\"let m of markers; let i = index\"\n      (markerClick)=\"clickedMarker(m, infoWindow, i)\"\n      [latitude]=\"m.lat\"\n      [longitude]=\"m.lon\">\n\n      <agm-info-window #infoWindow>\n\n        <div><strong>Name:</strong> {{m.name}}</div>\n        <div><strong>Address:</strong> {{m.address}}</div>\n        <div><strong>Phone Number: </strong> {{m.phone_number}}</div>\n\n      </agm-info-window>\n\n    </agm-marker>\n\n  </agm-map>\n</div>\n"
+module.exports = "<div *ngIf=\"allDataFetched\">\n  <agm-map (mapClick)=\"mapClicked($event)\" [latitude]=\"latitude\" [longitude]=\"longitude\" [scrollwheel]=\"false\"\n           [zoom]=\"zoom\">\n\n    <agm-marker\n      *ngFor=\"let m of markers; let i = index\"\n      (markerClick)=\"clickedMarker(m, infoWindow, i)\"\n      [latitude]=\"m.address.lat\"\n      [longitude]=\"m.address.lon\">\n\n      <agm-info-window #infoWindow>\n\n        <div><strong>Name:</strong> {{m.name}}</div>\n        <div><strong>Address:</strong> {{m.address.address}}</div>\n        <div><strong>Phone Number: </strong> {{m.phone_number}}</div>\n\n      </agm-info-window>\n\n    </agm-marker>\n\n  </agm-map>\n</div>\n"
 
 /***/ }),
 
@@ -1434,7 +1424,6 @@ var MapComponent = /** @class */ (function () {
     function MapComponent(restaurantService) {
         this.restaurantService = restaurantService;
         this.markers = [];
-        this.restaurants = [];
         this.allDataFetched = false;
         this.infoWindowOpened = null;
     }
@@ -1448,22 +1437,16 @@ var MapComponent = /** @class */ (function () {
         this.setMarkers();
     };
     MapComponent.prototype.setMarkers = function () {
-        var _this = this;
+        this.markers = [];
         var markers = this.markers;
-        this.restaurantService.getRestaurants().subscribe(function (restaurants) {
-            restaurants['data'].forEach(function (restaurant) {
+        this.restaurants.forEach(function (restaurant) {
+            if (restaurant.meals.length > 0) {
                 markers.push({
-                    lat: restaurant['lat'],
-                    lon: restaurant['lon'],
-                    name: restaurant['name'],
-                    address: restaurant['address'],
-                    phone_number: restaurant['phone_number']
+                    name: restaurant['name'], address: restaurant['address'], phone_number: restaurant['phone_number']
                 });
-            });
-            _this.allDataFetched = true;
-            console.log(markers);
-            console.log(_this.markers);
+            }
         });
+        this.allDataFetched = true;
     };
     MapComponent.prototype.clickedMarker = function (label, infoWindow, index) {
         if (this.infoWindowOpened === infoWindow) {
@@ -1474,7 +1457,7 @@ var MapComponent = /** @class */ (function () {
         }
         this.infoWindowOpened = infoWindow;
     };
-    MapComponent.prototype.mapClicked = function ($event) {
+    MapComponent.prototype.mapClicked = function () {
         this.infoWindowOpened.close();
     };
     MapComponent.prototype.setCurrentPosition = function () {
@@ -1487,6 +1470,10 @@ var MapComponent = /** @class */ (function () {
             });
         }
     };
+    __decorate([
+        core_1.Input(),
+        __metadata("design:type", Array)
+    ], MapComponent.prototype, "restaurants", void 0);
     MapComponent = __decorate([
         core_1.Component({
             selector: 'app-map',
@@ -1683,7 +1670,7 @@ module.exports = ""
 /***/ "./app/app/components/splash/splash.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<app-home></app-home>\r\n<div *ngIf=\"allDataFetched\">\r\n\r\n  <form class=\"form\" #frm=\"ngForm\" (ngSubmit)=\"onSearch()\" style=\"width: 50%;float: left\">\r\n\r\n    <div>\r\n      <label>Allergies</label>\r\n      <div class=\"col-xs-4\" *ngFor=\"let allergy of allergies;let i = index;\">\r\n        <div class=\"checkbox-inline center\">\r\n          <input name=\"{{allergy.name}}\" type=\"checkbox\"\r\n                 [checked]=\"allergy?.checked\" (change)=\"onCheckboxChange(allergy?.checked, i)\">\r\n          <label [for]=\"allergy.name\">{{allergy.name}}</label>\r\n        </div>\r\n      </div>\r\n    </div>\r\n\r\n\r\n    <div>\r\n      <label>Price Range: {{rangeValues[0] + ' - ' + rangeValues[1]}}</label>\r\n      <p-slider name=\"price\" [ngModel]=\"rangeValues\" [style]=\"{'width':'200px'}\" range=\"true\"></p-slider>\r\n    </div>\r\n\r\n\r\n    <button type=\"submit\" class=\"btn btn-primary\" [disabled]=\"!frm.valid\">Search</button>\r\n  </form>\r\n  <app-map></app-map>\r\n  <hr>\r\n  <h1>Results</h1>\r\n  <clr-stack-view>\r\n    <clr-stack-header class=\"cap\">\r\n    </clr-stack-header>\r\n    <div *ngFor=\"let meal of meals\">\r\n\r\n\r\n      <clr-stack-block>\r\n\r\n        <clr-stack-label>{{meal.name}}</clr-stack-label>\r\n        <div class=\"flexMe\">\r\n          <clr-stack-content>{{meal.description}}</clr-stack-content>\r\n          <clr-stack-content>\r\n          </clr-stack-content>\r\n        </div>\r\n\r\n        <clr-stack-block>\r\n          <clr-stack-label>Allergies</clr-stack-label>\r\n          <clr-stack-content *ngIf=\"meal.allergies.length > 0\">\r\n            <span *ngFor=\"let allergy of meal.allergies;let last=last;let i = index\">{{allergy.name}}{{last ? '' : (i==meal.allergies.length-2) ? ' and ' : ', '}}</span>\r\n          </clr-stack-content>\r\n        </clr-stack-block>\r\n\r\n        <clr-stack-block>\r\n          <clr-stack-label>Price</clr-stack-label>\r\n          <clr-stack-content>${{meal.price}}</clr-stack-content>\r\n        </clr-stack-block>\r\n\r\n      </clr-stack-block>\r\n\r\n    </div>\r\n\r\n  </clr-stack-view>\r\n</div>\r\n"
+module.exports = "<app-home></app-home>\r\n<div *ngIf=\"allDataFetched\">\r\n\r\n  <form class=\"form\" #frm=\"ngForm\" (ngSubmit)=\"onSearch()\" style=\"width: 50%;float: left\">\r\n    <section class=\"form-block\">\r\n      <div class=\"form-group\">\r\n        <div class=\"checkbox\" *ngFor=\"let allergy of allergies;let i = index;\">\r\n          <input id=\"{{allergy.name}}\" name=\"{{allergy.name}}\" type=\"checkbox\"\r\n                 [checked]=\"allergy?.checked\" (change)=\"onCheckboxChange(allergy?.checked, i)\">\r\n          <label [for]=\"allergy.name\">{{allergy.name}}</label>\r\n        </div>\r\n      </div>\r\n\r\n      <label>Price Range: {{rangeValues[0] + ' - ' + rangeValues[1]}}</label>\r\n      <p-slider name=\"price\" [ngModel]=\"rangeValues\" [style]=\"{'width':'200px'}\" range=\"true\"></p-slider>\r\n\r\n\r\n      <button type=\"submit\" class=\"btn btn-primary\" [disabled]=\"!frm.valid\">Search</button>\r\n    </section>\r\n  </form>\r\n\r\n  <app-map [restaurants]=\"restaurants\"></app-map>\r\n\r\n  <hr>\r\n  <h1>Results</h1>\r\n  <clr-stack-view>\r\n    <clr-stack-header class=\"cap\">\r\n    </clr-stack-header>\r\n    <div *ngFor=\"let restaurant of restaurants\">\r\n\r\n      <div *ngIf=\"restaurant.meals?.length > 0\">\r\n\r\n        <clr-stack-block>\r\n\r\n          <clr-stack-label>{{restaurant.name}}</clr-stack-label>\r\n          <div class=\"flexMe\">\r\n            <clr-stack-content>{{restaurant.address.address}}</clr-stack-content>\r\n            <clr-stack-content>\r\n            </clr-stack-content>\r\n          </div>\r\n\r\n\r\n          <clr-stack-block *ngFor=\"let food of restaurant.meals\">\r\n            <clr-stack-label>{{food.name}}</clr-stack-label>\r\n            <div class=\"flexMe\">\r\n              <clr-stack-content>{{food.description}}</clr-stack-content>\r\n              <clr-stack-content>\r\n              </clr-stack-content>\r\n            </div>\r\n            <clr-stack-block>\r\n\r\n\r\n              <clr-stack-label>Price</clr-stack-label>\r\n              <clr-stack-content>${{food.price}}</clr-stack-content>\r\n            </clr-stack-block>\r\n            <clr-stack-block>\r\n\r\n              <clr-stack-label>Allergies</clr-stack-label>\r\n              <clr-stack-content *ngIf=\"food.allergies.length > 0\">\r\n                <span *ngFor=\"let allergy of food.allergies;let last=last;let i = index\">{{allergy.name}}{{last ? '' : (i==food.allergies.length-2) ? ' and ' : ', '}}</span>\r\n              </clr-stack-content>\r\n\r\n\r\n            </clr-stack-block>\r\n\r\n          </clr-stack-block>\r\n\r\n        </clr-stack-block>\r\n\r\n      </div>\r\n    </div>\r\n\r\n\r\n  </clr-stack-view>\r\n</div>\r\n"
 
 /***/ }),
 
@@ -1704,12 +1691,15 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 Object.defineProperty(exports, "__esModule", { value: true });
 var core_1 = __webpack_require__("./node_modules/@angular/core/esm5/core.js");
 var allergies_service_1 = __webpack_require__("./app/app/services/allergies.service.ts");
+var restaurant_service_1 = __webpack_require__("./app/app/services/restaurant.service.ts");
 var meal_service_1 = __webpack_require__("./app/app/services/meal.service.ts");
 var router_1 = __webpack_require__("./node_modules/@angular/router/esm5/router.js");
+var map_component_1 = __webpack_require__("./app/app/components/form/map/map.component.ts");
 var SplashComponent = /** @class */ (function () {
-    function SplashComponent(allergiesService, mealService, router) {
+    function SplashComponent(allergiesService, mealService, restaurantService, router) {
         this.allergiesService = allergiesService;
         this.mealService = mealService;
+        this.restaurantService = restaurantService;
         this.router = router;
         this.allergies = [];
         this.meals = [];
@@ -1721,7 +1711,18 @@ var SplashComponent = /** @class */ (function () {
         this.allergiesService.getAllergies().subscribe(function (allergies) {
             _this.allergies = allergies['allergies'];
         });
-        this.getMenuSetup();
+        this.rangeValues = [0, 100];
+        this.getRestaurants();
+    };
+    SplashComponent.prototype.getRestaurants = function () {
+        var _this = this;
+        this.restaurantService.getRestaurantsAll().subscribe(function (restaurants) {
+            if (!restaurants['data'] && restaurants['messages']) {
+                _this.router.navigate(['/login']);
+            }
+            _this.restaurants = restaurants['data'];
+            _this.getMenu();
+        });
     };
     SplashComponent.prototype.onCheckboxChange = function (val, index) {
         this.allergies[index]['checked'] = !val;
@@ -1743,12 +1744,12 @@ var SplashComponent = /** @class */ (function () {
         return maxPrice;
     };
     SplashComponent.prototype.onSearch = function () {
-        this.getMenu();
+        this.getRestaurants();
     };
     SplashComponent.prototype.getMenu = function () {
         var _this = this;
         var selectedNames = this.getSelectedOptionNames();
-        this.mealService.getMenu().subscribe(function (menu) {
+        this.mealService.getMenuAll().subscribe(function (menu) {
             if (!menu['data'] && menu['messages']) {
                 _this.router.navigate(['/login']);
             }
@@ -1768,19 +1769,28 @@ var SplashComponent = /** @class */ (function () {
                     }
                 }
             }
+            _this.formatFoodRestaurant();
         });
     };
-    SplashComponent.prototype.getMenuSetup = function () {
-        var _this = this;
-        this.mealService.getMenu().subscribe(function (menu) {
-            if (!menu['data'] && menu['messages']) {
-                _this.router.navigate(['/login']);
-            }
-            _this.meals = menu['data'];
-            _this.rangeValues = [_this.getminPrice(_this.meals), _this.getmaxPrice(_this.meals)];
-            _this.allDataFetched = true;
+    SplashComponent.prototype.formatFoodRestaurant = function () {
+        var meals = this.meals;
+        this.restaurants.forEach(function (restaurant) {
+            restaurant['meals'] = [];
+            meals.forEach(function (food) {
+                if (food.restaurant_id === restaurant.id) {
+                    restaurant['meals'].push(food);
+                }
+            });
         });
+        this.allDataFetched = true;
+        if (this.mapComponent) {
+            this.mapComponent.setMarkers();
+        }
     };
+    __decorate([
+        core_1.ViewChild(map_component_1.MapComponent),
+        __metadata("design:type", map_component_1.MapComponent)
+    ], SplashComponent.prototype, "mapComponent", void 0);
     SplashComponent = __decorate([
         core_1.Component({
             selector: 'app-splash',
@@ -1788,7 +1798,8 @@ var SplashComponent = /** @class */ (function () {
             styles: [__webpack_require__("./app/app/components/splash/splash.component.css")],
             providers: [allergies_service_1.AllergiesService]
         }),
-        __metadata("design:paramtypes", [allergies_service_1.AllergiesService, meal_service_1.MealService, router_1.Router])
+        __metadata("design:paramtypes", [allergies_service_1.AllergiesService, meal_service_1.MealService,
+            restaurant_service_1.RestaurantService, router_1.Router])
     ], SplashComponent);
     return SplashComponent;
 }());
@@ -1848,135 +1859,6 @@ exports.AllergiesService = AllergiesService;
 
 /***/ }),
 
-/***/ "./app/app/services/auth.service.ts":
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
-    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
-    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
-    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
-    return c > 3 && r && Object.defineProperty(target, key, r), r;
-};
-var __metadata = (this && this.__metadata) || function (k, v) {
-    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
-};
-Object.defineProperty(exports, "__esModule", { value: true });
-var core_1 = __webpack_require__("./node_modules/@angular/core/esm5/core.js");
-var router_1 = __webpack_require__("./node_modules/@angular/router/esm5/router.js");
-var auth_1 = __webpack_require__("./node_modules/angularfire2/auth/index.js");
-var firestore_1 = __webpack_require__("./node_modules/angularfire2/firestore/index.js");
-var Observable_1 = __webpack_require__("./node_modules/rxjs/_esm5/Observable.js");
-__webpack_require__("./node_modules/rxjs/_esm5/add/operator/switchMap.js");
-// ### TODO add notify user function
-// import { NotifyService } from './notify.service';
-// Keeps track of user at global level of Application
-var AuthService = /** @class */ (function () {
-    function AuthService(afAuth, afs, router) {
-        var _this = this;
-        this.afAuth = afAuth;
-        this.afs = afs;
-        this.router = router;
-        this.user$ = this.afAuth.authState.switchMap(function (user) {
-            if (user) {
-                console.log('In the USER', user);
-                return _this.afs.doc("users/" + user.uid).valueChanges();
-            }
-            else {
-                return Observable_1.Observable.of(null);
-            }
-        });
-    }
-    AuthService.prototype.signinUser = function (email, password) {
-        var _this = this;
-        return this.afAuth.auth
-            .signInWithEmailAndPassword(email, password)
-            .then(function (response) {
-            _this.router.navigate(['app/homepage']);
-            _this.afAuth.auth.currentUser.getIdToken().then(function (token) {
-                _this.token = token;
-            });
-        })
-            .catch(function (error) { return _this.handleError(error); });
-    };
-    AuthService.prototype.signoutUser = function () {
-        var _this = this;
-        this.afAuth.auth.signOut().catch(function (error) { return _this.handleError(error); });
-        this.router.navigate(['/login']);
-    };
-    // #### Email/Password Auth #### //
-    AuthService.prototype.emailSignup = function (email, password) {
-        var _this = this;
-        return this.afAuth.auth
-            .createUserWithEmailAndPassword(email, password)
-            .then(function (user) {
-            return _this.setUserDoc(user);
-        })
-            .catch(function (error) { return _this.handleError(error); });
-    };
-    // #### Update properties on the user document
-    AuthService.prototype.updateUserDoc = function (user, data) {
-        return this.afs.doc("users/" + user.uid).update(data);
-        // this.router.navigate(['/app/homepage']);
-    };
-    // #### TODO: Possibly remove. This Get Token Method would be used
-    // to authenicate the user against all db queries.
-    AuthService.prototype.getToken = function () {
-        var _this = this;
-        this.afAuth.auth.currentUser
-            .getIdToken()
-            .then(function (token) { return (_this.token = token); });
-        return this.token;
-    };
-    // #### If error, console log and notify user
-    AuthService.prototype.handleError = function (error) {
-        console.error(error);
-        // #### TODO add notify user function
-        // this.notify.update(error.message, 'error');
-    };
-    AuthService.prototype.setUserDoc = function (user) {
-        var userRef = this.afs.doc("users/" + user.uid);
-        var data = {
-            uid: user.uid,
-            email: user.email
-        };
-        return userRef.set(data);
-    };
-    AuthService.prototype.checkAuth = function (user, allowedRoles) {
-        if (!user) {
-            return false;
-        }
-        return false;
-    };
-    AuthService.prototype.canRead = function (user) {
-        var allowed = ['admin', 'editor', 'subscriber'];
-        return this.checkAuth(user, allowed);
-    };
-    AuthService.prototype.canEdit = function (user) {
-        var allowed = ['admin', 'editor'];
-        return this.checkAuth(user, allowed);
-    };
-    AuthService.prototype.canDelete = function (user) {
-        var allowed = ['admin'];
-        return this.checkAuth(user, allowed);
-    };
-    AuthService.prototype.activeUser = function () {
-        return this.user$;
-    };
-    AuthService = __decorate([
-        core_1.Injectable(),
-        __metadata("design:paramtypes", [auth_1.AngularFireAuth,
-            firestore_1.AngularFirestore,
-            router_1.Router])
-    ], AuthService);
-    return AuthService;
-}());
-exports.AuthService = AuthService;
-
-
-/***/ }),
-
 /***/ "./app/app/services/meal.service.ts":
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -1998,6 +1880,9 @@ var MealService = /** @class */ (function () {
     function MealService(http) {
         this.http = http;
     }
+    MealService.prototype.getMenuAll = function () {
+        return this.http.get('/api/menu/all');
+    };
     MealService.prototype.getMenu = function () {
         return this.http.get('/api/menu');
     };
@@ -2083,6 +1968,9 @@ var RestaurantService = /** @class */ (function () {
     function RestaurantService(http) {
         this.http = http;
     }
+    RestaurantService.prototype.getRestaurantsAll = function () {
+        return this.http.get('/api/restaurant/all');
+    };
     RestaurantService.prototype.getRestaurants = function () {
         return this.http.get('/api/restaurant');
     };

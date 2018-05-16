@@ -7,6 +7,9 @@ export class MealService {
   constructor(private http: HttpClient) {
   }
 
+  getMenuAll() {
+    return this.http.get('/api/menu/all');
+  }
   getMenu() {
     return this.http.get('/api/menu');
   }

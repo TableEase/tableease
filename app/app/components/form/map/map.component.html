@@ -5,13 +5,13 @@
     <agm-marker
       *ngFor="let m of markers; let i = index"
       (markerClick)="clickedMarker(m, infoWindow, i)"
-      [latitude]="m.lat"
-      [longitude]="m.lon">
+      [latitude]="m.address.lat"
+      [longitude]="m.address.lon">
 
       <agm-info-window #infoWindow>
 
         <div><strong>Name:</strong> {{m.name}}</div>
-        <div><strong>Address:</strong> {{m.address}}</div>
+        <div><strong>Address:</strong> {{m.address.address}}</div>
         <div><strong>Phone Number: </strong> {{m.phone_number}}</div>
 
       </agm-info-window>

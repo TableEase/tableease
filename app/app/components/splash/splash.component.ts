@@ -1,9 +1,13 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { AllergyCheckboxes } from '../../models/allergycheckboxes';
 import { AllergiesService } from '../../services/allergies.service';
+import { RestaurantService } from '../../services/restaurant.service';
 import { MealService } from '../../services/meal.service';
 import { Router } from '@angular/router';
 import { Meal } from '../../models/meal';
+import { Address } from '../../models/address';
+import { Restaurant } from '../../models/restaurants';
+import { MapComponent } from '../form/map/map.component';
 
 
 @Component({
@@ -13,21 +17,36 @@ import { Meal } from '../../models/meal';
   providers: [AllergiesService]
 })
 export class SplashComponent implements OnInit {
-
+  @ViewChild(MapComponent) mapComponent: MapComponent;
   allergies: AllergyCheckboxes[] = [];
   meals: Meal[] = [];
   rangeValues: number[] = [];
   allDataFetched = false;
+  restaurants: Restaurant[];
 
 
-  constructor(private allergiesService: AllergiesService, private mealService: MealService, private router: Router) {
+  constructor(private allergiesService: AllergiesService, private mealService: MealService,
+              private restaurantService: RestaurantService, private router: Router) {
+
   }
 
   ngOnInit() {
     this.allergiesService.getAllergies().subscribe((allergies) => {
       this.allergies = allergies['allergies'];
     });
-    this.getMenuSetup();
+
+    this.rangeValues = [0, 100];
+    this.getRestaurants();
+  }
+
+  getRestaurants() {
+    this.restaurantService.getRestaurantsAll().subscribe((restaurants) => {
+      if (!restaurants['data'] && restaurants['messages']) {
+        this.router.navigate(['/login']);
+      }
+      this.restaurants = restaurants['data'];
+      this.getMenu();
+    });
   }
 
   onCheckboxChange(val: boolean, index: number) {
@@ -54,12 +73,12 @@ export class SplashComponent implements OnInit {
   }
 
   onSearch() {
-    this.getMenu();
+    this.getRestaurants();
   }
 
   getMenu() {
     const selectedNames = this.getSelectedOptionNames();
-    this.mealService.getMenu().subscribe((menu) => {
+    this.mealService.getMenuAll().subscribe((menu) => {
       if (!menu['data'] && menu['messages']) {
         this.router.navigate(['/login']);
       }
@@ -80,17 +99,23 @@ export class SplashComponent implements OnInit {
           }
         }
       }
+      this.formatFoodRestaurant();
     });
   }
 
-  getMenuSetup() {
-    this.mealService.getMenu().subscribe((menu) => {
-      if (!menu['data'] && menu['messages']) {
-        this.router.navigate(['/login']);
-      }
-      this.meals = menu['data'];
-      this.rangeValues = [this.getminPrice(this.meals), this.getmaxPrice(this.meals)];
-      this.allDataFetched = true;
+  formatFoodRestaurant() {
+    const meals = this.meals;
+    this.restaurants.forEach(function(restaurant) {
+      restaurant['meals'] = [];
+      meals.forEach(function(food) {
+        if (food.restaurant_id === restaurant.id) {
+          restaurant['meals'].push(food);
+        }
+      });
     });
+    this.allDataFetched = true;
+    if (this.mapComponent) {
+      this.mapComponent.setMarkers();
+    }
   }
 }

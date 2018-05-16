@@ -1,7 +1,7 @@
+import { Address } from './address';
+
 export interface Marker {
-  lat: number;
-  lon: number;
   name: string;
-  address: string;
-  phone_number: number;
+  address: Address;
+  phone_number: string;
 }

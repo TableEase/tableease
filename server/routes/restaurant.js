@@ -1,29 +1,34 @@
 const express = require("express");
-const router = express.Router();
-const db = require("../config/db");
+const router = express.Router({});
 const myFunctions = require("./myFunctions");
-const foodAllergyFunctions = require("./functions/foodAllergiesController");
 
-
-const restaurant = new db({ tableName: "restaurants" });
-const Restaurant = db.extend({
-  tableName: "restaurants"
-});
-const food = new db({ tableName: "food" });
-
+const restaurantFunctions = require("./functions/restaurantController");
 
 /* GET home page. */
 router.get("/", myFunctions.isLoggedIn, function(req, res, next) {
-  var companyId = req.user.id;
-  getRestaurants(companyId, function(restaurants) {
-    res.send({ data: restaurants });
+  const companyId = req.user.id;
+  restaurantFunctions.getRestaurants(companyId, function(restaurants) {
+    restaurantFunctions.createAddress(restaurants, function(restaurants) {
+      res.send({ data: restaurants });
+    });
+
+  });
+});
+
+router.get("/all", function(req, res, next) {
+  const companyId = req.user.id;
+  restaurantFunctions.getRestaurantsAll(companyId, function(restaurants) {
+    restaurantFunctions.createAddress(restaurants, function(restaurants) {
+      res.send({ data: restaurants });
+    });
+
   });
 });
 
 
 router.post("/add", myFunctions.isLoggedIn, function(req, res, next) {
-  var companyId = req.user.id;
-  addRestaurant(req, companyId, function(formFields) {
+  const companyId = req.user.id;
+  restaurantFunctions.addRestaurant(req, companyId, function(formFields) {
     req.flash("restaurantMessage", "Added: " + JSON.stringify(formFields));
     res.redirect("/api/restaurant");
   });
@@ -31,14 +36,14 @@ router.post("/add", myFunctions.isLoggedIn, function(req, res, next) {
 
 
 router.get("/delete/:id", myFunctions.isLoggedIn, function(req, res, next) {
-  var restaurantId = req.params.id;
-  var companyId = req.user.id;
-  checkOwnerRestaurant(restaurantId, companyId, function(row) {
+  const restaurantId = req.params.id;
+  const companyId = req.user.id;
+  restaurantFunctions.checkOwnerRestaurant(restaurantId, companyId, function(row) {
     if (!row) {
       res.render("action", { data: "You do not own that menu item OR it does not exist." });
     }
     else {
-      deleteRestaurant(restaurantId, companyId, function(result) {
+      restaurantFunctions.deleteRestaurant(restaurantId, companyId, function(result) {
         res.redirect("/api/restaurant");
       });
     }
@@ -46,14 +51,14 @@ router.get("/delete/:id", myFunctions.isLoggedIn, function(req, res, next) {
 });
 
 router.post("/update/:id", myFunctions.isLoggedIn, function(req, res, next) {
-  var restaurantId = req.params.id;
-  var companyId = req.user.id;
-  checkOwnerRestaurant(restaurantId, companyId, function(row) {
+  const restaurantId = req.params.id;
+  const companyId = req.user.id;
+  restaurantFunctions.checkOwnerRestaurant(restaurantId, companyId, function(row) {
     if (!row) {
       res.render("action", { data: "You do not own that menu item OR it does not exist." });
     }
     else {
-      updateRestaurant(req, companyId, function(formFields) {
+      restaurantFunctions.updateRestaurant(req, companyId, function(formFields) {
         res.redirect("/api/restaurant");
       });
     }
@@ -61,69 +66,3 @@ router.post("/update/:id", myFunctions.isLoggedIn, function(req, res, next) {
 });
 module.exports = router;
 
-// mysql functions related to register
-function updateRestaurant(req, companyId, callback) {
-  const formFields = req.body;
-  const restaurant = new Restaurant({
-    address: formFields.address,
-    lat: formFields.lat,
-    lon: formFields.lon,
-    name: formFields.name,
-    company_id: companyId,
-    phone_number: formFields.phone_number,
-    id: formFields.id
-  });
-  restaurant.save(function(err, rows, fields) {
-    if (err) throw err;
-    return callback();
-  });
-}
-
-function addRestaurant(req, companyId, callback) {
-  const formFields = req.body;
-  const restaurant = new Restaurant({
-    address: formFields.address,
-    lat: formFields.lat,
-    lon: formFields.lon,
-    name: formFields.name,
-    company_id: companyId,
-    phone_number: formFields.phone_number
-  });
-  restaurant.save(function(err, rows, fields) {
-    if (err) throw err;
-    const rowId = rows.insertId;
-    return callback();
-  });
-}
-
-
-function getRestaurants(companyId, callback) {
-  var query = "select * from restaurants where company_id =" + companyId;
-  restaurant.query(query, function(err, rows, fields) {
-    if (err) throw err;
-    callback(rows);
-  });
-}
-
-
-function deleteRestaurant(restaurantId, companyId, callback) {
-  restaurant.remove("id=" + restaurantId + " and company_id=" + companyId, function(err, res, fields) {
-    if (err) throw err;
-    return callback(res);
-  });
-}
-
-
-function checkOwnerRestaurant(restaurantId, companyId, callback) {
-  restaurant.find("first", { where: ["company_id=" + companyId + " and id=" + restaurantId] }, function(err, row, fields) {
-    if (err) throw err;
-    return callback(row);
-  });
-}
-
-function getFoodForRestaurant(restaurantId, callback) {
-  food.find("all", { where: "restaurant_id=" + restaurantId }, function(err, foods, fields) {
-    if (err) throw err;
-    return callback(foods);
-  });
-}

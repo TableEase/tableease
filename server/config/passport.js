@@ -31,7 +31,7 @@ module.exports = function(passport) {
   // used to deserialize the user
   passport.deserializeUser(function(id, done) {
     company.find("all", {
-      fields: ["name", "email", "address", "id", "phone_number"],
+      fields: ["name", "email", "id", "phone_number"],
       where: "id = '" + id + "'"
     }, function(err, rows) {
       done(err, rows[0]);
@@ -66,7 +66,6 @@ module.exports = function(passport) {
               email: email,
               password: bcrypt.hashSync(password, null, null),  // use the generateHash function in our user model
               phone_number: req.body.phoneNumber,
-              address: req.body.address,
               name: req.body.name
             });
 

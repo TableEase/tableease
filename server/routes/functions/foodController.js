@@ -59,6 +59,18 @@ module.exports = {
       callback(rows);
     });
   },
+  getMenuAll: function(companyId, callback) {
+    const query = "select f.restaurant_id, f.price, f.id as food_id, f.description, f.name, " +
+      "GROUP_CONCAT(DISTINCT a.id SEPARATOR ',') AS allergy_ids, " +
+      "GROUP_CONCAT(DISTINCT a.name SEPARATOR ',') AS allergy_names, " +
+      "GROUP_CONCAT(DISTINCT a.active SEPARATOR ',') AS allergy_active " +
+      "from food as f left join food_allergy as fa on f.id = fa.food_id left join allergies as a on fa.allergy_id =a.id " +
+      "group by f.id";
+    food.query(query, function(err, rows, fields) {
+      if (err) throw err;
+      callback(rows);
+    });
+  },
   checkOwnerFood: function(foodId, companyId, callback) {
     food.find("first", { where: ["company_id=" + companyId + " and id=" + foodId] }, function(err, row, fields) {
       if (err) throw err;

@@ -50,7 +50,6 @@ app.use(flash()); // use connect-flash for flash messages stored in session
 const index = require("./routes/index");
 const login = require("./routes/login")(passport);
 const signup = require("./routes/signup")(passport);
-const profile = require("./routes/profile");
 const logout = require("./routes/logout");
 const admin = require("./routes/admin");
 const users = require("./routes/users");
@@ -59,12 +58,9 @@ const restaurant = require("./routes/restaurant");
 const menu = require("./routes/menu");
 
 app.use("/api", router);
-
 router.use("/", index);
 router.use("/login", login);
 router.use("/signup", signup);
-router.use("/profile", profile);
-
 router.use("/logout", logout);
 router.use("/admin", admin);
 router.use("/users", users);

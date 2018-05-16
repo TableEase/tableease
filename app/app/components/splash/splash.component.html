@@ -2,60 +2,74 @@
 <div *ngIf="allDataFetched">
 
   <form class="form" #frm="ngForm" (ngSubmit)="onSearch()" style="width: 50%;float: left">
-
-    <div>
-      <label>Allergies</label>
-      <div class="col-xs-4" *ngFor="let allergy of allergies;let i = index;">
-        <div class="checkbox-inline center">
-          <input name="{{allergy.name}}" type="checkbox"
+    <section class="form-block">
+      <div class="form-group">
+        <div class="checkbox" *ngFor="let allergy of allergies;let i = index;">
+          <input id="{{allergy.name}}" name="{{allergy.name}}" type="checkbox"
                  [checked]="allergy?.checked" (change)="onCheckboxChange(allergy?.checked, i)">
           <label [for]="allergy.name">{{allergy.name}}</label>
         </div>
       </div>
-    </div>
 
-
-    <div>
       <label>Price Range: {{rangeValues[0] + ' - ' + rangeValues[1]}}</label>
       <p-slider name="price" [ngModel]="rangeValues" [style]="{'width':'200px'}" range="true"></p-slider>
-    </div>
 
 
-    <button type="submit" class="btn btn-primary" [disabled]="!frm.valid">Search</button>
+      <button type="submit" class="btn btn-primary" [disabled]="!frm.valid">Search</button>
+    </section>
   </form>
-  <app-map></app-map>
+
+  <app-map [restaurants]="restaurants"></app-map>
+
   <hr>
   <h1>Results</h1>
   <clr-stack-view>
     <clr-stack-header class="cap">
     </clr-stack-header>
-    <div *ngFor="let meal of meals">
+    <div *ngFor="let restaurant of restaurants">
 
-
-      <clr-stack-block>
-
-        <clr-stack-label>{{meal.name}}</clr-stack-label>
-        <div class="flexMe">
-          <clr-stack-content>{{meal.description}}</clr-stack-content>
-          <clr-stack-content>
-          </clr-stack-content>
-        </div>
+      <div *ngIf="restaurant.meals?.length > 0">
 
         <clr-stack-block>
-          <clr-stack-label>Allergies</clr-stack-label>
-          <clr-stack-content *ngIf="meal.allergies.length > 0">
-            <span *ngFor="let allergy of meal.allergies;let last=last;let i = index">{{allergy.name}}{{last ? '' : (i==meal.allergies.length-2) ? ' and ' : ', '}}</span>
-          </clr-stack-content>
+
+          <clr-stack-label>{{restaurant.name}}</clr-stack-label>
+          <div class="flexMe">
+            <clr-stack-content>{{restaurant.address.address}}</clr-stack-content>
+            <clr-stack-content>
+            </clr-stack-content>
+          </div>
+
+
+          <clr-stack-block *ngFor="let food of restaurant.meals">
+            <clr-stack-label>{{food.name}}</clr-stack-label>
+            <div class="flexMe">
+              <clr-stack-content>{{food.description}}</clr-stack-content>
+              <clr-stack-content>
+              </clr-stack-content>
+            </div>
+            <clr-stack-block>
+
+
+              <clr-stack-label>Price</clr-stack-label>
+              <clr-stack-content>${{food.price}}</clr-stack-content>
+            </clr-stack-block>
+            <clr-stack-block>
+
+              <clr-stack-label>Allergies</clr-stack-label>
+              <clr-stack-content *ngIf="food.allergies.length > 0">
+                <span *ngFor="let allergy of food.allergies;let last=last;let i = index">{{allergy.name}}{{last ? '' : (i==food.allergies.length-2) ? ' and ' : ', '}}</span>
+              </clr-stack-content>
+
+
+            </clr-stack-block>
+
+          </clr-stack-block>
+
         </clr-stack-block>
 
-        <clr-stack-block>
-          <clr-stack-label>Price</clr-stack-label>
-          <clr-stack-content>${{meal.price}}</clr-stack-content>
-        </clr-stack-block>
-
-      </clr-stack-block>
-
+      </div>
     </div>
+
 
   </clr-stack-view>
 </div>

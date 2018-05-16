@@ -1,4 +1,4 @@
-import { Component, ElementRef, Input, NgZone, OnInit, Output, ViewChild } from '@angular/core';
+import { Component, ElementRef, Input, NgZone, OnInit } from '@angular/core';
 import {} from 'googlemaps';
 import { Marker } from '../../../models/marker';
 import { Restaurant } from '../../../models/restaurants';
@@ -15,9 +15,10 @@ export class MapComponent implements OnInit {
   public longitude: number;
   public zoom: number;
   public markers: Marker[] = [];
-  public restaurants: Restaurant[] = [];
+  @Input() restaurants: Restaurant[];
   public allDataFetched = false;
   infoWindowOpened = null;
+
 
   constructor(private restaurantService: RestaurantService) {
   }
@@ -31,25 +32,19 @@ export class MapComponent implements OnInit {
     // set current position
     this.setCurrentPosition();
     this.setMarkers();
-
   }
 
   setMarkers() {
+    this.markers = [];
     const markers = this.markers;
-    this.restaurantService.getRestaurants().subscribe((restaurants) => {
-      restaurants['data'].forEach(function(restaurant) {
+    this.restaurants.forEach(function(restaurant) {
+      if (restaurant.meals.length > 0) {
         markers.push({
-          lat: restaurant['lat'],
-          lon: restaurant['lon'],
-          name: restaurant['name'],
-          address: restaurant['address'],
-          phone_number: restaurant['phone_number']
+          name: restaurant['name'], address: restaurant['address'], phone_number: restaurant['phone_number']
         });
-      });
-      this.allDataFetched = true;
-      console.log(markers);
-      console.log(this.markers);
+      }
     });
+    this.allDataFetched = true;
   }
 
   clickedMarker(label: string, infoWindow, index: number) {
@@ -63,7 +58,7 @@ export class MapComponent implements OnInit {
     this.infoWindowOpened = infoWindow;
   }
 
-  mapClicked($event: MouseEvent) {
+  mapClicked() {
     this.infoWindowOpened.close();
   }
 

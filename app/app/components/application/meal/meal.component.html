@@ -10,7 +10,7 @@
   <button *ngIf="meals" class="btn btn-primary" (click)="addModal=true">Add Item</button>
   Restaurant:
   <select (change)="getMenu()" [(ngModel)]="selectedRestaurant" required>
-    <option *ngFor="let r of restaurants" [ngValue]="r">{{r.name}} - {{r.address}}</option>
+    <option *ngFor="let r of restaurants" [ngValue]="r">{{r.name}} - {{r.address.address}}</option>
   </select>
 
   <clr-stack-view>

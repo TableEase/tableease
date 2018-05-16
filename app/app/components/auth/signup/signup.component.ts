@@ -25,7 +25,6 @@ export class SignupComponent implements OnInit {
 
   ngOnInit() {
     this.userService.getUser().subscribe((user) => {
-      console.log(user);
       this.user = user['user'];
     });
   }

@@ -1,4 +1,6 @@
 const db = require("../../config/db");
+const allergy = new db({ tableName: "allergies" });
+
 
 module.exports = {
   createAllergies: function(fullMenu, callback) {
@@ -22,5 +24,11 @@ module.exports = {
       }
     }
     return false;
+  },
+  getAllergies: function(callback) {
+    allergy.find("all", {}, function(err, rows, fields) {
+      if (err) throw err;
+      return callback(rows);
+    });
   }
 };
