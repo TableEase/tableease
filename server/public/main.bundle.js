@@ -1317,7 +1317,7 @@ module.exports = ""
 /***/ "./app/app/components/form/address/address.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<div class=\"form-group\">\n  <label for=\"address\">Address</label>\n  <input placeholder=\"address\" type=\"text\" class=\"form-control\" #search name=\"address\" id=\"address\"\n         [ngModel]=\"address?.address\">\n</div>\n"
+module.exports = "<div class=\"form-group\">\r\n  <label for=\"address\">Address</label>\r\n  <input placeholder=\"address\" type=\"text\" class=\"form-control\" #search name=\"address\" id=\"address\"\r\n         [ngModel]=\"address?.address\">\r\n</div>\r\n"
 
 /***/ }),
 
@@ -1399,7 +1399,7 @@ module.exports = "agm-map {\r\n  height: 300px;\r\n  width: 50%;\r\n}\r\n"
 /***/ "./app/app/components/form/map/map.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<div *ngIf=\"allDataFetched\">\n  <agm-map (mapClick)=\"mapClicked($event)\" [latitude]=\"latitude\" [longitude]=\"longitude\" [scrollwheel]=\"false\"\n           [zoom]=\"zoom\">\n\n    <agm-marker\n      *ngFor=\"let m of markers; let i = index\"\n      (markerClick)=\"clickedMarker(m, infoWindow, i)\"\n      [latitude]=\"m.address.lat\"\n      [longitude]=\"m.address.lon\">\n\n      <agm-info-window #infoWindow>\n\n        <div><strong>Name:</strong> {{m.name}}</div>\n        <div><strong>Address:</strong> {{m.address.address}}</div>\n        <div><strong>Phone Number: </strong> {{m.phone_number}}</div>\n\n      </agm-info-window>\n\n    </agm-marker>\n\n  </agm-map>\n</div>\n"
+module.exports = "<div *ngIf=\"allDataFetched\">\r\n  <agm-map (mapClick)=\"mapClicked($event)\" [latitude]=\"latitude\" [longitude]=\"longitude\" [scrollwheel]=\"false\"\r\n           [zoom]=\"zoom\">\r\n\r\n    <agm-marker\r\n      *ngFor=\"let m of markers; let i = index\"\r\n      (markerClick)=\"clickedMarker(m, infoWindow, i)\"\r\n      [latitude]=\"m.address.lat\"\r\n      [longitude]=\"m.address.lon\">\r\n\r\n      <agm-info-window #infoWindow>\r\n\r\n        <div><strong>Name:</strong> {{m.name}}</div>\r\n        <div><strong>Address:</strong> {{m.address.address}}</div>\r\n        <div><strong>Phone Number: </strong> {{m.phone_number}}</div>\r\n\r\n      </agm-info-window>\r\n\r\n    </agm-marker>\r\n\r\n  </agm-map>\r\n</div>\r\n"
 
 /***/ }),
 

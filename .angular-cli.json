@@ -6,11 +6,8 @@
   "apps": [
     {
       "root": "app",
-      "outDir": "server/public/js",
-      "assets": [
-        "assets",
-        "favicon.ico"
-      ],
+      "outDir": "server/public",
+      "assets": ["assets", "favicon.ico"],
       "index": "index.html",
       "main": "main.ts",
       "polyfills": "polyfills.ts",
