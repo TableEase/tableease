@@ -1,11 +1,13 @@
-import { GeoPoint } from '@firebase/firestore-types';
-import { Location } from './location';
+import { Address } from './address';
+import { Meal } from './meal';
 
 export interface Restaurant {
-  uid: string;
-  rid: string;
+  id: number;
+  location_id: number;
+  company_id: number;
   name: string;
-  phone: string;
-  locations: Location[];
+  phone_number: string;
+  address: Address;
   active: boolean;
+  meals: Meal[];
 }

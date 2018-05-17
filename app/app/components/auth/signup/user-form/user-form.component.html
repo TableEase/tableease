@@ -1,67 +1,54 @@
-<!-- <ng-container *ngIf="(auth.user | async) || {} as user"> -->
+<div class="row">
+  <div class="col-xs-12 col-sm-10 col-md-8 push-md-2">
+    <ng-container>
 
-<form [formGroup]="signupForm" (ngSubmit)="signup()">
-  <section class="form-block">
-    <h3>Create an Account</h3>
-  </section>
-  <section class="form-block">
-    <div class="form-group">
-      <label for="validFirstName" aria-haspopup="true" role="tooltip" class="tooltip tooltip-validation invalid tooltip-md">
-        <input placeholder="First Name" id="validFirstName" type="text" formControlName="first">
-        <span class="tooltip-content">
-          This field cannot be empty!
-        </span>
-      </label>
-    </div>
-    <div class="form-group">
-      <label for="validFirstName" aria-haspopup="true" role="tooltip" class="tooltip tooltip-validation invalid tooltip-md">
-        <input placeholder="Last Name" type="text" formControlName="last">
-        <span class="tooltip-content">
-          This field cannot be empty!
-        </span>
-      </label>
-    </div>
-    <div class="form-group">
-      <label for="validFirstName" aria-haspopup="true" role="tooltip" class="tooltip tooltip-validation invalid tooltip-md">
-        <input placeholder="Email Address" type="email" formControlName="email">
-        <span class="tooltip-content">
-          This field cannot be empty!
-        </span>
-      </label>
-    </div>
-    <div class="form-group">
-      <label for="validFirstName" aria-haspopup="true" role="tooltip" class="tooltip tooltip-validation invalid tooltip-md">
-        <input placeholder="Confirm Email Address" type="email" formControlName="email">
-        <span class="tooltip-content">
-          This field cannot be empty!
-        </span>
-      </label>
-    </div>
-    <div class="form-group">
-      <label for="validFirstName" aria-haspopup="true" role="tooltip" class="tooltip tooltip-validation invalid tooltip-md">
-        <input placeholder="Password" type="password" formControlName="password">
-        <span class="tooltip-content">
-          This field cannot be empty!
-        </span>
-      </label>
-    </div>
-  </section>
+      <!-- Initial SignupForm -->
+      <form class="form" #f="ngForm">
+        <div class="signup-group">
+          <app-messages [messages]=messages></app-messages>
 
-  <!-- <div *ngIf="email.invalid && email.dirty">
-      Your email doesn't look quite right...
-    </div>
+          <section class="form-block">
+            <div class="form-group">
+              <label for="name">Name</label>
+              <input type="text" id="name" name="name" class="form-control" [ngModel]="user?.name">
+            </div>
 
-    <label for="passowrd">Password</label>
-    <input type="password" formControlName="password" required>
+            <div class="form-group">
+              <label for="phoneNumber">Phone Number</label>
+              <input type="number" id="phoneNumber" name="phoneNumber" class="form-control"
+                     [ngModel]="user?.phone_number">
+            </div>
 
-    <div *ngIf="password.invalid && password.touched">
-      Password must be between 6 and 24 chars and have at least one number
-    </div>
+            <div class="form-group">
+              <label for="email">Email</label>
+              <input type="email" id="email" name="email" class="form-control" [ngModel]="user?.email">
+            </div>
 
-    <div *ngIf="signupForm.valid">Form looks good! Let's do this.</div> -->
+            <div class="form-group">
+              <label for="password">Password</label>
+              <input type="password" id="password" name="password" class="form-control" [ngModel]>
+            </div>
 
-  <button type="submit" class="btn btn-link btn-block">Create Account</button>
+            <div class="form-group">
+              <label for="confirmPassword">Confirm Password</label>
+              <input type="password" id="confirmPassword" name="confirmPassword" class="form-control" [ngModel]>
+            </div>
 
-</form>
 
-<!-- </ng-container> -->
+            <div *ngIf="allDataFetched">
+              <div *ngIf="user;then edit else new">
+              </div>
+            </div>
+            <ng-template #edit>
+              <button class="btn btn-primary" type="submit" (click)="onUpdate(f)" [disabled]="!f.valid">Save</button>
+            </ng-template>
+
+            <ng-template #new>
+              <button class="btn btn-primary" type="submit" (click)="onSignup(f)" [disabled]="!f.valid">Sign Up</button>
+            </ng-template>
+          </section>
+        </div>
+      </form>
+    </ng-container>
+  </div>
+</div>

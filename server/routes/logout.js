@@ -1,5 +1,5 @@
 const express = require("express");
-const router = express.Router();
+const router = express.Router({});
 const myFunctions = require("./myFunctions");
 
 router.get("/", myFunctions.isLoggedIn, function(req, res) {

@@ -1,53 +1,16 @@
-<form (ngSubmit)="onSubmit()" [formGroup]="restForm" class="compact">
-  <section class="form-block">
+<form class="compact" #frm="ngForm">
+  <div class="form-group">
+    <label for="phoneNumber">Name</label>
+    <input placeholder="restaurant name" type="text" id="restaurantName" name="name" class="form-control"
+           [ngModel]="restaurant?.name">
+  </div>
 
-    <div class="form-group">
-      <input placeholder="restaurant name" type="text" id="restaurantName" name="name" class="form-control" formControlName="name">
-    </div>
+  <div class="form-group">
+    <label for="phoneNumber">Phone Number</label>
+    <input placeholder="phone number" type="number" id="phoneNumber" name="phone_number" class="form-control"
+           [ngModel]="restaurant?.phone_number">
+  </div>
 
-    <div class="form-group">
-      <input placeholder="phone number" type="text" id="phoneNumber" name="phone" class="form-control" formControlName="phone">
-    </div>
+  <app-address [address]="restaurant?.address"></app-address>
 
-    <div class="form-group">
-      <input placeholder="primary contact" type="text" id="primaryContact" name="primary" class="form-control" formControlName="primary">
-    </div>
-
-  </section>
-
-  <section class="form-block">
-    <div formArrayName="locations">
-
-      <div *ngFor="let address of locations.controls; let i = index" [formGroupName]="i">
-
-
-        <div class="form-group">
-          <input placeholder="street" type="text" id="street" name="street" class="form-control" formControlName="street">
-        </div>
-
-        <div class="form-group">
-          <input placeholder="suite" type="text" id="suite" name="suite" class="form-control" formControlName="suite">
-        </div>
-
-        <div class="form-group">
-          <input placeholder="city" type="text" id="city" name="city" class="form-control" formControlName="city">
-        </div>
-
-        <div class="form-group">
-          <input placeholder="state" type="text" id="state" name="state" class="form-control" formControlName="state">
-        </div>
-
-        <div class="form-group">
-          <input placeholder="zip code" type="text" id="zip" name="zip" class="form-control" formControlName="zip">
-        </div>
-
-        <br>
-      </div>
-
-      <button (click)="addLocation()" type="button">Add Location</button>
-
-    </div>
-  </section>
-
-  <button class="btn btn-primary" type="submit" [disabled]="!restForm.valid">Submit</button>
 </form>

@@ -1,10 +1,8 @@
-import { Component, OnInit, Input } from '@angular/core';
-import { FormGroup, FormBuilder, Validators } from '@angular/forms';
-
-import { Observable } from 'rxjs/Observable';
-import 'rxjs/add/operator/switchMap';
-
-import { AuthService } from '../../../../services/auth.service';
+import { Component, OnInit, ViewChild } from '@angular/core';
+import { NgForm } from '@angular/forms';
+import { PassportService } from '../../../../services/passport.service';
+import { UserService } from '../../../../services/user.service';
+import { Router } from '@angular/router';
 import { User } from '../../../../models/user';
 
 @Component({
@@ -13,47 +11,43 @@ import { User } from '../../../../models/user';
   styleUrls: ['./user-form.component.css']
 })
 export class UserFormComponent implements OnInit {
-  @Input() user: User;
-  signupForm: FormGroup;
-  detailForm: FormGroup;
+  messages: string[];
+  user: User;
+  allDataFetched = false;
 
-  // ### TODO Add Auth Service
-  constructor(public fb: FormBuilder, private authService: AuthService) {
-    this.createForm();
+
+  constructor(
+    private passport: PassportService,
+    private userService: UserService,
+    private router: Router
+  ) {
+
   }
 
   ngOnInit() {
-    // Second Step
-    // this.detailForm = this.fb.group({
-    //   catchPhrase: ['', Validators.required]
-    // });
-  }
-
-  createForm() {
-    this.signupForm = this.fb.group({
-      first: ['', [Validators.required, Validators.minLength(2)]],
-      last: ['', [Validators.required, Validators.minLength(2)]],
-      email: ['', [Validators.required, Validators.email]],
-      password: [
-        '',
-        [
-          Validators.required,
-          Validators.pattern('^(?=.*[0-9])(?=.*[a-zA-Z])([a-zA-Z0-9]+)$'),
-          Validators.minLength(6),
-          Validators.maxLength(25)
-        ]
-      ]
+    this.userService.getUser().subscribe((user) => {
+      this.user = user['user'];
+      this.allDataFetched = true;
     });
   }
 
-  get email() {
-    return this.signupForm.get('email');
-  }
-  get password() {
-    return this.signupForm.get('password');
+  onSignup(form: NgForm) {
+    const formVals = form.value;
+    this.passport.signup(formVals).subscribe(res => {
+      this.messages = res['messages'];
+      if (this.messages.length === 0) {
+        this.router.navigate(['/app/homepage']);
+      }
+    });
   }
 
-  onSignup() {
-    return this.authService.emailSignup(this.email.value, this.password.value);
+  onUpdate(form: NgForm) {
+    const formVals = form.value;
+    this.userService.updateUser(formVals).subscribe(res => {
+      this.messages = res['messages'];
+      if (this.messages.length === 0) {
+        this.router.navigate(['/app/homepage']);
+      }
+    });
   }
 }

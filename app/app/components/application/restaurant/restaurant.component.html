@@ -1,3 +1,71 @@
-<p>
-  restaurant works!
-</p>
+<div>
+  <button *ngIf="restaurants" class="btn btn-primary" (click)="addModal=true">Add Restaurant</button>
+
+  <clr-stack-view>
+    <clr-stack-header class="cap">
+    </clr-stack-header>
+    <div *ngFor="let restaurant of restaurants">
+
+      <clr-stack-block>
+
+        <clr-stack-label>{{restaurant.name}}</clr-stack-label>
+        <div class="flexMe">
+          <clr-stack-content>{{restaurant.address.address}}</clr-stack-content>
+          <clr-stack-content>
+            <a (click)="editModal = true; onReadRestaurant(restaurant)">
+              <clr-icon shape="pencil"></clr-icon>
+            </a>
+          </clr-stack-content>
+        </div>
+
+        <clr-stack-block>
+          <clr-stack-label>Phone Number</clr-stack-label>
+          <clr-stack-content>
+            <span>{{restaurant.phone_number}}</span>
+          </clr-stack-content>
+        </clr-stack-block>
+      </clr-stack-block>
+
+    </div>
+  </clr-stack-view>
+
+</div>
+
+<clr-modal [(clrModalOpen)]="editModal">
+  <h3 class="modal-title" *ngIf="editModal">{{restaurantToEdit.name}}</h3>
+  <div class="modal-body">
+    <app-restaurant-form *ngIf="editModal" [restaurant]="restaurantToEdit"></app-restaurant-form>
+  </div>
+  <div class="modal-footer pr-0">
+    <button type="button" class="btn btn-outline btn-sm" (click)="editModal = false; onUpdateRestaurant()">Update
+    </button>
+    <button type="button" class="btn btn-danger btn-sm" (click)="editModal = false; doubleCheck=true">Delete</button>
+  </div>
+</clr-modal>
+
+<clr-modal [(clrModalOpen)]="doubleCheck">
+  <h3 class="modal-title">Confirm delete confirmation</h3>
+  <h4 class="modal-body" *ngIf="doubleCheck">Are you sure you want to remove {{restaurantToEdit.name}}?</h4>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-secondary btn-sm" (click)="doubleCheck=false; editModal=true">Return</button>
+    <button type="button" class="btn btn-danger btn-sm"
+            (click)="doubleCheck=false; onDeleteRestaurant(restaurantToEdit)">
+      Confirm
+    </button>
+  </div>
+</clr-modal>
+
+<clr-modal [(clrModalOpen)]="addModal">
+  <h3 class="modal-title" *ngIf="addModal">Add A Restaurant</h3>
+  <div class="modal-body">
+    <app-restaurant-form *ngIf="addModal"></app-restaurant-form>
+  </div>
+
+  <div class="modal-footer pr-0">
+    <button type="button" class="btn btn-outline btn-sm" (click)="addModal = false; onCreateRestaurant()">Submit
+    </button>
+    <button type="button" class="btn btn-warning btn-sm" (click)="onClear()">Clear</button>
+  </div>
+
+
+</clr-modal>

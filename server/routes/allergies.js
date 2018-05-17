@@ -1,21 +1,12 @@
 const express = require("express");
-const router = express.Router();
-const db = require("../config/db");
+const router = express.Router({});
 
-const allergy = new db({ tableName: "allergies" });
-
+const allergyFunctions = require("./functions/allergiesController");
 
 router.get("/", function(req, res) {
-  getAllergies(function(allergies) {
+  allergyFunctions.getAllergies(function(allergies) {
     res.send({ allergies: allergies });
   });
 });
 
 module.exports = router;
-
-function getAllergies(callback) {
-  allergy.find("all", {}, function(err, rows, fields) {
-    if (err) throw err;
-    return callback(rows);
-  });
-}

@@ -2,3 +2,7 @@
 body {
   font-size: 0.87rem;
 }
+
+.pac-container {
+  z-index: 1051 !important;
+}

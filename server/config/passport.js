@@ -31,7 +31,7 @@ module.exports = function(passport) {
   // used to deserialize the user
   passport.deserializeUser(function(id, done) {
     company.find("all", {
-      fields: ["name", "email", "address", "id", "phone_number"],
+      fields: ["name", "email", "id", "phone_number"],
       where: "id = '" + id + "'"
     }, function(err, rows) {
       done(err, rows[0]);
@@ -52,7 +52,7 @@ module.exports = function(passport) {
         passwordField: "password",
         passReqToCallback: true // allows us to pass back the entire request to the callback
       },
-      function(req, email, password, done, test) {
+      function(req, email, password, done) {
 
         // find a user whose email is the same as the forms email
         // we are checking to see if the user trying to login already exists
@@ -62,17 +62,18 @@ module.exports = function(passport) {
           if (rows.length) {
             return done(null, false, req.flash("signupMessage", "That email is already taken."));
           } else {
-
             const company = new Company({
               email: email,
               password: bcrypt.hashSync(password, null, null),  // use the generateHash function in our user model
               phone_number: req.body.phoneNumber,
-              address: req.body.address,
               name: req.body.name
             });
 
-            company.save();
-            return done(null, false, company);
+            company.save(function(err, res) {
+              company.attributes.id = res.insertId;
+              delete company.attributes.password;
+              return done(null, company.attributes);
+            });
           }
         });
       })

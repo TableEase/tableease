@@ -15,7 +15,8 @@ export class UserService {
     return this.http.get('/api/users');
   }
 
-  updateUser(user: User, data: User) {
+  updateUser(formVals) {
+    return this.http.post('/api/signup/update', formVals);
   }
 
   deleteUser(user: User) {

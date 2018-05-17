@@ -2,6 +2,5 @@ export interface User {
   uid: string;
   email: string;
   name?: string;
-  phone?: string;
-  address?: string;
+  phone_number?: string;
 }
