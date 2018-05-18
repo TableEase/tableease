@@ -1,4 +1,6 @@
 const express = require('express');
+const app = express();
+
 const path = require('path');
 const cookieParser = require('cookie-parser');
 const bodyParser = require('body-parser');
@@ -14,12 +16,14 @@ const flash = require('connect-flash');
 const router = express.Router({});
 
 require('./config/passport')(passport); // pass passport for configuration
-const app = express();
 
-// uncomment after placing your favicon in /public
-app.use(morgan('dev')); // log every request to the console
+// MORGAN CONSOLE LOGS
+app.use(morgan('dev'));
+
+// BODY PARSER
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
+
 app.use(expressValidator());
 app.use(cookieParser());
 
@@ -42,16 +46,18 @@ app.use(passport.session()); // persistent login sessions
 app.use(flash()); // use connect-flash for flash messages stored in session
 // require('./routes/routes.js')(app, passport); // load our routes and pass in our app and fully configured passport
 
-const index = require('./routes/index');
-const login = require('./routes/login')(passport);
-const signup = require('./routes/signup')(passport);
-const logout = require('./routes/logout');
-const admin = require('./routes/admin');
-const users = require('./routes/users');
-const allergies = require('./routes/allergies');
-const restaurant = require('./routes/restaurant');
-const menu = require('./routes/menu');
+// ROUTE IMPORTS
+const index = require('.api/routes/index');
+const login = require('.api/routes/login')(passport);
+const signup = require('.api/routes/signup')(passport);
+const logout = require('.api/routes/logout');
+const admin = require('.api/routes/admin');
+const users = require('.api/routes/users');
+const allergies = require('.api/routes/allergies');
+const restaurant = require('.api/routes/restaurant');
+const menu = require('.api/routes/menu');
 
+// ROUTES
 app.use('/api', router);
 router.use('/', index);
 router.use('/login', login);
@@ -63,18 +69,18 @@ router.use('/allergies', allergies);
 router.use('/restaurant', restaurant);
 router.use('/menu', menu);
 
-app.get('/*', function(req, res, next) {
+app.get('*', function(req, res, next) {
   res.sendFile(angularDir + '/index.html');
 });
 
-// catch 404 and forward to error handler
+// 404 ERROR HANDLER
 app.use(function(req, res, next) {
   const err = new Error('Not Found');
   err.status = 404;
   next(err);
 });
 
-// error handler
+// ERROR HANDLER
 app.use(function(err, req, res, next) {
   // set locals, only providing error in development
   res.locals.message = err.message;

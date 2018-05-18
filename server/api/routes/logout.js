@@ -1,10 +1,10 @@
-const express = require("express");
+const express = require('express');
 const router = express.Router({});
-const myFunctions = require("./myFunctions");
+const myFunctions = require('./myFunctions');
 
-router.get("/", myFunctions.isLoggedIn, function(req, res) {
+router.get('/', myFunctions.isLoggedIn, function(req, res) {
   req.logout();
-  res.send({ message: "success" });
+  res.send({ message: 'success' });
 });
 
 module.exports = router;
