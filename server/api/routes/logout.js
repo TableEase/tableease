@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router({});
-const myFunctions = require('./myFunctions');
+const myFunctions = require('../middleware/myFunctions');
 
 router.get('/', myFunctions.isLoggedIn, function(req, res) {
   req.logout();

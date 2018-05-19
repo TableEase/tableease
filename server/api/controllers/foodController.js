@@ -1,4 +1,4 @@
-const db = require('../../config/db');
+const db = require('../config/db');
 const faController = require('./foodAllergiesController');
 
 const food = new db({ tableName: 'food' });

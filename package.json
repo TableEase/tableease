@@ -4,7 +4,8 @@
   "license": "MIT",
   "scripts": {
     "ng": "ng",
-    "start": "concurrently \"ng build --watch\" \"nodemon ./server/bin/www\"",
+    "start":
+      "concurrently \"ng build --watch\" \"nodemon --inspect ./server/bin/www\"",
     "build": "ng build --prod",
     "test": "ng test",
     "lint": "ng lint",
@@ -78,7 +79,8 @@
       {
         "files": "*",
         "options": {
-          "singleQuote": true
+          "singleQuote": true,
+          "arrowParens": "always"
         }
       }
     ]

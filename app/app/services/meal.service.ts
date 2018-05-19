@@ -3,27 +3,24 @@ import { HttpClient } from '@angular/common/http';
 
 @Injectable()
 export class MealService {
-
-  constructor(private http: HttpClient) {
-  }
+  constructor(private http: HttpClient) {}
 
   getMenuAll() {
-    return this.http.get('/api/menu/all');
+    return this.http.get('/api/meals/');
   }
   getMenu() {
-    return this.http.get('/api/menu');
+    return this.http.get('/api/meals/');
   }
 
   addFood(formVals) {
-    return this.http.post('/api/menu/add', formVals);
+    return this.http.post('/api/meals/', formVals);
   }
 
   updateFood(formVals) {
-    return this.http.post('/api/menu/update/' + formVals.food_id, formVals);
+    return this.http.put('/api/meals/' + formVals.food_id, formVals);
   }
 
   deleteFood(food_id) {
-    return this.http.get('/api/menu/delete/' + food_id);
+    return this.http.delete('/api/meals/' + food_id);
   }
-
 }

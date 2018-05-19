@@ -8,14 +8,14 @@ const expressValidator = require('express-validator');
 
 const session = require('express-session');
 const MySQLStore = require('express-mysql-session')(session);
-const options = require('./config/db');
+const options = require('./api/config/db');
 
 const morgan = require('morgan');
 const passport = require('passport');
 const flash = require('connect-flash');
 const router = express.Router({});
 
-require('./config/passport')(passport); // pass passport for configuration
+require('./api/config/passport')(passport); // pass passport for configuration
 
 // MORGAN CONSOLE LOGS
 app.use(morgan('dev'));
@@ -47,27 +47,27 @@ app.use(flash()); // use connect-flash for flash messages stored in session
 // require('./routes/routes.js')(app, passport); // load our routes and pass in our app and fully configured passport
 
 // ROUTE IMPORTS
-const index = require('.api/routes/index');
-const login = require('.api/routes/login')(passport);
-const signup = require('.api/routes/signup')(passport);
-const logout = require('.api/routes/logout');
-const admin = require('.api/routes/admin');
-const users = require('.api/routes/users');
-const allergies = require('.api/routes/allergies');
-const restaurant = require('.api/routes/restaurant');
-const menu = require('.api/routes/menu');
+const index = require('./api/routes/index');
+const loginRoutes = require('./api/routes/login')(passport);
+const signupRoutes = require('./api/routes/signup')(passport);
+const logoutRoutes = require('./api/routes/logout');
+const adminRoutes = require('./api/routes/admin');
+const usersRoutes = require('./api/routes/users');
+const allergiesRoutes = require('./api/routes/allergies');
+const restaurantRoutes = require('./api/routes/restaurants');
+const mealRoutes = require('./api/routes/meals');
 
 // ROUTES
 app.use('/api', router);
 router.use('/', index);
-router.use('/login', login);
-router.use('/signup', signup);
-router.use('/logout', logout);
-router.use('/admin', admin);
-router.use('/users', users);
-router.use('/allergies', allergies);
-router.use('/restaurant', restaurant);
-router.use('/menu', menu);
+router.use('/login', loginRoutes);
+router.use('/signup', signupRoutes);
+router.use('/logout', logoutRoutes);
+router.use('/admins', adminRoutes);
+router.use('/users', usersRoutes);
+router.use('/allergies', allergiesRoutes);
+router.use('/restaurants', restaurantRoutes);
+router.use('/meals', mealRoutes);
 
 app.get('*', function(req, res, next) {
   res.sendFile(angularDir + '/index.html');
@@ -84,11 +84,9 @@ app.use(function(req, res, next) {
 app.use(function(err, req, res, next) {
   // set locals, only providing error in development
   res.locals.message = err.message;
-  res.locals.error = req.app.get('env') === 'development' ? err : {};
+  res.locals.error = req.app.get('env.production') ? {} : err;
 
-  // render the error page
-  res.status(err.status || 500);
-  res.render('error');
+  res.status(err.status || 500).json({ error: err });
 });
 
 module.exports = app;

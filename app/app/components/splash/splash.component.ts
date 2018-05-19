@@ -8,7 +8,7 @@ import { Meal } from '../../models/meal';
 import { Address } from '../../models/address';
 import { Restaurant } from '../../models/restaurants';
 import { MapComponent } from '../form/map/map.component';
-
+import { Allergy } from '../../models/allergy';
 
 @Component({
   selector: 'app-splash',
@@ -24,14 +24,16 @@ export class SplashComponent implements OnInit {
   allDataFetched = false;
   restaurants: Restaurant[];
 
-
-  constructor(private allergiesService: AllergiesService, private mealService: MealService,
-              private restaurantService: RestaurantService, private router: Router) {
-
-  }
+  constructor(
+    private allergiesService: AllergiesService,
+    private mealService: MealService,
+    private restaurantService: RestaurantService,
+    private router: Router
+  ) {}
 
   ngOnInit() {
     this.allergiesService.getAllergies().subscribe((allergies) => {
+      // this.allergies = allergies;
       this.allergies = allergies['allergies'];
     });
 
@@ -41,6 +43,7 @@ export class SplashComponent implements OnInit {
 
   getRestaurants() {
     this.restaurantService.getRestaurantsAll().subscribe((restaurants) => {
+      console.log('The Restaurants: ', restaurants);
       if (!restaurants['data'] && restaurants['messages']) {
         this.router.navigate(['/login']);
       }
@@ -54,21 +57,26 @@ export class SplashComponent implements OnInit {
   }
 
   getSelectedOptionNames() {
-    return this.allergies
-      .filter(opt => opt.checked).map(opt => opt.name);
+    return this.allergies.filter((opt) => opt.checked).map((opt) => opt.name);
   }
 
   getminPrice(meals) {
-    const minPrice = Math.min.apply(Math, meals.map(function(item) {
-      return item.price;
-    }));
+    const minPrice = Math.min.apply(
+      Math,
+      meals.map(function(item) {
+        return item.price;
+      })
+    );
     return minPrice;
   }
 
   getmaxPrice(meals) {
-    const maxPrice = Math.max.apply(Math, meals.map(function(item) {
-      return item.price;
-    }));
+    const maxPrice = Math.max.apply(
+      Math,
+      meals.map(function(item) {
+        return item.price;
+      })
+    );
     return maxPrice;
   }
 

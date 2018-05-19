@@ -1709,6 +1709,7 @@ var SplashComponent = /** @class */ (function () {
     SplashComponent.prototype.ngOnInit = function () {
         var _this = this;
         this.allergiesService.getAllergies().subscribe(function (allergies) {
+            // this.allergies = allergies;
             _this.allergies = allergies['allergies'];
         });
         this.rangeValues = [0, 100];
@@ -1717,6 +1718,7 @@ var SplashComponent = /** @class */ (function () {
     SplashComponent.prototype.getRestaurants = function () {
         var _this = this;
         this.restaurantService.getRestaurantsAll().subscribe(function (restaurants) {
+            console.log('The Restaurants: ', restaurants);
             if (!restaurants['data'] && restaurants['messages']) {
                 _this.router.navigate(['/login']);
             }
@@ -1728,8 +1730,7 @@ var SplashComponent = /** @class */ (function () {
         this.allergies[index]['checked'] = !val;
     };
     SplashComponent.prototype.getSelectedOptionNames = function () {
-        return this.allergies
-            .filter(function (opt) { return opt.checked; }).map(function (opt) { return opt.name; });
+        return this.allergies.filter(function (opt) { return opt.checked; }).map(function (opt) { return opt.name; });
     };
     SplashComponent.prototype.getminPrice = function (meals) {
         var minPrice = Math.min.apply(Math, meals.map(function (item) {
@@ -1798,8 +1799,10 @@ var SplashComponent = /** @class */ (function () {
             styles: [__webpack_require__("./app/app/components/splash/splash.component.css")],
             providers: [allergies_service_1.AllergiesService]
         }),
-        __metadata("design:paramtypes", [allergies_service_1.AllergiesService, meal_service_1.MealService,
-            restaurant_service_1.RestaurantService, router_1.Router])
+        __metadata("design:paramtypes", [allergies_service_1.AllergiesService,
+            meal_service_1.MealService,
+            restaurant_service_1.RestaurantService,
+            router_1.Router])
     ], SplashComponent);
     return SplashComponent;
 }());
@@ -1841,12 +1844,17 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 Object.defineProperty(exports, "__esModule", { value: true });
 var core_1 = __webpack_require__("./node_modules/@angular/core/esm5/core.js");
 var http_1 = __webpack_require__("./node_modules/@angular/common/esm5/http.js");
+__webpack_require__("./node_modules/rxjs/_esm5/add/operator/map.js");
+__webpack_require__("./node_modules/rxjs/_esm5/add/operator/do.js");
 var AllergiesService = /** @class */ (function () {
     function AllergiesService(http) {
         this.http = http;
     }
     AllergiesService.prototype.getAllergies = function () {
         return this.http.get('/api/allergies/');
+        // return this.http
+        //   .get<{ allergies: Allergy[] }>('/api/allergies/')
+        //   .map((res) => (res.allergies as Allergy[]) || []);
     };
     AllergiesService = __decorate([
         core_1.Injectable(),
@@ -1881,19 +1889,19 @@ var MealService = /** @class */ (function () {
         this.http = http;
     }
     MealService.prototype.getMenuAll = function () {
-        return this.http.get('/api/menu/all');
+        return this.http.get('/api/meals/');
     };
     MealService.prototype.getMenu = function () {
-        return this.http.get('/api/menu');
+        return this.http.get('/api/meals/');
     };
     MealService.prototype.addFood = function (formVals) {
-        return this.http.post('/api/menu/add', formVals);
+        return this.http.post('/api/meals/', formVals);
     };
     MealService.prototype.updateFood = function (formVals) {
-        return this.http.post('/api/menu/update/' + formVals.food_id, formVals);
+        return this.http.put('/api/meals/' + formVals.food_id, formVals);
     };
     MealService.prototype.deleteFood = function (food_id) {
-        return this.http.get('/api/menu/delete/' + food_id);
+        return this.http.delete('/api/meals/' + food_id);
     };
     MealService = __decorate([
         core_1.Injectable(),
@@ -1969,19 +1977,19 @@ var RestaurantService = /** @class */ (function () {
         this.http = http;
     }
     RestaurantService.prototype.getRestaurantsAll = function () {
-        return this.http.get('/api/restaurant/all');
+        return this.http.get('/api/restaurants/');
     };
     RestaurantService.prototype.getRestaurants = function () {
-        return this.http.get('/api/restaurant');
+        return this.http.get('/api/restaurants/');
     };
     RestaurantService.prototype.addRestaurant = function (formVals) {
-        return this.http.post('/api/restaurant/add', formVals);
+        return this.http.post('/api/restaurants/', formVals);
     };
     RestaurantService.prototype.updateRestaurant = function (formVals) {
-        return this.http.post('/api/restaurant/update/' + formVals.id, formVals);
+        return this.http.put('/api/restaurants/' + formVals.id, formVals);
     };
     RestaurantService.prototype.deleteRestaurant = function (restaurant_id) {
-        return this.http.get('/api/restaurant/delete/' + restaurant_id);
+        return this.http.delete('/api/restaurants/' + restaurant_id);
     };
     RestaurantService = __decorate([
         core_1.Injectable(),
