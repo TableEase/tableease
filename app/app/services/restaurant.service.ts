@@ -6,7 +6,9 @@ export class RestaurantService {
   constructor(private http: HttpClient) {}
 
   getRestaurantsAll() {
-    return this.http.get('/api/restaurants/');
+    const restaurants = this.http.get('/api/restaurants/');
+    console.log('In Request: ', restaurants);
+    return restaurants;
   }
 
   getRestaurants() {

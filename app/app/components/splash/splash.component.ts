@@ -48,6 +48,7 @@ export class SplashComponent implements OnInit {
         this.router.navigate(['/login']);
       }
       this.restaurants = restaurants['data'];
+      console.log('New Rest: ', this.restaurants);
       this.getMenu();
     });
   }

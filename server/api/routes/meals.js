@@ -1,8 +1,8 @@
 const express = require('express');
 const router = express.Router({});
 
-const myFunctions = require('../middleware/myFunctions');
-const foodController = require('../controllers/foodController');
+const validate = require('../middleware/validate');
+const mealsController = require('../controllers/mealsController');
 const allergyController = require('../controllers/allergiesController');
 const restaurantController = require('../controllers/restaurantController');
 const faController = require('../controllers/foodAllergiesController');
@@ -10,26 +10,24 @@ const faController = require('../controllers/foodAllergiesController');
 /* IN CRUD FORM */
 
 // Move to new route
-router.get('/', myFunctions.isLoggedIn, function(req, res, next) {
-  const companyId = req.user.id;
-  foodController.getMenu(companyId, function(fullMenu) {
-    allergyController.createAllergies(fullMenu, function(fullMenu) {
-      res.send({ data: fullMenu });
-    });
-  });
-});
+// router.get('/', validate.isLoggedIn, function(req, res, next) {
+//   const companyId = req.user.id;
+//   mealsController.getMenu(companyId, function(fullMenu) {
+//     allergyController.createAllergies(fullMenu, function(fullMenu) {
+//       res.send({ data: fullMenu });
+//     });
+//   });
+// });
 
 // CREATE MEAL /api/meals/
-router.post('/', myFunctions.isLoggedIn, function(req, res, next) {
+router.post('/', validate.isLoggedIn, (req, res, next) => {
   const companyId = req.user.id;
   const restaurantId = req.body.restaurant_id;
-  restaurantController.checkOwnerRestaurant(restaurantId, companyId, function(
-    row
-  ) {
+  restaurantController.validate(restaurantId, companyId, (row) => {
     if (!row) {
       res.send({ message: 'You do not own that restaurant.' });
     } else {
-      foodController.addFood(req, companyId, function(formFields) {
+      mealsController.createMeal(req, companyId, (formFields) => {
         req.flash('menuMessage', 'Added: ' + JSON.stringify(formFields));
         res.redirect('/api/meals');
       });
@@ -38,21 +36,21 @@ router.post('/', myFunctions.isLoggedIn, function(req, res, next) {
 });
 
 // READ ALL MEALS /api/meals/
-router.get('/', function(req, res, next) {
+router.get('/', (req, res, next) => {
   const companyId = req.user.id;
-  foodController.getMenuAll(companyId, function(fullMenu) {
-    allergyController.createAllergies(fullMenu, function(fullMenu) {
+  mealsController.readMeals(companyId, (fullMenu) => {
+    allergyController.createAllergies(fullMenu, (fullMenu) => {
       res.send({ data: fullMenu });
     });
   });
 });
 
 // UPDATE MEAL /api/meals/:id
-router.put('/:id', myFunctions.isLoggedIn, function(req, res, next) {
+router.put('/:id', validate.isLoggedIn, (req, res, next) => {
   const foodId = req.params.id;
   const companyId = req.user.id;
   const checkedAllergies = req.body.checkedAllergies;
-  foodFunctions.checkOwnerFood(foodId, companyId, function(row) {
+  foodFunctions.checkOwnerFood(foodId, companyId, (row) => {
     if (!row) {
       res.render('action', {
         data: 'You do not own that menu item OR it does not exist.'
@@ -62,12 +60,15 @@ router.put('/:id', myFunctions.isLoggedIn, function(req, res, next) {
         foodId,
         companyId,
         checkedAllergies,
-        function(result) {
-          foodFunctions.updateFood(req, companyId, checkedAllergies, function(
-            formFields
-          ) {
-            res.redirect('/api/meals');
-          });
+        (result) => {
+          foodFunctions.updateFood(
+            req,
+            companyId,
+            checkedAllergies,
+            (formFields) => {
+              res.redirect('/api/meals');
+            }
+          );
         }
       );
     }
@@ -75,16 +76,16 @@ router.put('/:id', myFunctions.isLoggedIn, function(req, res, next) {
 });
 
 // DELETE MEAL /api/meals/:id
-router.delete('/:id', myFunctions.isLoggedIn, function(req, res, next) {
+router.delete('/:id', validate.isLoggedIn, (req, res, next) => {
   const foodId = req.params.id;
   const companyId = req.user.id;
-  foodController.checkOwnerFood(foodId, companyId, function(row) {
+  mealsController.validate(foodId, companyId, (row) => {
     if (!row) {
       res.send({
         message: 'You do not own that menu item OR it does not exist.'
       });
     } else {
-      foodController.deleteFood(foodId, companyId, function(result) {
+      mealsController.deleteMeal(foodId, companyId, (result) => {
         res.redirect('/api/meals');
       });
     }

@@ -1723,6 +1723,7 @@ var SplashComponent = /** @class */ (function () {
                 _this.router.navigate(['/login']);
             }
             _this.restaurants = restaurants['data'];
+            console.log('New Rest: ', _this.restaurants);
             _this.getMenu();
         });
     };
@@ -1977,7 +1978,9 @@ var RestaurantService = /** @class */ (function () {
         this.http = http;
     }
     RestaurantService.prototype.getRestaurantsAll = function () {
-        return this.http.get('/api/restaurants/');
+        var restaurants = this.http.get('/api/restaurants/');
+        console.log('In Request: ', restaurants);
+        return restaurants;
     };
     RestaurantService.prototype.getRestaurants = function () {
         return this.http.get('/api/restaurants/');

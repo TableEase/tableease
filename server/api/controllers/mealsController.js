@@ -7,35 +7,7 @@ const Food = db.extend({
 });
 
 module.exports = {
-  deleteFood: function(foodId, companyId, callback) {
-    food.remove('id=' + foodId + ' and company_id=' + companyId, function(
-      err,
-      res,
-      fields
-    ) {
-      if (err) throw err;
-      return callback(res);
-    });
-  },
-
-  updateFood: function(req, companyId, checkedAllergies, callback) {
-    const formFields = req.body;
-    const food = new Food({
-      company_id: companyId,
-      name: formFields.name,
-      description: formFields.description,
-      price: formFields.price,
-      id: formFields.food_id,
-      restaurant_id: formFields.restaurant_id
-    });
-
-    food.save(function(err, rows, fields) {
-      if (err) throw err;
-      return callback(faController.addFoodAllergy(food.id, checkedAllergies));
-    });
-  },
-
-  addFood: function(req, companyId, callback) {
+  createMeal: function(req, companyId, callback) {
     const formFields = req.body;
     const checkedAllergies = formFields.checkedAllergies;
     const food = new Food({
@@ -52,7 +24,7 @@ module.exports = {
     });
   },
 
-  getMenu: function(companyId, callback) {
+  readMeal: function(companyId, callback) {
     const query =
       'select f.restaurant_id, f.price, f.id as food_id, f.description, f.name, ' +
       "GROUP_CONCAT(DISTINCT a.id SEPARATOR ',') AS allergy_ids, " +
@@ -68,7 +40,7 @@ module.exports = {
     });
   },
 
-  getMenuAll: function(companyId, callback) {
+  readMeals: function(companyId, callback) {
     const query =
       'select f.restaurant_id, f.price, f.id as food_id, f.description, f.name, ' +
       "GROUP_CONCAT(DISTINCT a.id SEPARATOR ',') AS allergy_ids, " +
@@ -82,7 +54,35 @@ module.exports = {
     });
   },
 
-  checkOwnerFood: function(foodId, companyId, callback) {
+  updateMeal: function(req, companyId, checkedAllergies, callback) {
+    const formFields = req.body;
+    const food = new Food({
+      company_id: companyId,
+      name: formFields.name,
+      description: formFields.description,
+      price: formFields.price,
+      id: formFields.food_id,
+      restaurant_id: formFields.restaurant_id
+    });
+
+    food.save(function(err, rows, fields) {
+      if (err) throw err;
+      return callback(faController.addFoodAllergy(food.id, checkedAllergies));
+    });
+  },
+
+  deleteMeal: function(foodId, companyId, callback) {
+    food.remove('id=' + foodId + ' and company_id=' + companyId, function(
+      err,
+      res,
+      fields
+    ) {
+      if (err) throw err;
+      return callback(res);
+    });
+  },
+
+  validate: function(foodId, companyId, callback) {
     food.find(
       'first',
       { where: ['company_id=' + companyId + ' and id=' + foodId] },

@@ -11,6 +11,7 @@ module.exports = function(passport) {
       messages: req.flash('loginMessage')
     });
   });
+
   router.post('/', function(req, res) {
     controller.loginValidation(req, res, function() {
       passport.authenticate('local-login', {

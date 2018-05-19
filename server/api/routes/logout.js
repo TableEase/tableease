@@ -1,8 +1,8 @@
 const express = require('express');
 const router = express.Router({});
-const myFunctions = require('../middleware/myFunctions');
+const validate = require('../middleware/validate');
 
-router.get('/', myFunctions.isLoggedIn, function(req, res) {
+router.get('/', validate.isLoggedIn, function(req, res) {
   req.logout();
   res.send({ message: 'success' });
 });

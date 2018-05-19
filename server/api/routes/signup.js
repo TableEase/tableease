@@ -5,7 +5,7 @@ const db = require('../config/db');
 const validationFunctions = require('../controllers/validationController');
 
 const bcrypt = require('bcrypt-nodejs');
-const myFunctions = require('../middleware/myFunctions');
+const validate = require('../middleware/validate');
 const Company = db.extend({ tableName: 'companies' });
 
 module.exports = function(passport) {
@@ -29,7 +29,7 @@ module.exports = function(passport) {
   return router;
 };
 
-router.post('/update', myFunctions.isLoggedIn, function(req, res, next) {
+router.post('/update', validate.isLoggedIn, function(req, res, next) {
   validationFunctions.validateCompany(req, res, function() {
     const company = new Company({
       email: req.body.email,
