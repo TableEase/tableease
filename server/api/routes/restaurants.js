@@ -8,79 +8,44 @@ const companyController = require('../controllers/companyController');
 
 // CREATE RESTAURANT /api/restaurants/
 router.post('/', validate.isLoggedIn, (req, res, next) => {
-  companyController.validate(req, (result) => {
-    if (result) {
-      restaurantController.create(req, (result) => {
-        if (result.insertId) {
-          restaurantController.read(result.insertId, (restaurant) => {
-            res.status(200).json({
-              message: 'Restaurant Created',
-              restaurant: restaurant[0]
-            });
-          });
-        }
-      });
-    } else {
-      res.status(401).json({ message: 'Unauthorized' });
-    }
+  restaurantController.create(req, (result) => {
+    res.status(200).json({
+      message: 'Restaurant Created',
+      restaurant: restaurant[0]
+    });
   });
 });
 
 // READ ALL RESTAURANTS /api/restaurants/
 router.get('/', (req, res, next) => {
-  restaurantController.readAll(req, (restaurants) => {
-    if (restaurants.length < 1) {
-      return res.status(404).json({ message: 'No Restaurants Found' });
-    }
+  restaurantController.readAll(req, res, (restaurants) => {
     res.status(200).json({ restaurant: restaurants });
   });
 });
 
 // READ A RESTAURANT /api/restaurants/:id
 router.get('/:id', (req, res, next) => {
-  restaurantController.read(req, (restaurant) => {
-    if (restaurant.length < 1) {
-      return res.status(404).json({ message: 'No Restaurant Found' });
-    }
+  restaurantController.read(req, res, (restaurant) => {
     res.status(200).json({ restaurant: restaurant[0] });
   });
 });
 
 // UPDATE RESTAURANT /api/restaurants/:id
 router.put('/:id', validate.isLoggedIn, (req, res, next) => {
-  companyController.validate(req, (result) => {
-    if (result) {
-      restaurantController.validate(req, (result) => {
-        if (!result) {
-          return res.status(404).json({ message: 'Not Found' });
-        }
-        restaurantController.update(req, (result) => {
-          if (result) {
-            restaurantController.read(req.params.id, (restaurant) => {
-              res.status(200).json({
-                message: 'Restaurant Updated',
-                restaurant: restaurant[0]
-              });
-            });
-          }
-        });
+  restaurantController.validate(req, res, (result) => {
+    restaurantController.update(req, (restaurant) => {
+      res.status(200).json({
+        message: 'Restaurant Updated',
+        restaurant: restaurant[0]
       });
-    } else {
-      res.status(401).json({ message: 'Unauthorized' });
-    }
+    });
   });
 });
 
 // DELETE REASTAURANT /api/restaurants/:id
 router.delete('/:id', validate.isLoggedIn, (req, res, next) => {
-  companyController.validate(req, (result) => {
-    restaurantController.validate(req, (result) => {
-      // ??? Should we delete or deactivate instead?
-      // if (!result) {
-      if (result.active === 0) {
-        return res.status(404).json({ message: 'Not Found' });
-      }
-
+  companyController.validate(req, res, (result) => {
+    restaurantController.validate(req, res, (result) => {
       // ??? Should we delete or deactivate instead?
       restaurantController.delete(req, () => {
         res.status(200).json({ message: 'Restaurant Deleted' });

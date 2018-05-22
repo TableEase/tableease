@@ -10,29 +10,28 @@ module.exports = {
 
     if (allergies.length < 1) {
       return allergies;
-    }
-
-    foodAllergy.find(
-      'all',
-      { where: `food_id = ${mealId}` },
-      (err, res, fields) => {
-        if (res.length < 1) {
-          return allergies;
-        }
-        res.forEach((allergy) => {
-          if (!allergyController.checkAllergyExists(allergies, allergy)) {
-            foodAllergy.remove(
-              `food_id = ${allergy.food_id} and allergy_id = ${
-                allergy.allergy_id
-              }`
-            );
+    } else {
+      foodAllergy.find(
+        'all',
+        { where: `food_id = ${mealId}` },
+        (err, res, fields) => {
+          if (res.length < 1) {
+            return allergies;
           }
-        });
-        return res;
-      }
-    );
-
-    return allergies;
+          res.forEach((allergy) => {
+            if (!allergyController.checkAllergyExists(allergies, allergy)) {
+              foodAllergy.remove(
+                `food_id = ${allergy.food_id} and allergy_id = ${
+                  allergy.allergy_id
+                }`
+              );
+            }
+          });
+          // return res;
+        }
+      );
+      return allergies;
+    }
   },
 
   create: (foodRowId, allergies) => {

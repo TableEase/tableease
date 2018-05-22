@@ -5,12 +5,12 @@ const Restaurant = db.extend({ tableName: 'restaurants' });
 
 const setBody = (payload, companyId, params) => {
   body = {
-    address: payload.address,
-    company_id: companyId,
-    lat: payload.lat,
-    lon: payload.lon,
     name: payload.name,
-    phone_number: payload.phone_number
+    phone_number: payload.phone_number,
+    company_id: companyId,
+    address: payload.address,
+    lat: payload.lat,
+    lon: payload.lon
   };
 
   if (params) {
@@ -52,7 +52,10 @@ module.exports = {
 
     restaurant.save((err, rows, fields) => {
       if (err) throw err;
-      return callback(rows);
+
+      const body = restaurant.attributes;
+
+      return callback(parseAddress([body]));
     });
   },
 
@@ -70,7 +73,7 @@ module.exports = {
   //   });
   // },
 
-  read: (req, bool, callback) => {
+  read: (req, res, bool, callback) => {
     if (typeof bool === 'function') {
       callback = bool;
       bool = null;
@@ -87,11 +90,14 @@ module.exports = {
 
     restaurant.query(query, (err, rows, fields) => {
       if (err) throw err;
+      if (rows.length < 1) {
+        return res.status(404).json({ message: 'Not Found' });
+      }
       callback(parseAddress(rows));
     });
   },
 
-  readAll: (req, bool, callback) => {
+  readAll: (req, res, bool, callback) => {
     if (typeof bool === 'function') {
       callback = bool;
       bool = null;
@@ -105,6 +111,9 @@ module.exports = {
     // Only active restaurants should be queried. Do not request active: 0
     restaurant.query(query, (err, rows, fields) => {
       if (err) throw err;
+      if (rows.length < 1) {
+        return res.status(404).json({ message: 'Not Found' });
+      }
       return callback(parseAddress(rows));
     });
   },
@@ -118,7 +127,10 @@ module.exports = {
 
     restaurant.save((err, result, fields) => {
       if (err) throw err;
-      return callback(result);
+
+      const body = restaurant.attributes;
+
+      return callback(parseAddress([body]));
     });
   },
 
@@ -135,21 +147,19 @@ module.exports = {
     );
   },
 
-  validate: (req, callback) => {
+  validate: (req, res, callback) => {
     let condition = `company_id = ${req.user.id}`;
 
     if (req.params.id) {
       condition = condition + ` and id = ${req.params.id}`;
     }
 
-    restaurant.find(
-      'first',
-      { where: [condition] },
-      // { where: ['company_id=' + companyId + ' and id=' + restId] },
-      (err, row, fields) => {
-        if (err) throw err;
-        return callback(row);
+    restaurant.find('first', { where: condition }, (err, row, fields) => {
+      if (err) throw err;
+      if (row.length < 1) {
+        return res.status(404).json({ message: 'Not Found' });
       }
-    );
+      return callback(row);
+    });
   }
 };
