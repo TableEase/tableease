@@ -44,12 +44,10 @@ router.put('/:id', validate.isLoggedIn, (req, res, next) => {
 
 // DELETE REASTAURANT /api/restaurants/:id
 router.delete('/:id', validate.isLoggedIn, (req, res, next) => {
-  companyController.validate(req, res, (result) => {
-    restaurantController.validate(req, res, (result) => {
-      // ??? Should we delete or deactivate instead?
-      restaurantController.delete(req, () => {
-        res.status(200).json({ message: 'Restaurant Deleted' });
-      });
+  restaurantController.validate(req, res, (result) => {
+    // ??? Should we delete or deactivate instead?
+    restaurantController.delete(req, () => {
+      res.status(200).json({ message: 'Restaurant Deleted' });
     });
   });
 });
