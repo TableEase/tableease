@@ -1,5 +1,6 @@
 <div>
-  <button *ngIf="restaurants" class="btn btn-primary" (click)="addModal=true">Add Restaurant</button>
+  <!-- <button *ngIf="restaurants" class="btn btn-primary" (click)="addModal=true">Add Restaurant</button> -->
+  <button class="btn btn-primary" (click)="addModal=true">Add Restaurant</button>
 
   <clr-stack-view>
     <clr-stack-header class="cap">
@@ -48,8 +49,7 @@
   <h4 class="modal-body" *ngIf="doubleCheck">Are you sure you want to remove {{restaurantToEdit.name}}?</h4>
   <div class="modal-footer">
     <button type="button" class="btn btn-secondary btn-sm" (click)="doubleCheck=false; editModal=true">Return</button>
-    <button type="button" class="btn btn-danger btn-sm"
-            (click)="doubleCheck=false; onDeleteRestaurant(restaurantToEdit)">
+    <button type="button" class="btn btn-danger btn-sm" (click)="doubleCheck=false; onDeleteRestaurant(restaurantToEdit)">
       Confirm
     </button>
   </div>

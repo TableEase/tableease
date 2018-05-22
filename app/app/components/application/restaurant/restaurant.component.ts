@@ -14,20 +14,24 @@ export class RestaurantComponent implements OnInit {
   @ViewChild(RestaurantFormComponent) restaurantForm: RestaurantFormComponent;
   private restaurantToEdit: Restaurant;
 
-  constructor(private restaurantService: RestaurantService, private router: Router) {
-  }
+  constructor(
+    private restaurantService: RestaurantService,
+    private router: Router
+  ) {}
 
   ngOnInit() {
     this.getRestaurants();
   }
 
   getRestaurants() {
-    this.restaurantService.getRestaurants().subscribe((restaurants) => {
-      if (!restaurants['data'] && restaurants['messages']) {
-        console.log('Error: ');
-        console.log(restaurants);
-      }
-      this.restaurants = restaurants['data'];
+    this.restaurantService.readCompRestaurants().subscribe((restaurants) => {
+      // Not Sure
+      // if (!restaurants['data'] && restaurants['messages']) {
+      //   console.log('Error: ');
+      //   console.log(restaurants);
+      // }
+      // this.restaurants = restaurants['data'];
+      this.restaurants = restaurants;
     });
   }
 
@@ -42,9 +46,11 @@ export class RestaurantComponent implements OnInit {
   }
 
   onDeleteRestaurant(restaurant) {
-    this.restaurantService.deleteRestaurant(restaurant['id']).subscribe((res) => {
-      this.getRestaurants();
-    });
+    this.restaurantService
+      .deleteRestaurant(restaurant['id'])
+      .subscribe((res) => {
+        this.getRestaurants();
+      });
   }
 
   onCreateRestaurant() {

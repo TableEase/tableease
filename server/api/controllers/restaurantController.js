@@ -20,6 +20,29 @@ const setBody = (payload, companyId, params) => {
   return new Restaurant(body);
 };
 
+const parseAddress = (array) => {
+  array.forEach((restaurant) => {
+    restaurant['address'] = {
+      address: restaurant['address'],
+      lat: restaurant['lat'],
+      lon: restaurant['lon']
+    };
+
+    // The two below will remove a key from the object.
+    // Since these two keys are being merged into the address
+    // field, we do not need them. They have been removed.
+    // Duplicate
+    delete restaurant['lat'];
+    delete restaurant['lon'];
+
+    // company ID is private. It is equivalent to userId.
+    // Only the company should know this. It must be removed.
+    delete restaurant['company_id'];
+  });
+  // return callback(restaurants);
+  return array;
+};
+
 module.exports = {
   create: (req, callback) => {
     const companyId = req.user.id;
@@ -47,23 +70,42 @@ module.exports = {
   //   });
   // },
 
-  read: (id, callback) => {
+  read: (req, bool, callback) => {
+    if (typeof bool === 'function') {
+      callback = bool;
+      bool = null;
+    }
+
     // ### TODO:
     // Only active restaurants should be queried. Do not request active: 0
-    var query = 'select * from restaurants where id = ' + id;
+    let query = `select * from restaurants where id = `;
+    req.params ? (query += req.params.id) : (query += req);
+
+    if (req.user && bool) {
+      query = query + ` and company_id = ${req.user.id}`;
+    }
+
     restaurant.query(query, (err, rows, fields) => {
       if (err) throw err;
-      callback(rows);
+      callback(parseAddress(rows));
     });
   },
 
-  readAll: (callback) => {
+  readAll: (req, bool, callback) => {
+    if (typeof bool === 'function') {
+      callback = bool;
+      bool = null;
+    }
+
+    let query = 'select * from restaurants';
+    if (req.user && bool) {
+      query = query + ` where company_id = ${req.user.id}`;
+    }
     // ### TODO:
     // Only active restaurants should be queried. Do not request active: 0
-    var query = 'select * from restaurants';
     restaurant.query(query, (err, rows, fields) => {
       if (err) throw err;
-      callback(rows);
+      return callback(parseAddress(rows));
     });
   },
 
@@ -74,9 +116,9 @@ module.exports = {
 
     const restaurant = setBody(payload, companyId, param);
 
-    restaurant.save((err, rows, fields) => {
+    restaurant.save((err, result, fields) => {
       if (err) throw err;
-      return callback(rows);
+      return callback(result);
     });
   },
 
@@ -93,35 +135,17 @@ module.exports = {
     );
   },
 
-  parseAddress: (array, callback) => {
-    array.forEach((restaurant) => {
-      restaurant['address'] = {
-        address: restaurant['address'],
-        lat: restaurant['lat'],
-        lon: restaurant['lon']
-      };
-
-      // The two below will remove a key from the object.
-      // Since these two keys are being merged into the address
-      // field, we do not need them. They have been removed.
-      delete restaurant['lat'];
-      delete restaurant['lon'];
-
-      // company ID is private. It is equivalent to userId.
-      // Only the company should know this. It must be removed.
-      delete restaurant['company_id'];
-    });
-    // return callback(restaurants);
-    return array;
-  },
-
   validate: (req, callback) => {
-    const restId = req.params.id;
-    const companyId = req.user.id;
+    let condition = `company_id = ${req.user.id}`;
+
+    if (req.params.id) {
+      condition = condition + ` and id = ${req.params.id}`;
+    }
 
     restaurant.find(
       'first',
-      { where: ['company_id=' + companyId + ' and id=' + restId] },
+      { where: [condition] },
+      // { where: ['company_id=' + companyId + ' and id=' + restId] },
       (err, row, fields) => {
         if (err) throw err;
         return callback(row);

@@ -1,4 +1,11 @@
-import { Component, OnInit, Input, OnDestroy, OnChanges, ViewChild } from '@angular/core';
+import {
+  Component,
+  OnInit,
+  Input,
+  OnDestroy,
+  OnChanges,
+  ViewChild
+} from '@angular/core';
 import { NgForm } from '@angular/forms';
 import { MealService } from '../../../../services/meal.service';
 import { AllergiesService } from '../../../../services/allergies.service';
@@ -12,8 +19,6 @@ import { AllergyCheckboxes } from '../../../../models/allergycheckboxes';
   styleUrls: ['./meal-form.component.css'],
   providers: []
 })
-
-
 export class MealFormComponent implements OnInit {
   @Input() meal: Meal;
   @ViewChild('frm') public form: NgForm;
@@ -22,8 +27,8 @@ export class MealFormComponent implements OnInit {
 
   constructor(
     private mealService: MealService,
-    private allergiesService: AllergiesService) {
-  }
+    private allergiesService: AllergiesService
+  ) {}
 
   ngOnInit() {
     this.allergiesService.getAllergies().subscribe((allergies) => {
@@ -55,8 +60,7 @@ export class MealFormComponent implements OnInit {
   }
 
   getSelectedOptions() {
-    return this.allergies
-      .filter(opt => opt.checked);
+    return this.allergies.filter((opt) => opt.checked);
   }
 
   onSubmit() {
@@ -66,9 +70,10 @@ export class MealFormComponent implements OnInit {
   }
 
   onUpdate() {
-    this.form.value['food_id'] = this.meal['food_id'];
+    console.log('Form: ', this.meal);
+    this.form.value.id = this.meal.id;
     const formVals = this.form.value;
-    formVals['checkedAllergies'] = this.getSelectedOptions();
+    formVals.allergies = this.getSelectedOptions();
     return this.mealService.updateFood(formVals);
   }
 

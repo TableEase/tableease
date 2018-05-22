@@ -4,7 +4,8 @@
 </div>
 
 <ng-template #norestaurant>
-  <div>First <a routerLink="/app/restaurant"> create a restaurant</a> before creating a menu.</div>
+  <div>First
+    <a routerLink="/app/restaurant"> create a restaurant</a> before creating a menu.</div>
 </ng-template>
 <ng-template #restaurant>
   <button *ngIf="meals" class="btn btn-primary" (click)="addModal=true">Add Item</button>
@@ -83,4 +84,3 @@
   </div>
 
 </clr-modal>
-

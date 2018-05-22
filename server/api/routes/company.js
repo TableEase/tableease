@@ -1,27 +1,48 @@
 const express = require('express');
-const routes = express.Router();
+const router = express.Router();
+const validate = require('../middleware/validate');
+const restaurantController = require('../controllers/restaurantController');
+const mealController = require('../controllers/mealController');
 
 // CREATE COMPANY
-router.get('/', validate.isLoggedIn, (req, res, next) => {
-  const companyId = req.user.id;
-  restaurantController.getRestaurants(companyId, (restaurants) => {
-    restaurantController.createAddress(restaurants, (restaurants) => {
-      // res.send({ data: restaurants });
-      res.status(200).json({ data: restaurants });
-    });
+router.post('/', validate.isLoggedIn, (req, res) => {
+  restaurantController.readAll(req, (restaurants) => {
+    res.status(200).json({ data: restaurants });
   });
 });
 
 // READ COMPANY /api/company/
 
-// READ COMPANY RESTAURANTS /api/company/restaurants/
-
-// READ COMPANY REASTAURANTS MEALS /api/company/restaurants/:id/meals/
-
-// READ COMPANY RESTAURANTS MEAL /api/company/restaurants/:id/meals/:id
-
 // UPDATE COMPANY /api/company/
+router.put('/:id', validate.isLoggedIn, (req, res) => {
+  res.status(200).json({ message: 'ENTER MESSAGE' });
+});
 
 // DELETE COMPANY /api/company
+router.put('/:id', validate.isLoggedIn, (req, res) => {
+  res.status(200).json({ message: 'ENTER MESSAGE' });
+});
 
-module.exports = routes;
+// READ COMPANY RESTAURANTS /api/company/restaurants/
+router.get('/restaurants/', (req, res) => {
+  restaurantController.readAll(req, true, (restaurants) => {
+    res.status(200).json({ restaurants: restaurants });
+  });
+});
+
+// Possibly do not need
+// READ A COMPANY RESTAURANT /api/company/restaurants/:id
+router.get('/restaurants/:id', (req, res) => {
+  restaurantController.read(req, true, (restaurants) => {
+    res.status(200).json({ restaurants: restaurants });
+  });
+});
+
+// READ COMPANY RESTAURANT MEALS /api/company/restaurants/:id/meals
+router.get('/restaurants/:id/meals', (req, res) => {
+  mealController.readAll(req, (meals) => {
+    res.status(200).json({ meals: meals });
+  });
+});
+
+module.exports = router;

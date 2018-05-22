@@ -14,11 +14,9 @@ export class RestaurantFormComponent implements OnInit {
   @ViewChild('frm') public form: NgForm;
   @ViewChild(AddressComponent) addressInput: AddressComponent;
 
-  constructor(private restaurantService: RestaurantService) {
-  }
+  constructor(private restaurantService: RestaurantService) {}
 
-  ngOnInit() {
-  }
+  ngOnInit() {}
 
   onSubmit() {
     Object.assign(this.form.value, this.addressInput.address);
@@ -36,5 +34,4 @@ export class RestaurantFormComponent implements OnInit {
   clearForm() {
     this.form.reset();
   }
-
 }

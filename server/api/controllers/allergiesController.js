@@ -2,22 +2,29 @@ const db = require('../config/db');
 const allergy = new db({ tableName: 'allergies' });
 
 module.exports = {
-  createAllergies: function(fullMenu, callback) {
-    fullMenu.forEach(function(item) {
-      item['allergies'] = [];
-      if (item['allergy_active'] === '1') {
-        item['allergy_ids'] = item['allergy_ids'].split(',').map(Number);
-        item['allergy_names'] = item['allergy_names'].split(',');
-        for (let i = 0; i < item['allergy_ids'].length; i++) {
-          item['allergies'].push({
-            id: item['allergy_ids'][i],
-            name: item['allergy_names'][i],
+  parse: function(meals) {
+    meals.forEach(function(meal) {
+      let id = meal.allergy_ids;
+      let name = meal.allergy_names;
+
+      meal.allergies = [];
+      if (meal.allergy_active === '1') {
+        id = id.split(',').map(Number);
+        name = name.split(',');
+        for (let i = 0; i < id.length; i++) {
+          meal.allergies.push({
+            id: id[i],
+            name: name[i],
             active: 1
           });
         }
       }
+
+      delete meal.allergy_names;
+      delete meal.allergy_ids;
+      delete meal.allergy_active;
     });
-    callback(fullMenu);
+    return meals;
   },
   checkAllergyExists: function(checkedAllergies, foodallergy) {
     for (let i = 0; i < checkedAllergies.length; i++) {

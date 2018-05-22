@@ -56,6 +56,7 @@ const usersRoutes = require('./api/routes/users');
 const allergiesRoutes = require('./api/routes/allergies');
 const restaurantRoutes = require('./api/routes/restaurants');
 const mealRoutes = require('./api/routes/meals');
+const companyRoutes = require('./api/routes/company');
 
 // ROUTES
 app.use('/api', router);
@@ -66,6 +67,7 @@ router.use('/logout', logoutRoutes);
 router.use('/admins', adminRoutes);
 router.use('/users', usersRoutes);
 router.use('/allergies', allergiesRoutes);
+router.use('/company', companyRoutes);
 router.use('/restaurants', restaurantRoutes);
 router.use('/meals', mealRoutes);
 

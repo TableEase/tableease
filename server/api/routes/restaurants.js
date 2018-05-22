@@ -2,87 +2,89 @@ const express = require('express');
 const router = express.Router({});
 const validate = require('../middleware/validate');
 const restaurantController = require('../controllers/restaurantController');
+const companyController = require('../controllers/companyController');
 
 /* IN CRUD FORM */
 
-// move?
-// router.get('/', validate.isLoggedIn, (req, res, next) => {
-//   const companyId = req.user.id;
-//   restaurantController.getRestaurants(companyId, (restaurants) => {
-//     restaurantController.createAddress(restaurants, (restaurants) => {
-//       // res.send({ data: restaurants });
-//       res.status(200).json({ data: restaurants });
-//     });
-//   });
-// });
-
 // CREATE RESTAURANT /api/restaurants/
 router.post('/', validate.isLoggedIn, (req, res, next) => {
-  restaurantController.create(req, (result) => {
+  companyController.validate(req, (result) => {
     if (result) {
-      restaurantController.read(result.insertId, (rows) => {
-        restaurant = restaurantController.parseAddress(rows);
-        res.send(200, {
-          message: 'Restaurant Created',
-          restaurant: restaurant[0]
-        });
+      restaurantController.create(req, (result) => {
+        if (result.insertId) {
+          restaurantController.read(result.insertId, (restaurant) => {
+            res.status(200).json({
+              message: 'Restaurant Created',
+              restaurant: restaurant[0]
+            });
+          });
+        }
       });
+    } else {
+      res.status(401).json({ message: 'Unauthorized' });
     }
   });
 });
 
 // READ ALL RESTAURANTS /api/restaurants/
 router.get('/', (req, res, next) => {
-  restaurantController.readAll((rows) => {
-    restaurants = restaurantController.parseAddress(rows);
-    res.send(200, { restaurants: restaurants });
+  restaurantController.readAll(req, (restaurants) => {
+    if (restaurants.length < 1) {
+      return res.status(404).json({ message: 'No Restaurants Found' });
+    }
+    res.status(200).json({ restaurant: restaurants });
   });
 });
 
 // READ A RESTAURANT /api/restaurants/:id
 router.get('/:id', (req, res, next) => {
-  restaurantController.read(req.params.id, (rows) => {
-    if (rows.length < 1) {
-      return res.send(404, { message: 'No Restaurant Found' });
+  restaurantController.read(req, (restaurant) => {
+    if (restaurant.length < 1) {
+      return res.status(404).json({ message: 'No Restaurant Found' });
     }
-    restaurant = restaurantController.parseAddress(rows);
-    res.send(200, { restaurant: restaurant[0] });
+    res.status(200).json({ restaurant: restaurant[0] });
   });
 });
 
 // UPDATE RESTAURANT /api/restaurants/:id
 router.put('/:id', validate.isLoggedIn, (req, res, next) => {
-  restaurantController.validate(req, (result) => {
-    if (!result) {
-      return res.send(404, { message: 'Not Found' });
-    }
-
-    restaurantController.update(req, (result) => {
-      if (result) {
-        restaurantController.read(req.params.id, (rows) => {
-          restaurant = restaurantController.parseAddress(rows);
-          res.send(200, {
-            message: 'Restaurant Updated',
-            restaurant: restaurant[0]
-          });
+  companyController.validate(req, (result) => {
+    if (result) {
+      restaurantController.validate(req, (result) => {
+        if (!result) {
+          return res.status(404).json({ message: 'Not Found' });
+        }
+        restaurantController.update(req, (result) => {
+          if (result) {
+            restaurantController.read(req.params.id, (restaurant) => {
+              res.status(200).json({
+                message: 'Restaurant Updated',
+                restaurant: restaurant[0]
+              });
+            });
+          }
         });
-      }
-    });
+      });
+    } else {
+      res.status(401).json({ message: 'Unauthorized' });
+    }
   });
 });
 
 // DELETE REASTAURANT /api/restaurants/:id
 router.delete('/:id', validate.isLoggedIn, (req, res, next) => {
-  restaurantController.validate(req, (result) => {
-    // ??? Should we delete or deactivate instead?
-    // if (!result) {
-    if (result.active === 0) {
-      return res.send(404, { message: 'Not Found' });
-    }
+  companyController.validate(req, (result) => {
+    restaurantController.validate(req, (result) => {
+      // ??? Should we delete or deactivate instead?
+      // if (!result) {
+      if (result.active === 0) {
+        return res.status(404).json({ message: 'Not Found' });
+      }
 
-    // ??? Should we delete or deactivate instead?
-    restaurantController.delete(req, () => {
-      res.send(200, { message: 'Restaurant Deleted' });
+      // ??? Should we delete or deactivate instead?
+      restaurantController.delete(req, () => {
+        res.status(200).json({ message: 'Restaurant Deleted' });
+      });
     });
   });
 });

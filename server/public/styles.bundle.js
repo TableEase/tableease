@@ -745,13 +745,13 @@ module.exports = function (css) {
 /***/ 2:
 /***/ (function(module, exports, __webpack_require__) {
 
+__webpack_require__("./app/styles.css");
 __webpack_require__("./node_modules/font-awesome/css/font-awesome.min.css");
 __webpack_require__("./node_modules/primeng/resources/themes/omega/theme.css");
 __webpack_require__("./node_modules/primeng/resources/primeng.min.css");
 __webpack_require__("./node_modules/font-awesome/css/font-awesome.css");
 __webpack_require__("./node_modules/@clr/icons/clr-icons.min.css");
-__webpack_require__("./node_modules/@clr/ui/clr-ui.min.css");
-module.exports = __webpack_require__("./app/styles.css");
+module.exports = __webpack_require__("./node_modules/@clr/ui/clr-ui.min.css");
 
 
 /***/ })

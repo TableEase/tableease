@@ -1,5 +1,8 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
+import { Observable } from 'rxjs/Observable';
+import 'rxjs/add/operator/map';
+import { Restaurant } from '../models/restaurants';
 
 @Injectable()
 export class RestaurantService {
@@ -7,7 +10,6 @@ export class RestaurantService {
 
   getRestaurantsAll() {
     const restaurants = this.http.get('/api/restaurants/');
-    console.log('In Request: ', restaurants);
     return restaurants;
   }
 
@@ -16,6 +18,7 @@ export class RestaurantService {
   }
 
   addRestaurant(formVals) {
+    console.log('FormVals: ', formVals);
     return this.http.post('/api/restaurants/', formVals);
   }
 
@@ -25,5 +28,11 @@ export class RestaurantService {
 
   deleteRestaurant(restaurant_id) {
     return this.http.delete('/api/restaurants/' + restaurant_id);
+  }
+
+  readCompRestaurants(): Observable<Restaurant[]> {
+    return this.http
+      .get<{ restaurants: Restaurant[] }>('/api/company/restaurants')
+      .map((res) => (res.restaurants as Restaurant[]) || []);
   }
 }

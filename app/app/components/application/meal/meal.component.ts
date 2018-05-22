@@ -23,8 +23,11 @@ export class MealComponent implements OnInit {
   allDataFetched = false;
   restaurantExists = false;
 
-  constructor(private mealService: MealService, private router: Router, private restaurantService: RestaurantService) {
-  }
+  constructor(
+    private mealService: MealService,
+    private router: Router,
+    private restaurantService: RestaurantService
+  ) {}
 
   ngOnInit() {
     this.getRestaurants();
@@ -42,31 +45,39 @@ export class MealComponent implements OnInit {
   }
 
   getMenu() {
-    this.mealService.getMenu().subscribe((menu) => {
-      if (!menu['data'] && menu['messages']) {
-        this.router.navigate(['/login']);
-      }
-      if (this.restaurantExists) {
-        const selRes = this.selectedRestaurant.id;
-        this.meals = menu['data'].filter(function(restaurant) {
-          return restaurant.restaurant_id === selRes;
-        });
-      }
-    });
-
+    console.log('In Get Menu: ', this.selectedRestaurant);
+    this.mealService
+      .getRestaurantMeals(this.selectedRestaurant.id)
+      .subscribe((meals) => {
+        console.log('The meals: ', meals);
+        // if (!menu['data'] && menu['messages']) {
+        //   this.router.navigate(['/login']);
+        // }
+        // if (this.restaurantExists) {
+        //   const selRes = this.selectedRestaurant.id;
+        //   this.meals = menu['data'].filter(function(restaurant) {
+        //     return restaurant.restaurant_id === selRes;
+        //   });
+        // }
+        this.meals = meals;
+      });
   }
 
   getRestaurants() {
-    this.restaurantService.getRestaurants().subscribe((restaurants) => {
-      if (!restaurants['data'] && restaurants['messages']) {
-        this.router.navigate(['/login']);
-      }
-      this.restaurants = restaurants['data'];
-      if (this.restaurants.length > 0) {
-        this.selectedRestaurant = restaurants['data'][0];
+    console.log('In Get Restaurants');
+    this.restaurantService.readCompRestaurants().subscribe((restaurants) => {
+      // AUTH GURD should handle this
+      // if (!restaurants['data'] && restaurants['messages']) {
+      //   this.router.navigate(['/login']);
+      // }
+
+      this.restaurants = restaurants;
+
+      if (restaurants.length > 0) {
+        // this.selectedRestaurant = restaurants[0];
         this.restaurantExists = true;
       }
-      this.selectedRestaurant = restaurants['data'][0];
+      this.selectedRestaurant = restaurants[0];
       this.allDataFetched = true;
       this.getMenu();
     });
