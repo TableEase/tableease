@@ -444,8 +444,9 @@ var MealFormComponent = /** @class */ (function () {
     };
     MealFormComponent.prototype.onSubmit = function () {
         var formVals = this.form.value;
-        formVals['checkedAllergies'] = this.getSelectedOptions();
-        return this.mealService.addFood(formVals);
+        console.log('Form Vals on Submit', formVals);
+        formVals.allergies = this.getSelectedOptions();
+        return this.mealService.create(formVals);
     };
     MealFormComponent.prototype.onUpdate = function () {
         console.log('Form: ', this.meal);
@@ -579,7 +580,7 @@ var MealComponent = /** @class */ (function () {
     };
     MealComponent.prototype.onCreateMeal = function () {
         var _this = this;
-        this.mealForm.form.value['restaurant_id'] = this.selectedRestaurant.id;
+        this.mealForm.form.value.restaurant_id = this.selectedRestaurant.id;
         this.mealForm.onSubmit().subscribe(function (res) {
             _this.getMenu();
         });
@@ -633,8 +634,11 @@ var MealComponent = /** @class */ (function () {
     };
     MealComponent.prototype.onDeleteMeal = function (meal) {
         var _this = this;
-        this.mealService.deleteFood(meal['food_id']).subscribe(function (menu) {
-            _this.meals = menu['data'];
+        console.log('The Delte Meal: ', meal);
+        this.mealService.delete(meal.id).subscribe(function (res) {
+            console.log('The Delete Response: ', res);
+            _this.meals = res['data'];
+            _this.getMenu();
         });
     };
     MealComponent.prototype.onClear = function () {
@@ -1015,9 +1019,8 @@ var RestaurantComponent = /** @class */ (function () {
     };
     RestaurantComponent.prototype.onDeleteRestaurant = function (restaurant) {
         var _this = this;
-        this.restaurantService
-            .deleteRestaurant(restaurant['id'])
-            .subscribe(function (res) {
+        console.log('The Delete Rest: ', restaurant);
+        this.restaurantService.delete(restaurant.id).subscribe(function (res) {
             _this.getRestaurants();
         });
     };
@@ -1732,10 +1735,11 @@ var SplashComponent = /** @class */ (function () {
         var _this = this;
         this.restaurantService.getRestaurantsAll().subscribe(function (restaurants) {
             console.log('The Restaurants: ', restaurants);
-            if (!restaurants['data'] && restaurants['messages']) {
-                _this.router.navigate(['/login']);
-            }
-            _this.restaurants = restaurants['data'];
+            // this function is for all. no need to redirect to login
+            // if (!restaurants['data'] && restaurants['messages']) {
+            //   this.router.navigate(['/login']);
+            // }
+            _this.restaurants = restaurants;
             console.log('New Rest: ', _this.restaurants);
             _this.getMenu();
         });
@@ -1765,10 +1769,12 @@ var SplashComponent = /** @class */ (function () {
         var _this = this;
         var selectedNames = this.getSelectedOptionNames();
         this.mealService.getMenuAll().subscribe(function (menu) {
-            if (!menu['data'] && menu['messages']) {
-                _this.router.navigate(['/login']);
-            }
-            _this.meals = menu['data'];
+            // this function is for all. no need to redirect to login
+            // if (!menu['data'] && menu['messages']) {
+            //   this.router.navigate(['/login']);
+            // }
+            _this.meals = menu;
+            console.log('the Meals: ', _this.meals);
             for (var i = 0; i < _this.meals.length; i++) {
                 var price = parseInt(_this.meals[i].price, 10);
                 if (price > _this.rangeValues[1] || price < _this.rangeValues[0]) {
@@ -1906,26 +1912,28 @@ var MealService = /** @class */ (function () {
     MealService.prototype.getRestaurantMeals = function (id) {
         console.log('The Id: ', id);
         return this.http
-            .get("/api/company/restaurants/" + id + "/meals")
+            .get('/api/company/restaurants/' + id + '/meals')
             .map(function (res) { return res.meals || []; });
     };
     MealService.prototype.getMenuAll = function () {
-        return this.http.get('/api/meals/');
+        return this.http
+            .get('/api/meals/')
+            .map(function (res) { return res.meals || []; });
     };
     MealService.prototype.getMenu = function () {
         return this.http.get('/api/meals/');
     };
-    MealService.prototype.addFood = function (formVals) {
-        console.log('Add Food Form Vals: ', formVals);
-        return this.http.post('/api/meals/', formVals);
+    MealService.prototype.create = function (payload) {
+        console.log('Add Food Form Vals: ', payload);
+        return this.http.post('/api/meals/', payload);
     };
     MealService.prototype.updateFood = function (payload) {
         console.log('update Food Form Vals: ', payload);
-        return this.http.put("/api/meals/" + payload.id, payload);
+        return this.http.put('/api/meals/' + payload.id, payload);
     };
-    MealService.prototype.deleteFood = function (food_id) {
-        console.log('Delete Food: ', food_id);
-        return this.http.delete('/api/meals/' + food_id);
+    MealService.prototype.delete = function (mealId) {
+        console.log('Delete Food: ', mealId);
+        return this.http.delete('/api/meals/' + mealId);
     };
     MealService = __decorate([
         core_1.Injectable(),
@@ -2002,21 +2010,23 @@ var RestaurantService = /** @class */ (function () {
         this.http = http;
     }
     RestaurantService.prototype.getRestaurantsAll = function () {
-        var restaurants = this.http.get('/api/restaurants/');
-        return restaurants;
+        return this.http
+            .get('/api/restaurants/')
+            .map(function (res) { return res.restaurants || []; });
     };
     RestaurantService.prototype.getRestaurants = function () {
         return this.http.get('/api/restaurants/');
     };
-    RestaurantService.prototype.addRestaurant = function (formVals) {
-        console.log('FormVals: ', formVals);
-        return this.http.post('/api/restaurants/', formVals);
+    RestaurantService.prototype.addRestaurant = function (payload) {
+        console.log('FormVals: ', payload);
+        return this.http.post('/api/restaurants/', payload);
     };
-    RestaurantService.prototype.updateRestaurant = function (formVals) {
-        return this.http.put('/api/restaurants/' + formVals.id, formVals);
+    RestaurantService.prototype.updateRestaurant = function (payload) {
+        return this.http.put('/api/restaurants/' + payload.id, payload);
     };
-    RestaurantService.prototype.deleteRestaurant = function (restaurant_id) {
-        return this.http.delete('/api/restaurants/' + restaurant_id);
+    RestaurantService.prototype.delete = function (id) {
+        console.log('The Rest Id: ', id);
+        return this.http.delete('/api/restaurants/' + id);
     };
     RestaurantService.prototype.readCompRestaurants = function () {
         return this.http

@@ -46,11 +46,10 @@ export class RestaurantComponent implements OnInit {
   }
 
   onDeleteRestaurant(restaurant) {
-    this.restaurantService
-      .deleteRestaurant(restaurant['id'])
-      .subscribe((res) => {
-        this.getRestaurants();
-      });
+    console.log('The Delete Rest: ', restaurant);
+    this.restaurantService.delete(restaurant.id).subscribe((res) => {
+      this.getRestaurants();
+    });
   }
 
   onCreateRestaurant() {

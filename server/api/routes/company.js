@@ -25,7 +25,7 @@ router.put('/:id', validate.isLoggedIn, (req, res) => {
 
 // READ COMPANY RESTAURANTS /api/company/restaurants/
 router.get('/restaurants/', (req, res) => {
-  restaurantController.readAll(req, true, (restaurants) => {
+  restaurantController.readAll(req, res, true, (restaurants) => {
     res.status(200).json({ restaurants: restaurants });
   });
 });
@@ -40,7 +40,7 @@ router.get('/restaurants/:id', (req, res) => {
 
 // READ COMPANY RESTAURANT MEALS /api/company/restaurants/:id/meals
 router.get('/restaurants/:id/meals', (req, res) => {
-  mealController.readAll(req, (meals) => {
+  mealController.readAll(req, res, (meals) => {
     res.status(200).json({ meals: meals });
   });
 });

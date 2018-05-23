@@ -73,13 +73,13 @@ module.exports = {
     });
   },
 
-  readAll: (req, callback) => {
+  readAll: (req, res, callback) => {
     const query = readQuery(null, req.params.id);
 
     food.query(query, (err, rows, fields) => {
       if (err) throw err;
       if (rows.length < 1) {
-        return res.status(404).json({ message: 'Not Found' });
+        return res.status(200).json({ message: 'No meals found', meals: rows });
       }
       callback(allergyController.parse(rows));
     });

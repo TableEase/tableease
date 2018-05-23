@@ -16,7 +16,7 @@ router.post('/', validate.isLoggedIn, (req, res) => {
 
 // READ ALL MEALS /api/meals/
 router.get('/', (req, res) => {
-  mealController.readAll(req, (meals) => {
+  mealController.readAll(req, res, (meals) => {
     res.status(200).json({ meals: meals });
   });
 });

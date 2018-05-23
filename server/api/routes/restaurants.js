@@ -8,7 +8,7 @@ const companyController = require('../controllers/companyController');
 
 // CREATE RESTAURANT /api/restaurants/
 router.post('/', validate.isLoggedIn, (req, res, next) => {
-  restaurantController.create(req, (result) => {
+  restaurantController.create(req, (restaurant) => {
     res.status(200).json({
       message: 'Restaurant Created',
       restaurant: restaurant[0]
@@ -19,7 +19,7 @@ router.post('/', validate.isLoggedIn, (req, res, next) => {
 // READ ALL RESTAURANTS /api/restaurants/
 router.get('/', (req, res, next) => {
   restaurantController.readAll(req, res, (restaurants) => {
-    res.status(200).json({ restaurant: restaurants });
+    res.status(200).json({ restaurants: restaurants });
   });
 });
 

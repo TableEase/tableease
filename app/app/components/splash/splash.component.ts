@@ -44,10 +44,13 @@ export class SplashComponent implements OnInit {
   getRestaurants() {
     this.restaurantService.getRestaurantsAll().subscribe((restaurants) => {
       console.log('The Restaurants: ', restaurants);
-      if (!restaurants['data'] && restaurants['messages']) {
-        this.router.navigate(['/login']);
-      }
-      this.restaurants = restaurants['data'];
+
+      // this function is for all. no need to redirect to login
+      // if (!restaurants['data'] && restaurants['messages']) {
+      //   this.router.navigate(['/login']);
+      // }
+
+      this.restaurants = restaurants;
       console.log('New Rest: ', this.restaurants);
       this.getMenu();
     });
@@ -88,10 +91,12 @@ export class SplashComponent implements OnInit {
   getMenu() {
     const selectedNames = this.getSelectedOptionNames();
     this.mealService.getMenuAll().subscribe((menu) => {
-      if (!menu['data'] && menu['messages']) {
-        this.router.navigate(['/login']);
-      }
-      this.meals = menu['data'];
+      // this function is for all. no need to redirect to login
+      // if (!menu['data'] && menu['messages']) {
+      //   this.router.navigate(['/login']);
+      // }
+      this.meals = menu;
+      console.log('the Meals: ', this.meals);
       for (let i = 0; i < this.meals.length; i++) {
         const price = parseInt(this.meals[i].price, 10);
         if (price > this.rangeValues[1] || price < this.rangeValues[0]) {

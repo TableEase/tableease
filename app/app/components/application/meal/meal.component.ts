@@ -34,7 +34,7 @@ export class MealComponent implements OnInit {
   }
 
   onCreateMeal() {
-    this.mealForm.form.value['restaurant_id'] = this.selectedRestaurant.id;
+    this.mealForm.form.value.restaurant_id = this.selectedRestaurant.id;
     this.mealForm.onSubmit().subscribe((res) => {
       this.getMenu();
     });
@@ -91,8 +91,11 @@ export class MealComponent implements OnInit {
   }
 
   onDeleteMeal(meal) {
-    this.mealService.deleteFood(meal['food_id']).subscribe((menu) => {
-      this.meals = menu['data'];
+    console.log('The Delte Meal: ', meal);
+    this.mealService.delete(meal.id).subscribe((res) => {
+      console.log('The Delete Response: ', res);
+      this.meals = res['data'];
+      this.getMenu();
     });
   }
 

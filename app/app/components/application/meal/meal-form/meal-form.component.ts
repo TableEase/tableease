@@ -65,8 +65,9 @@ export class MealFormComponent implements OnInit {
 
   onSubmit() {
     const formVals = this.form.value;
-    formVals['checkedAllergies'] = this.getSelectedOptions();
-    return this.mealService.addFood(formVals);
+    console.log('Form Vals on Submit', formVals);
+    formVals.allergies = this.getSelectedOptions();
+    return this.mealService.create(formVals);
   }
 
   onUpdate() {

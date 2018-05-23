@@ -8,26 +8,28 @@ import { Restaurant } from '../models/restaurants';
 export class RestaurantService {
   constructor(private http: HttpClient) {}
 
-  getRestaurantsAll() {
-    const restaurants = this.http.get('/api/restaurants/');
-    return restaurants;
+  getRestaurantsAll(): Observable<Restaurant[]> {
+    return this.http
+      .get<{ restaurants: Restaurant[] }>('/api/restaurants/')
+      .map((res) => (res.restaurants as Restaurant[]) || []);
   }
 
   getRestaurants() {
     return this.http.get('/api/restaurants/');
   }
 
-  addRestaurant(formVals) {
-    console.log('FormVals: ', formVals);
-    return this.http.post('/api/restaurants/', formVals);
+  addRestaurant(payload) {
+    console.log('FormVals: ', payload);
+    return this.http.post('/api/restaurants/', payload);
   }
 
-  updateRestaurant(formVals) {
-    return this.http.put('/api/restaurants/' + formVals.id, formVals);
+  updateRestaurant(payload) {
+    return this.http.put('/api/restaurants/' + payload.id, payload);
   }
 
-  deleteRestaurant(restaurant_id) {
-    return this.http.delete('/api/restaurants/' + restaurant_id);
+  delete(id) {
+    console.log('The Rest Id: ', id);
+    return this.http.delete('/api/restaurants/' + id);
   }
 
   readCompRestaurants(): Observable<Restaurant[]> {
