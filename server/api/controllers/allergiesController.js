@@ -26,15 +26,17 @@ module.exports = {
     });
     return meals;
   },
-  checkAllergyExists: function(checkedAllergies, foodallergy) {
-    for (let i = 0; i < checkedAllergies.length; i++) {
-      if (checkedAllergies[i]['id'] === foodallergy['allergy_id']) {
-        checkedAllergies.splice(i, 1);
+
+  compare: function(allergies, allergy) {
+    for (let i = 0; i < allergies.length; i++) {
+      if (allergies[i]['id'] === allergy['allergy_id']) {
+        allergies.splice(i, 1);
         return true;
       }
     }
     return false;
   },
+
   getAllergies: function(callback) {
     allergy.find('all', {}, function(err, rows, fields) {
       if (err) throw err;

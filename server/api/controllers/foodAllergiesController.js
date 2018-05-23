@@ -12,14 +12,17 @@ module.exports = {
       return allergies;
     } else {
       foodAllergy.find(
+        // get current allergy list
         'all',
         { where: `food_id = ${mealId}` },
         (err, res, fields) => {
           if (res.length < 1) {
             return allergies;
           }
+
           res.forEach((allergy) => {
-            if (!allergyController.checkAllergyExists(allergies, allergy)) {
+            // remove allergies not on payload list
+            if (!allergyController.compare(allergies, allergy)) {
               foodAllergy.remove(
                 `food_id = ${allergy.food_id} and allergy_id = ${
                   allergy.allergy_id
@@ -27,30 +30,27 @@ module.exports = {
               );
             }
           });
-          // return res;
         }
       );
-      return allergies;
     }
+    return allergies;
   },
 
-  create: (foodRowId, allergies) => {
+  create: (mealId, allergies) => {
     if (!allergies) {
       return allergies;
     }
 
     if (allergies.length > 0) {
-      let foodAllergyQuery =
-        'insert into food_allergy (food_id, allergy_id) values ? ';
+      let query = 'insert into food_allergy (food_id, allergy_id) values ? ';
       let vals = [];
       allergies.forEach((allergy) => {
-        vals.push([foodRowId, allergy.id]);
+        vals.push([mealId, allergy.id]);
       });
-      foodAllergy.query(foodAllergyQuery, [vals], (err, rows, fields) => {
+      foodAllergy.query(query, [vals], (err, rows, fields) => {
         if (err) throw err;
       });
+      return allergies;
     }
-
-    return allergies;
   }
 };

@@ -9,16 +9,8 @@ const restaurantController = require('../controllers/restaurantController');
 
 // CREATE MEAL /api/meals/
 router.post('/', validate.isLoggedIn, (req, res) => {
-  restaurantController.validate(req, (result) => {
-    if (result.company_id === req.user.id && result.active === 1) {
-      mealController.create(req, (result, allergies) => {
-        mealController.read(result.insertId, (meal) => {
-          res.status(201).json({ message: 'Meal Created', meal: meal[0] });
-        });
-      });
-    } else {
-      res.status(401).json({ message: 'Unauthorized' });
-    }
+  mealController.create(req, () => {
+    res.status(201).json({ message: 'Meal Created' });
   });
 });
 
@@ -31,33 +23,23 @@ router.get('/', (req, res) => {
 
 // READ A MEAL /api/meals/:id
 router.get('/:id', (req, res) => {
-  mealController.read(req, (meal) => {
+  mealController.read(req, res, (meal) => {
     res.status(200).json({ meal: meal });
   });
 });
 
 // UPDATE MEAL /api/meals/:id
 router.put('/:id', validate.isLoggedIn, (req, res) => {
-  mealController.validate(req, (result) => {
-    if (result.length < 1) {
-      return res.status(404).json({ message: 'Not Found' });
-    }
-    mealController.update(req, (result, allergies) => {
-      if (result) {
-        mealController.read(req, (meal) => {
-          res.status(200).json({ message: 'Meal Updated', meal: meal[0] });
-        });
-      }
+  mealController.validate(req, res, (result) => {
+    mealController.update(req, (meal) => {
+      res.status(200).json({ message: 'Meal Updated', meal: meal[0] });
     });
   });
 });
 
 // DELETE MEAL /api/meals/:id
 router.delete('/:id', validate.isLoggedIn, (req, res) => {
-  mealController.validate(req, (result) => {
-    if (result.length < 1) {
-      return res.status(404).json({ message: 'Not Found' });
-    }
+  mealController.validate(req, res, (result) => {
     mealController.delete(req, () => {
       res.status(200).json({ message: 'Meal Deleted' });
     });

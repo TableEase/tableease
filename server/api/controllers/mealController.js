@@ -46,26 +46,29 @@ module.exports = {
   create: (req, callback) => {
     const companyId = req.user.id;
     const payload = req.body;
-    const allergies = payload.checkedAllergies;
+    const allergies = payload.allergies;
 
     const food = setBody(payload, companyId);
 
     food.save((err, rows, fields) => {
       if (err) throw err;
-      return callback(
-        rows,
-        faController.addFoodAllergy(rows.insertId, allergies)
-      );
+
+      faController.create(rows.insertId, allergies);
+
+      return callback();
     });
   },
 
-  read: (req, callback) => {
+  read: (req, res, callback) => {
     req.params ? (mealId = req.params.id) : (mealId = req);
 
     const query = readQuery(mealId);
 
     food.query(query, (err, rows, fields) => {
       if (err) throw err;
+      if (rows.length < 1) {
+        return res.status(404).json({ message: 'Not Found' });
+      }
       callback(allergyController.parse(rows));
     });
   },
@@ -75,6 +78,9 @@ module.exports = {
 
     food.query(query, (err, rows, fields) => {
       if (err) throw err;
+      if (rows.length < 1) {
+        return res.status(404).json({ message: 'Not Found' });
+      }
       callback(allergyController.parse(rows));
     });
   },
@@ -83,13 +89,17 @@ module.exports = {
     const mealId = req.params.id;
     const companyId = req.user.id;
     const payload = req.body;
-    const allergies = faController.update(req);
+    const allergies = faController.update(req); // Remove any allergy not on payload
 
     const food = setBody(payload, companyId, mealId);
 
     food.save((err, rows, fields) => {
       if (err) throw err;
-      return callback(rows, faController.create(food.id, allergies));
+
+      let meal = food.attributes;
+      meal.allergies = faController.create(food.id, allergies);
+
+      return callback(allergyController.parse([meal]));
     });
   },
 
@@ -106,7 +116,7 @@ module.exports = {
     );
   },
 
-  validate: (req, callback) => {
+  validate: (req, res, callback) => {
     const mealId = req.params.id;
     const companyId = req.user.id;
 
@@ -115,6 +125,9 @@ module.exports = {
       { where: [`company_id = ${companyId} and id = ${mealId}`] },
       (err, row, fields) => {
         if (err) throw err;
+        if (row.length < 1) {
+          return res.status(404).json({ message: 'Not Found' });
+        }
         return callback(row);
       }
     );
